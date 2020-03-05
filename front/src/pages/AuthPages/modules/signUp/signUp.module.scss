@@ -1,0 +1,10 @@
+.signUp {
+  align-self: flex-start;
+  width: 100%;
+  text-align: right;
+  flex-grow: 1;
+
+  &_link {
+    margin-left: 3px;
+  }
+}

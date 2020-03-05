@@ -1,0 +1,32 @@
+.sign {
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  min-height: 100vh;
+
+  &__form {
+    align-self: center;
+    max-width: 600px;
+    width: 100%;
+    transform: translateY(-100%);
+
+    &_title {
+      margin-bottom: 1em;
+      color: #222;
+    }
+  }
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.socials {
+  padding-top: 10px;
+
+  &_justify {
+    display: flex;
+    justify-content: space-between;
+  }
+}

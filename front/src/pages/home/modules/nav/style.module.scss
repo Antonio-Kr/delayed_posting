@@ -1,0 +1,10 @@
+.nav {
+  background-color: beige;
+  grid-template: 'nav';
+  height: 100%;
+  padding-top: 100px;
+
+  &__link {
+    display: block;
+  }
+}

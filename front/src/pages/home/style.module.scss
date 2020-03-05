@@ -1,0 +1,6 @@
+.home {
+  display: grid;
+  grid-template-areas: 'nav' 'main' 'agenda';
+  grid-template-columns: 1fr 3fr 2fr;
+
+}
