@@ -5,12 +5,8 @@ const initialState = {
     isLogin: false
 };
 
-type actionType = {
-    type: string
-    payload: boolean
-}
-
-export const authReducer = (state = initialState, action: actionType) => {
+// type actionType  ;
+export const authReducer = (state = initialState, action: any) => {
 
     switch (action.type) {
         // case

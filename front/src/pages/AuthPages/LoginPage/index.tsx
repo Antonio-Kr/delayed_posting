@@ -5,6 +5,7 @@ import {NavLink} from 'react-router-dom'
 import SignUpLoginPage, {signType} from '../modules/signUp/signUp'
 import SocialAuthButtons from '../modules/SocialAuthButtons/SocialAuthButtons'
 import EmailItem from "../modules/EmailItem";
+import {StateType} from "typesafe-actions";
 
 export const layout = {
     labelCol: {span: 8},
@@ -20,7 +21,7 @@ export type LoginFormValueType = {
 }
 
 
-export default function LoginPage() {
+export default function LoginPage(props: StateType<any>) {
 
     const signName: signType = {
         message: "Don't have an account",

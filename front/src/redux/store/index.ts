@@ -1,7 +1,7 @@
-import { createStore, applyMiddleware, compose } from "redux";
-import { routerMiddleware } from 'react-router-redux';
+import {createStore, applyMiddleware, compose} from "redux";
+import {routerMiddleware} from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
-import { createBrowserHistory } from 'history';
+import {createBrowserHistory} from 'history';
 
 import rootReducer from "../reducers";
 import rootSaga from '../sagas';
@@ -16,6 +16,7 @@ const enhancer = composeEnhancers(
 );
 const store = createStore(rootReducer, enhancer);
 
+export type StateType = typeof store;
 sagaMiddleware.run(rootSaga);
 
 export default store;

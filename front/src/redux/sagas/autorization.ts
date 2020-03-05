@@ -4,7 +4,7 @@ import {FETCH_USER_URL} from "../constants";
 
 export default function* fetchUser() {
     try {
-        // yeld put('REQUEST_USER')
+        // yeld call(UserApi.getUser, 'REQUEST_USER')
         // yield call(UserApi.getAuthTag(FETCH_USER_URL))
 
     } catch (error) {
