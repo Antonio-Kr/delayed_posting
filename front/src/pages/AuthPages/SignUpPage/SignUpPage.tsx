@@ -47,7 +47,7 @@ export default function SignUpPage(props: any) {
                         rules={[
                             {required: true, message: 'Please repeat your password!'},
                             ({getFieldValue}) => ({
-                                validator(rule, value: string) {
+                                validator(rule: any, value: string) {
 
                                     if (!value || getFieldValue('password') === value) {
                                         return Promise.resolve();
