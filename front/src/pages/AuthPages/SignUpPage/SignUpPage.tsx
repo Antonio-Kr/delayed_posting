@@ -46,6 +46,15 @@ export default function SignUpPage(props: any) {
                         name="passwordConfirm"
                         rules={[
                             {required: true, message: 'Please repeat your password!'},
+                            ({getFieldValue}) => ({
+                                validator(rule, value: string) {
+
+                                    if (!value || getFieldValue('password') === value) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(`Your passwords don't match!`);
+                                }
+                            })
                         ]}
                     >
                         <Input.Password/>
