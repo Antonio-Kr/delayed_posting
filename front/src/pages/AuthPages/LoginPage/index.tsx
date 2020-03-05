@@ -31,10 +31,9 @@ export default function LoginPage() {
     return (
         <div className={classes.sign}>
             <SignUpLoginPage {...signName} />
-            <LoginForm/>
             <div className={classes.sign__form}>
                 <h2 className={classes.sign__form_title}>Log in</h2>
-
+                <LoginForm/>
                 <div className={classes.textCenter}>
                     or
                     <div className={classes.socials}>
