@@ -28,7 +28,7 @@ export class UserService {
     return this.client.send<string, IUser>('register', user);
   }
 
-  public forgotPassword(email: string) {
-    return this.client.send<string, string>('register', email);
+  public forgotPassword(email: any) {
+    return this.client.send<Promise<IUser>, any>('forgot', email);
   }
 }
