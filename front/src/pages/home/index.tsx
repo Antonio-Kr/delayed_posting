@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactElement, useEffect} from 'react'
 import classes from './style.module.scss'
 import Nav from "./modules/nav";
 import Main from './modules/main';
@@ -10,7 +10,11 @@ import {Redirect} from 'react-router-dom';
 
 function Home(props: StateType<any>) {
 
-    if (props.user === null) return <Redirect to={'/login'}/>
+    const token = localStorage.getItem('token');
+
+
+
+    if (props.user === null || !token) return <Redirect to={'/login'}/>
 
     return (
         <h1 className={classes.home}>
