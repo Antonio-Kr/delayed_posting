@@ -53,20 +53,17 @@ const LoginForm = () => {
 
 
     const onFinish = (values: any) => {
-        console.log('Success:', values)
+        console.log('Success:', values);
     }
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo)
     }
-
     const formChange = (formName: string,
                         info: { values: string, forms: string }) => {
         console.log(info.values, info.forms)
     }
-
     return (
-
         <Form
             {...layout}
             name="login"
