@@ -1,5 +1,4 @@
 import axios from 'axios';
-import {Simulate} from "react-dom/test-utils";
 
 // const baseURL = 'http://localhost:3000';
 const baseURL = 'https://jsonplaceholder.typicode.com/users/';

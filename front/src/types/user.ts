@@ -6,6 +6,7 @@ export interface IAddress {
 }
 
 export interface IUser {
+    fullName?: string
     email: string;
     password: string;
     status?: string;
