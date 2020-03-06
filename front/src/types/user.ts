@@ -18,3 +18,12 @@ export interface IUser {
     phone?: string;
     roles?: Array<string>;
 }
+
+export interface IisFetching {
+    isFetching: boolean
+}
+
+export interface IState {
+    isFetching: boolean
+    user: IUser | null
+}
