@@ -18,7 +18,7 @@ export class AppController {
   }
 
   @MessagePattern('forgot')
-  async forgotPassword(email: string) {
+  async forgotPassword(email: any) {
     return this.appService.forgotPassword(email);
   }
 }
