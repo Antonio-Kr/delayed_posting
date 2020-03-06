@@ -1,14 +1,15 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {layout, tailLayout} from "../LoginPage";
 import {Button, Form, Input} from "antd";
 import EmailItem from "../modules/EmailItem";
 import classes from "../style.module.scss";
 import SocialAuthButtons from "../modules/SocialAuthButtons/SocialAuthButtons";
+import {IUser} from "../../../types";
 
 
 export const SignUpForm = (props: any) => {
 
-    interface ValuesType {
+    type ValuesType = {
         name: string
         email: string
         password: string
@@ -17,11 +18,14 @@ export const SignUpForm = (props: any) => {
 
     const onFinish = (values: any) => {
         const {name, email, password} = values; //
-        const user = {
-            name,
-            email,
-            password
+
+        const user: IUser = {
+            fullName: name,
+            email: email,
+            password: password
         }
+        props.setUser(user);
+
         // TODO: send user to server
         //    if ( ok ) => store add user
         //    error => show error
@@ -55,7 +59,7 @@ export const SignUpForm = (props: any) => {
             </Form.Item>
             <Form.Item
                 label="Confirm password"
-                // name="passwordConfirm"
+                name="passwordConfirm"
                 rules={[
                     {required: true, message: 'Please repeat your password!'},
                     ({getFieldValue}) => ({
@@ -73,7 +77,8 @@ export const SignUpForm = (props: any) => {
             </Form.Item>
             <Form.Item {...tailLayout}>
                 <div className={classes.socials_justify}>
-                    <Button type="primary" htmlType="submit">
+                    <Button
+                        type="primary" htmlType="submit">
                         Sign Up Now
                     </Button>
                     <span>or</span>
