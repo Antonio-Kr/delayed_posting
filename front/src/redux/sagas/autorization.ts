@@ -1,11 +1,12 @@
-import {call, put} from 'redux-saga/effects';
+import {put, call} from 'redux-saga/effects';
 import {UserApi} from "../../API/api";
-import {FETCH_USER_URL} from "../constants";
+import {UserActions} from "../actions";
 
-export default function* fetchUser() {
+export function* fetchUser() {
     try {
-        // yeld call(UserApi.getUser, 'REQUEST_USER')
-        // yield call(UserApi.getAuthTag(FETCH_USER_URL))
+        yield put(UserActions.fetchingUser({isFetching: true}))
+        const user = yield call(UserApi.getUser, 1)
+        yield put(UserActions.setUser(user))
 
     } catch (error) {
         yield put({type: "FETCH_FAILED", error})
