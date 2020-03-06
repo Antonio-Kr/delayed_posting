@@ -1,8 +1,11 @@
 import {handleActions} from 'redux-actions';
-import {IUser} from '../../types';
+import {IState} from '../../types';
 import {UserActions} from '../actions';
 
-const initialState = null;
+const initialState: IState = {
+    isFetching: false,
+    user: null
+};
 
 
 // fake  initial state
@@ -26,10 +29,15 @@ const initialState = null;
 //
 // }
 
-export const UserReducer = handleActions<IUser | null, IUser>({
+export const UserReducer = handleActions({
+    [UserActions.Type.FETCHING_USER]: (state, action) => ({
+        ...state,
+        isFetching: action.payload.isFetching
+
+    }),
     [UserActions.Type.SET_USER]: (state, action) => ({
-        state,
-        ...action.payload
+        ...state,
+        user: action.payload.user
     }), // registration?
 
 }, initialState);
