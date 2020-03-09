@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import classes from '../style.module.scss'
 import SignUpLoginPage, {signType} from '../modules/signUp/signUp'
 import {connect} from 'react-redux'
