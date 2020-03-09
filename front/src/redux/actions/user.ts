@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import {createAction} from 'redux-actions';
-import {IisFetching, IState, IUser} from '../../types';
+import { IisFetching, IUser} from '../../types';
 
 enum Type {
     SET_USER = 'SET_USER',
     GET_USER = 'GET_USER',
-    FETCHING_USER = "FETCHING_USER"
+    FETCHING_USER = 'FETCHING_USER'
 }
-
-
 
 
 const setUser = createAction<IUser>(Type.SET_USER);

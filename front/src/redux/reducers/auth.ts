@@ -1,19 +1,26 @@
-import {handleActions} from 'redux-actions';
-import store from "../store";
+import {handleActions} from "redux-actions";
+import {AuthActions} from "../actions";
 
 const initialState = {
-    isLogin: false
+    isLogin: false,
+    inRegisterProcess: false
 };
 
-// type actionType  ;
-export const authReducer = (state = initialState, action: any) => {
+// type actionType;
+export const authReducer = handleActions({
+        [AuthActions.Type.GET_AUTH]: (state, action) => ({
+            ...action.payload
+        }), // fetching to/from server
 
-    switch (action.type) {
-        // case
+        [AuthActions.Type.SEND_AUTH_DATA]: (state, action) => ({
+            ...action.payload,
+        }), // set user into state
 
-        default:
-            return store
-    }
-}
+        [AuthActions.Type.AUTHENTICATION_IN_PROGRESS]: (state, action) => ({
+            ...state,
+            inRegisterProcess: action.payload.inRegisterProcess
+        }),
 
-
+    }, initialState
+    )
+;

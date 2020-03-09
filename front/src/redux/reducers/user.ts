@@ -1,7 +1,7 @@
 import {handleActions} from 'redux-actions';
 import {IState} from '../../types';
 import {UserActions} from '../actions';
-import {IUser} from "../../types/user";
+import {IUser} from "../../types";
 
 const initialState: IState = {
     isFetching: false,
@@ -12,7 +12,9 @@ const initialState: IState = {
 // fake  initial state
 
 // const initialState = {
-// email: 'string',
+//     isFetching: false,
+//
+//     email: 'string',
 //     status: 'string',
 //     avatar: 'string',
 //     lastName: 'string',
@@ -31,13 +33,8 @@ const initialState: IState = {
 // }
 
 export const UserReducer = handleActions({
-    [UserActions.Type.FETCHING_USER]: (state, action) => ({
-        ...action.payload
-
-    }), // fetching to/from server
-    [UserActions.Type.SET_USER]: (state, action) => ({
-        ...action.payload,
-    }), // set user into state
+    [UserActions.Type.FETCHING_USER]: (state, action) => action.payload, // fetching to/from server
+    [UserActions.Type.SET_USER]: (state, action) => action.payload,// set user into state
 
 }, initialState);
 

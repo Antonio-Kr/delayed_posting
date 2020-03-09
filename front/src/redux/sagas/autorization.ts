@@ -1,15 +1,21 @@
-import {put, call} from 'redux-saga/effects';
+import {put, call, takeLatest} from 'redux-saga/effects';
 import {UserApi} from "../../API/api";
-import {UserActions} from "../actions";
+import {AuthActions} from "../actions";
 
-export function* fetchUser() {
+export function* registerUser() {
+
+}
+
+export function* sendRegistrationData(payload: any) {
     try {
-        yield put(UserActions.fetchingUser({isFetching: true}))
-        const user = yield call(UserApi.getUser, 1)
-        yield put(UserActions.setUser(user))
-
+        // const data = yield call(UserApi.getUserData())
+        yield put({type: AuthActions.Type.AUTHENTICATION_IN_PROGRESS, payload})
+        yield (console.log(UserApi.getUserData()))
     } catch (error) {
         yield put({type: "FETCH_FAILED", error})
     }
 }
 
+export function* RegisterWatchAgeUp() {
+    yield takeLatest(AuthActions.authenticationInProgress, sendRegistrationData)
+}
