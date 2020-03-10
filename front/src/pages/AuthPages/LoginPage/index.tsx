@@ -1,11 +1,12 @@
 import React from 'react'
 import classes from '../style.module.scss'
-import {Form, Input, Button} from 'antd'
-import {NavLink} from 'react-router-dom'
 import SignUpLoginPage, {signType} from '../modules/signUp/signUp'
 import SocialAuthButtons from '../modules/SocialAuthButtons/SocialAuthButtons'
-import EmailItem from "../modules/EmailItem";
 import {StateType} from "typesafe-actions";
+import {connect} from "react-redux";
+import {IAuth} from "../../../types";
+import {AuthActions} from "../../../redux/actions";
+import LoginForm from './LoginForm'
 
 export const layout = {
     labelCol: {span: 8},
@@ -20,21 +21,24 @@ export type LoginFormValueType = {
     password: string
 }
 
-
-export default function LoginPage(props: StateType<any>) {
+function LoginPage(props: any) {
 
     const signName: signType = {
         message: "Don't have an account",
         linkName: 'Sign Up',
         path: '/signup',
     }
-
+    // UserApi.getUserData().then(console.log)
     return (
         <div className={classes.sign}>
             <SignUpLoginPage {...signName} />
             <div className={classes.sign__form}>
                 <h2 className={classes.sign__form_title}>Log in</h2>
-                <LoginForm/>
+                <LoginForm
+                    isFetching={props.isFetching}
+                    inRegisterProcess={props.inRegisterProcess}
+                    sendAuthData={props.sendAuthData}
+                />
                 <div className={classes.textCenter}>
                     or
                     <div className={classes.socials}>
@@ -43,53 +47,20 @@ export default function LoginPage(props: StateType<any>) {
                     </div>
                 </div>
             </div>
+
         </div>
     )
 }
 
-
-const LoginForm = () => {
-    const [loginform] = Form.useForm();
-
-
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
+const mapStateToProps = (state: any) => {
+    return {
+        isFetching: state.user.isFetching,
+        inRegisterProcess: state.auth.inRegisterProcess
     }
-
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo)
-    }
-    const formChange = (formName: string,
-                        info: { values: string, forms: string }) => {
-        console.log(info.values, info.forms)
-    }
-    return (
-        <Form
-            {...layout}
-            name="login"
-            form={loginform}
-            initialValues={{remember: true}}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-        >
-            <EmailItem/>
-            <Form.Item
-                label="Password"
-                name="password"
-                rules={[{required: true, message: 'Please input your password!'}]}
-
-            >
-                <Input.Password/>
-            </Form.Item>
-
-            <Form.Item {...tailLayout}>
-                <Button type="primary" htmlType="submit">
-                    Log In Now
-                </Button>
-                <Button type={'link'}>
-                    <NavLink to={'/recoverypass'}>Forgot your password?</NavLink>
-                </Button>
-            </Form.Item>
-        </Form>
-    );
 }
+
+const mapDispatchToProps = {
+    sendAuthData: (payload: IAuth) => (AuthActions.authenticationInProgress(payload))
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)
