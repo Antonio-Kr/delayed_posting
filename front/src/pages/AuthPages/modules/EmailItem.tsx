@@ -1,11 +1,12 @@
 import {Form, Input} from "antd";
 import React from "react";
 
-export default function EmailItem() {
+export default function EmailItem(props: any) {
     return (
         <Form.Item
             label="Email"
             name="email"
+            validateStatus={ props.loginError ? "error" : "success" }
             rules={[{required: true, message: 'Please input your e-mail!'},
                 ({getFieldValue}) => ({
                     validator(rule: any, value: string) {

@@ -1,34 +1,23 @@
-import {Button, Form, Input} from "antd";
+import React from "react";
+import {Button, Form, Input, Typography, Row, Col} from "antd";
 import EmailItem from "../modules/EmailItem";
 import {NavLink} from "react-router-dom";
-import React from "react";
 import {layout, tailLayout} from "./index";
-import {sendRegistrationData} from "../../../redux/sagas/autorization";
-import {IAuth, IUser} from "../../../types";
-import {AuthActions} from "../../../redux/actions";
+
+
+const {Text} = Typography;
 
 const LoginForm = (props: any) => {
     const [loginform] = Form.useForm();
 
     const onFinish = (values: any) => {
-        // const user: IUser = {
-        //     email: values.email,
-        //     password: values.password
-        // }
+        console.log(props);
         const {email, password} = values;
         console.log('Success:', values);
-        console.log(props);
-        // sendRegistrationData(values);
-        const user: IUser = {
-            email, password
-        }
-        const auth: IAuth = {
-            isLogin: false,
-            inRegisterProcess: true
-        }
-        props.sendAuthData(auth);
-    }
 
+        // sendRegistrationData(values);
+        props.sendAuthData({email, password});
+    }
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo)
@@ -42,22 +31,34 @@ const LoginForm = (props: any) => {
             {...layout}
             name="login"
             form={loginform}
+
             initialValues={{remember: true}}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
+
         >
-            <EmailItem/>
+            {
+                props.loginError &&
+                <Row justify={"center"}>
+                    <Col>
+                        <Text type="danger">Incorrect e-mail or password</Text>
+                    </Col>
+                </Row>
+            }
+            <EmailItem loginError={props.loginError}/>
             <Form.Item
                 label="Password"
                 name="password"
                 rules={[{required: true, message: 'Please input your password!'}]}
+                validateStatus={props.loginError ? "error" : "success"}
+
             >
                 <Input.Password/>
             </Form.Item>
 
             <Form.Item {...tailLayout}>
                 <Button type="primary" htmlType="submit"
-                        loading={props.inRegisterProcess}
+                        loading={props.isLoginFetching}
                 >
                     Log In Now
                 </Button>

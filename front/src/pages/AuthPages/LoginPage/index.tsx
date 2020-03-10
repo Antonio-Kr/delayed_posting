@@ -2,9 +2,8 @@ import React from 'react'
 import classes from '../style.module.scss'
 import SignUpLoginPage, {signType} from '../modules/signUp/signUp'
 import SocialAuthButtons from '../modules/SocialAuthButtons/SocialAuthButtons'
-import {StateType} from "typesafe-actions";
 import {connect} from "react-redux";
-import {IAuth} from "../../../types";
+import {IUser} from "../../../types";
 import {AuthActions} from "../../../redux/actions";
 import LoginForm from './LoginForm'
 
@@ -16,11 +15,6 @@ export const tailLayout = {
     wrapperCol: {offset: 8, span: 16},
 }
 
-export type LoginFormValueType = {
-    email: string
-    password: string
-}
-
 function LoginPage(props: any) {
 
     const signName: signType = {
@@ -28,7 +22,6 @@ function LoginPage(props: any) {
         linkName: 'Sign Up',
         path: '/signup',
     }
-    // UserApi.getUserData().then(console.log)
     return (
         <div className={classes.sign}>
             <SignUpLoginPage {...signName} />
@@ -36,8 +29,9 @@ function LoginPage(props: any) {
                 <h2 className={classes.sign__form_title}>Log in</h2>
                 <LoginForm
                     isFetching={props.isFetching}
-                    inRegisterProcess={props.inRegisterProcess}
+                    isLoginFetching={props.isLoginFetching}
                     sendAuthData={props.sendAuthData}
+                    loginError={props.loginError}
                 />
                 <div className={classes.textCenter}>
                     or
@@ -55,12 +49,15 @@ function LoginPage(props: any) {
 const mapStateToProps = (state: any) => {
     return {
         isFetching: state.user.isFetching,
-        inRegisterProcess: state.auth.inRegisterProcess
+        isLoginFetching: state.auth.isLoginFetching,
+        loginError: state.auth.loginError
     }
 }
 
-const mapDispatchToProps = {
-    sendAuthData: (payload: IAuth) => (AuthActions.authenticationInProgress(payload))
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        sendAuthData: (user: IUser) => dispatch(AuthActions.login(user))
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginPage)

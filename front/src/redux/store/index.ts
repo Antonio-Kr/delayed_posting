@@ -16,7 +16,7 @@ const enhancer = composeEnhancers(
 );
 const store = createStore(rootReducer, enhancer);
 
-export type StateType = typeof store;
+// export type StateType = typeof store;
 sagaMiddleware.run(rootSaga);
 
 // @ts-ignore

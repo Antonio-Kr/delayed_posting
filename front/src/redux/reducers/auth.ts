@@ -1,26 +1,36 @@
 import {handleActions} from "redux-actions";
 import {AuthActions} from "../actions";
+import {IAuth} from "../../types";
 
-const initialState = {
-    isLogin: false,
-    inRegisterProcess: false
+const initialState: IAuth = {
+    isLoginFetching: false,
+    token: null,
+    loginError: false
 };
 
 // type actionType;
 export const authReducer = handleActions({
-        [AuthActions.Type.GET_AUTH]: (state, action) => ({
-            ...action.payload
-        }), // fetching to/from server
+    // fetching to/from server
 
-        [AuthActions.Type.SEND_AUTH_DATA]: (state, action) => ({
-            ...action.payload,
-        }), // set user into state
+    [AuthActions.Type.LOGIN_REQUEST]: (state, action) => ({
+        ...state,
+        isLoginFetching: action.payload.isLoginFetching
+    }),
 
-        [AuthActions.Type.AUTHENTICATION_IN_PROGRESS]: (state, action) => ({
-            ...state,
-            inRegisterProcess: action.payload.inRegisterProcess
-        }),
+    [AuthActions.Type.LOGIN_REQUEST_SUCCESS]: (state, action) => ({
+        ...state,
+        token: action.payload.token
+    }),
 
-    }, initialState
-    )
-;
+    [AuthActions.Type.LOGIN_REQUEST_FAILED]: (state, action) => ({
+        ...state,
+        loginError: action.payload.loginError,
+        isLoginFetching: false
+    }),
+
+    [AuthActions.Type.LOGOUT]: (state) => ({
+        ...state,
+        token: null
+    }),
+
+}, initialState);

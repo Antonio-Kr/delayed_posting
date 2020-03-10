@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
-import {RegisterWatchAgeUp} from "./autorization";
+import {loginFlow} from "./autorization";
 
 export default function* rootSaga() {
-    yield all([RegisterWatchAgeUp]);
+    yield all([loginFlow()]);
 }

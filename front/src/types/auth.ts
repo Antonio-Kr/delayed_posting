@@ -1,5 +1,5 @@
 export interface IAuth {
-    isLogin: boolean;
-    inRegisterProcess: boolean;
-    token?: string
+    isLoginFetching: boolean;
+    token: string | null
+    loginError: boolean
 }

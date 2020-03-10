@@ -2,14 +2,13 @@ import axios from 'axios';
 import {IUser} from "../types";
 
 // const baseURL = 'http://localhost:3000';
-const baseURL = 'https://jsonplaceholder.typicode.com/users/1';
+const baseURL = 'http://5dffcf1a1fb99500141402ad.mockapi.io';
 
-const instance = axios.create({
+export const instance = axios.create({
     baseURL,
     responseType: 'json',
-    withCredentials: true,
     headers: {
-        'Access-Control-Allow-Origin': '*',
+        // 'Access-Control-Allow-Origin': '*',
         'Content-Type': 'application/json',
     },
 });
@@ -21,15 +20,5 @@ interface IUserData {
 }
 
 export const UserApi = {
-    getUserData(): any {
-        instance.get('')
-            .then((response: any) => response.data)
-    },
-    registerUser(userData: IUser) {
-        instance.post('', {
-            ...userData
-        })
-            .then(({data}) => data)
-            .then(console.log)
-    }
+
 }
