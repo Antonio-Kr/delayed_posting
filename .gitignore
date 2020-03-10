@@ -12,6 +12,7 @@ front/node_modules
 
 # production
 /front/build
+/build
 
 # misc
 /front/.DS_Store

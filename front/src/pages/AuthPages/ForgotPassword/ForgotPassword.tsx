@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './../style.module.scss'
+
 import {Button, Form} from 'antd'
 import {layout, tailLayout} from '../LoginPage'
 import EmailItem from "../modules/EmailItem";
@@ -51,3 +52,4 @@ const ForgotPassForm = (props: any) => {
         </Form>
     )
 }
+

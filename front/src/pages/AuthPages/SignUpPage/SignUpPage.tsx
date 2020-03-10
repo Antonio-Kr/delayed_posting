@@ -1,7 +1,7 @@
-import React from 'react'
-import classes from '../style.module.scss'
-import SignUpLoginPage, {signType} from '../modules/signUp/signUp'
-import {connect} from 'react-redux'
+import React from 'react';
+import classes from '../style.module.scss';
+import SignUpLoginPage, {signType} from '../modules/signUp/signUp';
+import {connect} from 'react-redux';
 import {SignUpForm} from "./SignUpForm";
 import {UserActions} from "../../../redux/actions";
 import {IUser} from '../../../types';

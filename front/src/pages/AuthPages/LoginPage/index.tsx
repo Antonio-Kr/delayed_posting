@@ -1,11 +1,11 @@
-import React from 'react'
-import classes from '../style.module.scss'
-import SignUpLoginPage, {signType} from '../modules/signUp/signUp'
-import SocialAuthButtons from '../modules/SocialAuthButtons/SocialAuthButtons'
+import React from 'react';
+import classes from '../style.module.scss';
+import SignUpLoginPage, {signType} from '../modules/signUp/signUp';
+import SocialAuthButtons from '../modules/SocialAuthButtons/SocialAuthButtons';
 import {connect} from "react-redux";
 import {IUser} from "../../../types";
 import {AuthActions} from "../../../redux/actions";
-import LoginForm from './LoginForm'
+import LoginForm from './LoginForm';
 
 export const layout = {
     labelCol: {span: 8},

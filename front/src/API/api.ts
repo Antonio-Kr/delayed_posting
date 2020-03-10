@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import {IUser} from "../types";
 
 // const baseURL = 'http://localhost:3000';

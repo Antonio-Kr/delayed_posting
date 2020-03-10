@@ -37,6 +37,3 @@ export const UserReducer = handleActions({
     [UserActions.Type.SET_USER]: (state, action) => action.payload,// set user into state
 
 }, initialState);
-
-
-

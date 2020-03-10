@@ -1,6 +1,6 @@
-import classes from './signUp.module.scss'
-import {NavLink} from 'react-router-dom'
-import React from 'react'
+import classes from './signUp.module.scss';
+import {NavLink} from 'react-router-dom';
+import React from 'react';
 
 export type signType = {
     message: string
