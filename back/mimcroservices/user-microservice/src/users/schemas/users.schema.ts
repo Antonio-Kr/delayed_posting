@@ -1,28 +1,37 @@
 import * as mongoose from 'mongoose';
-// import * as bcrypt from 'bcrypt';
 import { sha512 } from 'js-sha512';
 
 export const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: true,
+    required: [true, 'First name field is required'],
+    trim: true,
   },
   lastName: {
     type: String,
-    required: true,
+    required: [true, 'Last name field is required'],
+    trim: true,
   },
   email: {
     type: String,
     unique: true,
-    required: true,
+    required: [true, 'Email field is required'],
+    trim: true,
+    validate: function(email) {
+      return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        email,
+      );
+    },
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'Password field is required'],
+    trim: true,
   },
   timezone: {
     type: String,
-    required: true,
+    required: [true, 'Timezone field is required'],
+    trim: true,
   },
   avatar: {
     type: String,
@@ -34,32 +43,19 @@ export const UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save', function(next) {
   let user = this;
+  console.log(user.firstName);
 
-  console.log('before save');
-  // Make sure not to rehash the password if it is already hashed
   if (!user.isModified('password')) return next();
 
   user.password = sha512(user.password);
-  console.log(user.password);
   next();
-  // bcrypt.genSalt(10, (err, salt) => {
-  //   if (err) return next(err);
-  //   bcrypt.hash(user.password, salt, (err, hash) => {
-  //     if (err) return next(err);
-  //     user.password = hash;
-  //     next();
-  //   });
-  // });
 });
 
 UserSchema.methods.checkPassword = function(attempt, callback) {
   let user = this;
-  if (sha512(attempt) === user.password) {
-    return true;
-  }
 
-  // bcrypt.compare(attempt, user.password, (err, isMatch) => {
-  //   if (err) return callback(err);
-  //   callback(null, isMatch);
-  // });
+  if (sha512(attempt) === user.password) {
+    callback(null, true);
+  }
+  callback('password is not equal');
 };

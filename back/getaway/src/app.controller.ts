@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { IUser } from './interfaces/user.interface';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Controller()
 export class AppController {
@@ -10,5 +11,10 @@ export class AppController {
   @MessagePattern('register')
   async register(user: IUser) {
     return this.appService.register(user);
+  }
+
+  @MessagePattern('login')
+  async login(user: LoginUserDto) {
+    return this.appService.login(user);
   }
 }
