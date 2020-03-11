@@ -1,21 +1,14 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { IUser } from './interfaces/users.interface';
+import { UsersService } from './users.service';
 import { MessagePattern } from '@nestjs/microservices';
 
 @Controller()
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private usersService: UsersService) {}
 
-  @MessagePattern('registerUser')
-  async create(createUserDto: CreateUserDto) {
-    console.log(createUserDto);
-    await this.usersService.create(createUserDto);
-  }
-  @MessagePattern('forgotPassword')
-  async findByEmail(email: any): Promise<IUser> {
-    console.log(email);
-    return this.usersService.findByEmail(email);
+  @MessagePattern('register')
+  async create(@Body() createUserDto: CreateUserDto) {
+    return await this.usersService.create(createUserDto);
   }
 }

@@ -20,13 +20,7 @@ export class AppService {
     });
   }
 
-  login(user: IUser) {
-    return this.client.send<IUser, IUser>('login', user);
-  }
   register(user: IUser) {
-    return this.client.send<IUser, IUser>('registerUser', user);
-  }
-  forgotPassword(email: any) {
-    return this.client.send<Promise<IUser>, any>('forgotPassword', email);
+    return this.client.send<IUser, IUser>('register', user);
   }
 }
