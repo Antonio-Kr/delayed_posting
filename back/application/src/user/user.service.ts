@@ -25,12 +25,14 @@ export class UserService {
   public login(user: LoginUserDto) {
     return this.client
       .send<Promise<IJwtToken>, LoginUserDto>('login', user)
-      .toPromise();
+      .toPromise()
+      .catch();
   }
 
   public register(user: IUser) {
     return this.client
       .send<Promise<IUser>, IUser>('register', user)
-      .toPromise();
+      .toPromise()
+      .catch();
   }
 }

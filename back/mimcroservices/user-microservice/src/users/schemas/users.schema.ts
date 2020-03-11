@@ -14,19 +14,19 @@ export const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    unique: true,
     required: [true, 'Email field is required'],
+    unique: true,
     trim: true,
-    validate: function(email) {
-      return /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+    validate: email =>
+      /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
         email,
-      );
-    },
+      ),
   },
   password: {
     type: String,
     required: [true, 'Password field is required'],
     trim: true,
+    minlength: 6,
   },
   timezone: {
     type: String,
@@ -43,7 +43,6 @@ export const UserSchema = new mongoose.Schema({
 
 UserSchema.pre('save', function(next) {
   let user = this;
-  console.log(user.firstName);
 
   if (!user.isModified('password')) return next();
 
