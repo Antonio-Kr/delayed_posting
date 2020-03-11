@@ -10,32 +10,32 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<IUser> {
     let createdUser = new this.userModel(createUserDto);
-    return await createdUser.save().catch(result => {
-      let errors = [];
-
-      if (result.name == 'MongoError') {
-        errors.push({
-          type: 'duplicate',
-          path: 'email',
-        });
-      }
-
-      for (const key in result.errors) {
-        if (result.errors.hasOwnProperty(key)) {
-          const element = result.errors[key]['properties'];
-
-          errors.push({
-            type: element.type,
-            path: element.path,
-          });
-        }
-      }
-
-      return errors;
-    });
+    return await createdUser.save().catch(result => this.getErrors(result));
   }
 
-  //name: mongo error, code: 11000(duplicate)
+  private getErrors(result) {
+    let errors = [];
+
+    if (result.name == 'MongoError') {
+      errors.push({
+        type: 'duplicate',
+        path: 'email',
+      });
+    }
+
+    for (const key in result.errors) {
+      if (result.errors.hasOwnProperty(key)) {
+        const element = result.errors[key]['properties'];
+
+        errors.push({
+          type: element.type,
+          path: element.path,
+        });
+      }
+    }
+
+    return errors;
+  }
 
   async findOneByEmail(email): Model<IUser> {
     return await this.userModel.findOne({ email: email });

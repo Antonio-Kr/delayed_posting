@@ -4,11 +4,17 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { UsersService } from '../users/users.service';
 import { IJwtPayload } from './interfaces/jwt-payload.interface';
 import { IJwtToken } from './interfaces/jwt-token.interface';
+import { TokenDto } from './dto/token.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { IToken } from './interfaces/token.interface.interface';
+
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    @InjectModel('Token') private tokenModel: Model<IToken>,
   ) {}
 
   async validateUserByPassword(loginAttempt: LoginUserDto) {
@@ -30,6 +36,11 @@ export class AuthService {
     });
   }
 
+  async saveToken(tokenDto: TokenDto): Promise<IToken> {
+    let createdToken = new this.tokenModel(tokenDto);
+    return await createdToken.save();
+  }
+
   async validateUserByJwt(payload: IJwtPayload) {
     let user = await this.usersService.findOneByEmail(payload.email);
 
@@ -48,7 +59,7 @@ export class AuthService {
     let jwt = this.jwtService.sign(data);
 
     let jwtToken: IJwtToken = {
-      expiresIn: 3600,
+      expiresIn: 86400,
       token: jwt,
     };
 

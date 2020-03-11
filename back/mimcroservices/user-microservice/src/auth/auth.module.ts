@@ -5,14 +5,18 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
+import { jwtConstants } from '../constants';
+import { MongooseModule } from '@nestjs/mongoose';
+import { TokenSchema } from './schemas/token.schema';
 
 @Module({
   imports: [
+    MongooseModule.forFeature([{ name: 'Token', schema: TokenSchema }]),
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
     JwtModule.register({
-      secretOrPrivateKey: 'thisismykickasssecretthatiwilltotallychangelater',
+      secretOrPrivateKey: jwtConstants.secret,
       signOptions: {
-        expiresIn: 3600,
+        expiresIn: 86400,
       },
     }),
     UsersModule,
