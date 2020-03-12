@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { LoginUserDto } from './dto/login-user.dto';
 import { TokenService } from './token.service';
+import { IToken } from './interfaces/token-check.interface';
 
 @Controller('token')
 export class TokenController {
@@ -13,7 +14,7 @@ export class TokenController {
   }
 
   @MessagePattern('tokenCheck')
-  async tokenCheck(token: string) {
+  async tokenCheck(token: IToken) {
     return this.tokenService.tokenCheck(token);
   }
 }

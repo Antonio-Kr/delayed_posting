@@ -3,7 +3,7 @@ import { TokenService } from './token.service';
 import { LoginUserDto } from './dto/login-user.dto';
 import { MessagePattern } from '@nestjs/microservices';
 import { IJwtToken } from './interfaces/jwt-token.interface';
-import { TokenDto } from './dto/token.dto';
+import { ITokenCheck } from './interfaces/token-check.interface';
 
 @Controller()
 export class TokenController {
@@ -12,24 +12,26 @@ export class TokenController {
   @MessagePattern('login')
   async login(loginUserDto: LoginUserDto) {
     let jwt = await this.tokenService.validateUserByPassword(loginUserDto);
-
-    await new Promise(resolve => {
-      let tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      let tokenDto: TokenDto = {
-        token: (jwt as IJwtToken).token,
-        createdAt: new Date(),
-        expires: tomorrow,
-      };
-      this.tokenService.saveToken(tokenDto);
-      resolve(true);
-    }).catch(result => result.message);
-
+    await this.tokenService.saveToken((jwt as IJwtToken).token);
     return jwt;
   }
 
   @MessagePattern('tokenCheck')
-  async tokenCheck(token: string) {
-    return await this.tokenService.tokenCheck(token);
+  async tokenCheck(token: ITokenCheck) {
+    let tokenItem: any = await this.tokenService.tokenCheck(token);
+    if (tokenItem) {
+      if (this.isTokenValid(tokenItem)) {
+        let user = await this.tokenService.takeUserByEmail(token.email);
+        tokenItem = await this.tokenService.createJwtPayload(user);
+        await this.tokenService.saveToken((tokenItem as IJwtToken).token);
+      } else {
+        tokenItem = null;
+      }
+    }
+    return tokenItem;
+  }
+
+  isTokenValid(tokenItem) {
+    return new Date(tokenItem.expires) > new Date();
   }
 }

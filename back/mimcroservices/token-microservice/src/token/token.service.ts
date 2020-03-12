@@ -14,6 +14,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { sha512 } from 'js-sha512';
+import { ITokenCheck } from './interfaces/token-check.interface';
 
 @Injectable()
 export class TokenService {
@@ -32,23 +33,19 @@ export class TokenService {
     });
   }
 
-  async saveToken(tokenDto: TokenDto): Promise<IToken> {
-    let createdToken = new this.tokenModel(tokenDto);
+  async saveToken(token: string): Promise<IToken> {
+    let createdToken = await this.createTokenModel(token);
     return await createdToken.save();
   }
 
-  async tokenCheck(token: string): Promise<IToken> {
-    let tokenItem = await this.tokenModel.findOne({ token: token });
-    console.log(tokenItem);
-    return tokenItem;
+  async tokenCheck(token: ITokenCheck): Promise<IToken> {
+    return await this.tokenModel.findOne({ token: token.token });
   }
 
   async validateUserByPassword(loginAttempt: LoginUserDto) {
-    let userToAttempt = await this.client
-      .send<IUser, string>('findOneByEmail', loginAttempt.email)
-      .toPromise();
-    return await new Promise(resolve => {
-      if (userToAttempt.password == sha512(loginAttempt.password)) {
+    let userToAttempt = await this.takeUserByEmail(loginAttempt.email);
+    return await new Promise(async resolve => {
+      if ((await userToAttempt).password == sha512(loginAttempt.password)) {
         resolve(this.createJwtPayload(userToAttempt));
       } else {
         throw new UnauthorizedException();
@@ -57,11 +54,7 @@ export class TokenService {
   }
 
   async validateUserByJwt(payload: IJwtPayload) {
-    let user: any = await this.client.send<any, string>(
-      'findOneByEmail',
-      payload.email,
-    );
-
+    let user: any = this.takeUserByEmail(payload.email);
     if (user) {
       return this.createJwtPayload(user);
     } else {
@@ -69,7 +62,13 @@ export class TokenService {
     }
   }
 
-  private createJwtPayload(user) {
+  async takeUserByEmail(email) {
+    return await this.client
+      .send<IUser, string>('findOneByEmail', email)
+      .toPromise();
+  }
+
+  createJwtPayload(user) {
     let data: IJwtPayload = {
       email: user.email,
     };
@@ -77,10 +76,26 @@ export class TokenService {
     let jwt = this.jwtService.sign(data);
 
     let jwtToken: IJwtToken = {
+      email: user.email,
       expiresIn: 86400,
       token: jwt,
     };
 
     return jwtToken;
+  }
+
+  async createTokenModel(token: string) {
+    return new Promise(resolve => {
+      let tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      let tokenDto: TokenDto = {
+        token: token,
+        createdAt: new Date(),
+        expires: tomorrow,
+      };
+      resolve(tokenDto);
+    })
+      .then(result => new this.tokenModel(result))
+      .catch(result => result.message);
   }
 }

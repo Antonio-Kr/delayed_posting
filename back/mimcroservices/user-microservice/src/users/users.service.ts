@@ -14,7 +14,9 @@ export class UsersService {
   }
 
   async findOneByEmail(email): Promise<IUser> {
-    return await this.userModel.findOne({ email: email });
+    let x = await this.userModel.findOne({ email: email });
+    console.log(email, x);
+    return x;
   }
 
   async forgotPassword(email: string) {
