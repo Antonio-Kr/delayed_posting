@@ -49,12 +49,3 @@ UserSchema.pre('save', function(next) {
   user.password = sha512(user.password);
   next();
 });
-
-UserSchema.methods.checkPassword = function(attempt, callback) {
-  let user = this;
-
-  if (sha512(attempt) === user.password) {
-    callback(null, true);
-  }
-  callback('password is not equal');
-};

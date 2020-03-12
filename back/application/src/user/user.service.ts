@@ -35,4 +35,15 @@ export class UserService {
       .toPromise()
       .catch();
   }
+
+  public tokenCheck(token) {
+    return this.client
+      .send<Promise<IJwtToken>, string>('tokenCheck', token)
+      .toPromise()
+      .catch();
+  }
+
+  public forgotPassword(email) {
+    return this.client.send<string, string>('forgotPassword', email);
+  }
 }

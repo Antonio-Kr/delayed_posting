@@ -11,4 +11,14 @@ export class UsersController {
   async create(createUserDto: CreateUserDto) {
     return await this.usersService.create(createUserDto);
   }
+
+  @MessagePattern('findOneByEmail')
+  async findOneByEmail(email: string) {
+    return await this.usersService.findOneByEmail(email);
+  }
+
+  @MessagePattern('forgotPassword')
+  async forgotPassword(email: string) {
+    return await this.usersService.forgotPassword(email);
+  }
 }

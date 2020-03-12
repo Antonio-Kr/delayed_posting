@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
+import { TokenService } from './token.service';
+import { TokenController } from './token.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { jwtConstants } from '../constants';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -19,9 +18,8 @@ import { TokenSchema } from './schemas/token.schema';
         expiresIn: 86400,
       },
     }),
-    UsersModule,
   ],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  controllers: [TokenController],
+  providers: [TokenService, JwtStrategy],
 })
-export class AuthModule {}
+export class TokenModule {}

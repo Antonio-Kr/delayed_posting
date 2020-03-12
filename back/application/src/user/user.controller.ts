@@ -16,4 +16,14 @@ export class UserController {
   async register(@Body('user') user: IUser) {
     return this.userService.register(user);
   }
+
+  @Post()
+  async tokenCheck(@Body('token') token: string) {
+    return this.userService.tokenCheck(token);
+  }
+
+  @Post('forgotPassword')
+  async forgotPassword(@Body('email') email: string) {
+    return this.userService.forgotPassword(email);
+  }
 }

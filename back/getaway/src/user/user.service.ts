@@ -1,15 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
+import { Transport } from '@nestjs/common/enums/transport.enum';
 import { IUser } from './interfaces/user.interface';
-import { IJwtToken } from './interfaces/jwt-token.interface';
-import {
-  ClientProxy,
-  ClientProxyFactory,
-  Transport,
-} from '@nestjs/microservices';
-import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
-export class AppService {
+export class UserService {
   private client: ClientProxy;
 
   constructor() {
@@ -25,10 +20,9 @@ export class AppService {
   register(user: IUser) {
     return this.client.send<IUser, IUser>('register', user).toPromise();
   }
-
-  login(loginUserDto: LoginUserDto) {
+  forgotPassword(email: string) {
     return this.client
-      .send<IJwtToken, LoginUserDto>('login', loginUserDto)
+      .send<string, string>('forgotPassword', email)
       .toPromise();
   }
 }

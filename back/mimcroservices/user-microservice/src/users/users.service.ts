@@ -13,6 +13,15 @@ export class UsersService {
     return await createdUser.save().catch(result => this.getErrors(result));
   }
 
+  async findOneByEmail(email): Promise<IUser> {
+    return await this.userModel.findOne({ email: email });
+  }
+
+  async forgotPassword(email: string) {
+    // todo: reset password
+    return await this.userModel.findOne({ email: email });
+  }
+
   private getErrors(result) {
     let errors = [];
 
@@ -35,9 +44,5 @@ export class UsersService {
     }
 
     return errors;
-  }
-
-  async findOneByEmail(email): Model<IUser> {
-    return await this.userModel.findOne({ email: email });
   }
 }
