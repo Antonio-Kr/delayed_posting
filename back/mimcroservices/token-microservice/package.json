@@ -1,5 +1,5 @@
 {
-  "name": "user-service",
+  "name": "token-microservice",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -22,11 +22,7 @@
   "dependencies": {
     "@nestjs/common": "^6.10.14",
     "@nestjs/core": "^6.10.14",
-    "@nestjs/microservices": "^6.11.11",
     "@nestjs/platform-express": "^6.10.14",
-    "mongoose": "^5.9.3",
-    "passport": "^0.4.1",
-    "passport-jwt": "4.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.4"
@@ -46,13 +42,13 @@
     "@typescript-eslint/eslint-plugin": "^2.12.0",
     "@typescript-eslint/parser": "^2.12.0",
     "eslint": "^6.7.2",
-    "mongoose": "5.9.4",
     "passport-jwt": "4.0.0",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-import": "^2.19.1",
     "jest": "^24.9.0",
     "passport": "^0.4.1",
     "prettier": "^1.18.2",
+    "mongoose": "5.9.4",
     "supertest": "^4.0.2",
     "js-sha512": "0.8.0",
     "ts-jest": "25.2.0",
