@@ -18,15 +18,9 @@ export class ForgService{
         userForgot=await this.usersService.findOneByEmail(email);
 
         console.log(userForgot._id);
-        console.log('One',userForgot.password);
-
         const res = await this.userModel.update({_id:userForgot._id}, {$set:{"password":a}});
-
-        console.log(`результат`,res);
         userForgot=await this.usersService.findOneByEmail(email);
-
         const {email:emailString, _id:uid, password} = userForgot;
-        console.log('Two',password);
         
         let nodemailer = require('nodemailer');
         
