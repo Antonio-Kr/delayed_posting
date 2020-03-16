@@ -35,6 +35,7 @@ export class TokenService {
 
   async saveToken(token: string): Promise<IToken> {
     let createdToken = await this.createTokenModel(token);
+    console.log(createdToken);
     return await createdToken.save();
   }
 
@@ -44,11 +45,14 @@ export class TokenService {
 
   async validateUserByPassword(loginAttempt: LoginUserDto) {
     let userToAttempt = await this.takeUserByEmail(loginAttempt.email);
-    return await new Promise(async resolve => {
-      if ((await userToAttempt).password == sha512(loginAttempt.password)) {
+    return await new Promise(async (resolve, reject) => {
+      if (
+        userToAttempt &&
+        (await userToAttempt).password == sha512(loginAttempt.password)
+      ) {
         resolve(this.createJwtPayload(userToAttempt));
       } else {
-        throw new UnauthorizedException();
+        reject(new UnauthorizedException());
       }
     });
   }

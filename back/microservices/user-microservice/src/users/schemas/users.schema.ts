@@ -27,6 +27,12 @@ export const UserSchema = new mongoose.Schema({
     required: [true, 'Password field is required'],
     trim: true,
     minlength: 6,
+    validate: [
+      password =>
+        /^(?=.*[0-9])(?=.*[\w])(?=.*[\W])[\d\W\w\s]{6,}$/.test(password),
+      '',
+      'easy password',
+    ],
   },
   timezone: {
     type: String,

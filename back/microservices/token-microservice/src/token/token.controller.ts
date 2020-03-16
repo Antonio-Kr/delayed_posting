@@ -11,8 +11,13 @@ export class TokenController {
 
   @MessagePattern('login')
   async login(loginUserDto: LoginUserDto) {
-    let jwt = await this.tokenService.validateUserByPassword(loginUserDto);
-    await this.tokenService.saveToken((jwt as IJwtToken).token);
+    let jwt: any = await this.tokenService
+      .validateUserByPassword(loginUserDto)
+      .catch(result => result.message);
+    if (!jwt.error) {
+      console.log('hello world');
+      await this.tokenService.saveToken((jwt as IJwtToken).token);
+    }
     return jwt;
   }
 
