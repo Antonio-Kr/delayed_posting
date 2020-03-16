@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { IUser } from './interfaces/users.interface';
 import { CreateUserDto } from './dto/create-user.dto';
+require('dotenv').config();
 
 @Injectable()
 export class UsersService {
@@ -10,6 +11,7 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<IUser> {
     let createdUser = new this.userModel(createUserDto);
+    
     return await createdUser.save();
 
     // err => {

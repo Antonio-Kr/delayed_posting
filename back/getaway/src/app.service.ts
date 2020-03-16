@@ -31,4 +31,15 @@ export class AppService {
       .send<IJwtToken, LoginUserDto>('login', loginUserDto)
       .toPromise();
   }
+
+  forgot(email:string){
+    return this.client
+      .send<Promise<IUser>, string>('forgotPassword', email)
+      .toPromise();
+  }
+
+  confirm(email:string){
+    return this.client
+      .send<Promise<IUser>, string>('confirmPassword', email).toPromise();
+  }
 }

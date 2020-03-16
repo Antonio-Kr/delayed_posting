@@ -4,6 +4,8 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { UsersService } from '../users/users.service';
 import { IJwtPayload } from './interfaces/jwt-payload.interface';
 import { IJwtToken } from './interfaces/jwt-token.interface';
+require('dotenv').config();
+
 @Injectable()
 export class AuthService {
   constructor(

@@ -17,4 +17,14 @@ export class AppController {
   async login(user: LoginUserDto) {
     return this.appService.login(user);
   }
+
+  @MessagePattern('forgot')
+  async forgot(email: string){
+    return this.appService.forgot(email);
+  }
+
+  @MessagePattern('confirm')
+  async confirm(email: string){
+    return this.appService.confirm(email);
+  }
 }
