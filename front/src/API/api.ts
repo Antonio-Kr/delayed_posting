@@ -1,17 +1,25 @@
 import axios from 'axios';
 
-const baseURL = process.env.BASE_URL;
+import {IUser} from "../types";
 
-const instance: any = axios.create({
+// const baseURL = 'http://localhost:3000';
+const baseURL = 'http://5dffcf1a1fb99500141402ad.mockapi.io';
+
+export const instance = axios.create({
     baseURL,
     responseType: 'json',
-    withCredentials: true,
     headers: {
-        'Content-Type': 'application/json'
-    }
+        // 'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+    },
 });
 
+interface IUserData {
+    name?: string
+    email: string
+    password: string
+}
+
 export const UserApi = {
-    getLoginInfo() {
-    }
+
 }
