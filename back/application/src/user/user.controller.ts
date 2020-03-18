@@ -2,7 +2,7 @@ import { Controller, Post, Body, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { IUser } from './interfaces/user.interface';
 import { LoginUserDto } from './dto/login-user.dto';
-import { IToken } from './interfaces/token-check.interface';
+import { ITokenCheck } from './interfaces/token-check.interface';
 
 @Controller('user')
 export class UserController {
@@ -10,7 +10,7 @@ export class UserController {
 
   @Post('login')
   async login(@Body('user') user: LoginUserDto) {
-    return this.userService.login(user).catch();
+    return this.userService.login(user);
   }
 
   @Post('register')
@@ -19,7 +19,7 @@ export class UserController {
   }
 
   @Post()
-  async tokenCheck(@Body('token') token: IToken) {
+  async tokenCheck(@Body('token') token: ITokenCheck) {
     return this.userService.tokenCheck(token);
   }
 

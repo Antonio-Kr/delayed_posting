@@ -23,7 +23,7 @@ export class TokenController {
 
   @MessagePattern('tokenCheck')
   async tokenCheck(token: ITokenCheck) {
-    let tokenItem: any = await this.tokenService.tokenCheck(token);
+    let tokenItem = await this.tokenService.tokenCheck(token);
     if (tokenItem) {
       if (this.isTokenValid(tokenItem)) {
         let user = await this.tokenService.takeUserByEmail(token.email);

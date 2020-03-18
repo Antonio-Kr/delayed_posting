@@ -3,7 +3,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { IJwtToken } from './interfaces/jwt-token.interface';
 import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
 import { Transport } from '@nestjs/common/enums/transport.enum';
-import { IToken } from './interfaces/token-check.interface';
+import { ITokenCheck } from './interfaces/token-check.interface';
 
 @Injectable()
 export class TokenService {
@@ -23,7 +23,9 @@ export class TokenService {
       .send<IJwtToken, LoginUserDto>('login', loginUserDto)
       .toPromise();
   }
-  tokenCheck(token: IToken) {
-    return this.client.send<IJwtToken, IToken>('tokenCheck', token).toPromise();
+  tokenCheck(token: ITokenCheck) {
+    return this.client
+      .send<IJwtToken, ITokenCheck>('tokenCheck', token)
+      .toPromise();
   }
 }

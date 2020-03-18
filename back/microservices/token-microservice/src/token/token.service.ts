@@ -39,7 +39,7 @@ export class TokenService {
     return await createdToken.save();
   }
 
-  async tokenCheck(token: ITokenCheck): Promise<IToken> {
+  async tokenCheck(token: ITokenCheck): Promise<IJwtToken> {
     return await this.tokenModel.findOne({ token: token.token });
   }
 

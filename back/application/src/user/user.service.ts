@@ -7,7 +7,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { LoginUserDto } from './dto/login-user.dto';
-import { IToken } from './interfaces/token-check.interface';
+import { ITokenCheck } from './interfaces/token-check.interface';
 
 @Injectable()
 export class UserService {
@@ -26,23 +26,20 @@ export class UserService {
   public login(user: LoginUserDto) {
     return this.client
       .send<Promise<IJwtToken>, LoginUserDto>('login', user)
-      .toPromise()
-      .catch();
+      .toPromise();
   }
 
   public register(user: IUser) {
     return this.client
       .send<Promise<IUser>, IUser>('register', user)
-      .toPromise()
-      .catch();
+      .toPromise();
   }
 
-  public tokenCheck(token: IToken) {
+  public tokenCheck(token: ITokenCheck) {
     console.log(token);
     return this.client
-      .send<Promise<IJwtToken>, IToken>('tokenCheck', token)
-      .toPromise()
-      .catch();
+      .send<Promise<IJwtToken>, ITokenCheck>('tokenCheck', token)
+      .toPromise();
   }
 
   public forgotPassword(email) {

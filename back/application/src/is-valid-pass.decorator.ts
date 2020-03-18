@@ -8,8 +8,8 @@ import {
 
 @ValidatorConstraint({ async: true })
 export class IsPasswordValidConstraint implements ValidatorConstraintInterface {
-  validate(password: any, args: ValidationArguments) {
-    return /^^(?=.*[0-9])(?=.*[\w])(?=.*[\W])[\d\W\w\s]{6,}$$/.test(password);
+  validate(password: string, args: ValidationArguments) {
+    return /^(?=.*[0-9])(?=.*[\w])(?=.*[\W])[\d\W\w\s]{6,}$/.test(password);
   }
 }
 

@@ -21,7 +21,7 @@ export class UsersService {
 
   async forgotPassword(email: string) {
     // todo: reset password
-    return await this.userModel.findOne({ email: email });
+    return await this.userModel.findOne({ email });
   }
 
   private getErrors(result) {
