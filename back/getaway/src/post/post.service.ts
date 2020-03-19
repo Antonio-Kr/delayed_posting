@@ -5,7 +5,6 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { connectionConstants } from 'src/constants';
-import { IAttachementResult } from './interfaces/attachement-result.interface';
 import { IPost } from './interfaces/post.interface';
 
 @Injectable()
@@ -17,16 +16,9 @@ export class PostService {
       transport: Transport.TCP,
       options: {
         host: connectionConstants.host,
-        port: connectionConstants.getawayPort,
+        port: connectionConstants.postMicroservicePort,
       },
     });
-  }
-
-  async uploadFile(file: any) {
-    return await this.client.send<IAttachementResult, string>(
-      'uploadFile',
-      file,
-    );
   }
 
   async createPost(postContent: IPost) {

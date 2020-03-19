@@ -1,12 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/common/enums/transport.enum';
+import { connectionConstants } from './constants';
 
 const microserviceOptions = {
   transport: Transport.TCP,
   options: {
-    host: '127.0.0.1',
-    port: 8877,
+    host: connectionConstants.host,
+    port: connectionConstants.getawayPort,
   },
 };
 

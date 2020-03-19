@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { FilesModule } from './files/files.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    FilesModule,
+    MongooseModule.forRoot('mongodb://localhost/delayed_posting'),
+  ],
 })
 export class AppModule {}
