@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { IUser } from './interfaces/user.interface';
 import { IUserUpdate } from './interfaces/user-update.interface';
 import { IJwtToken } from './interfaces/jwt-token.interface';
+require('dotenv').config();
 import {
   ClientProxyFactory,
   ClientProxy,
