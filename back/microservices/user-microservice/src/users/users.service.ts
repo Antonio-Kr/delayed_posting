@@ -169,7 +169,7 @@ export class UsersService {
 
   async passwordUpdate(passwordUpdate:IUserUpdate){
     let user:IUser = await this.findOneByEmail(passwordUpdate.email);
-    if(user.password==sha512(passwordUpdate.password)){
+    if(user.password===sha512(passwordUpdate.password)){
       await this.userModel.update({email:user.email}, {$set:{"password":sha512(passwordUpdate.newPassword)}});
       user = await this.findOneByEmail(passwordUpdate.email);
       return user;

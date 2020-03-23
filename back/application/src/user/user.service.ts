@@ -56,7 +56,7 @@ export class UserService {
   }
 
   public userUpdate(userUpdate:IUserUpdate){
-    return this.client.send<Promise<IUser>, IUserUpdate>('userUpdateAll', userUpdate);
+    return this.client.send<IUser, IUserUpdate>('userUpdateAll', userUpdate);
   }
 
   // public avatarUpdate(avatarUpdate:IUserUpdate){
