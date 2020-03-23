@@ -7,6 +7,7 @@ import {
 import { connectionConstants } from 'src/constants';
 import { IAttachementResult } from './interfaces/attachement-result.interface';
 import { IPost } from './interfaces/post.interface';
+import { IAttachementRemove } from './interfaces/attachement-remove.interface';
 
 @Injectable()
 export class PostService {
@@ -26,6 +27,13 @@ export class PostService {
     return await this.client.send<IAttachementResult, string>(
       'uploadFile',
       file,
+    );
+  }
+
+  async removeAttachement(removeContent: IAttachementRemove) {
+    return await this.client.send<any, IAttachementRemove>(
+      'removeAttachement',
+      removeContent,
     );
   }
 

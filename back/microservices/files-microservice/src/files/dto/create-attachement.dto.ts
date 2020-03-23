@@ -8,6 +8,9 @@ export class CreateAttachementDto {
   readonly fileId: string;
 
   @IsNotEmpty()
+  readonly postId: string;
+
+  @IsNotEmpty()
   readonly contentType: string;
 
   @IsNotEmpty()

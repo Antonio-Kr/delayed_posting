@@ -6,3 +6,7 @@ export const connectionConstants = {
   // filesMicroservicePort: 8870,
   // getawayPort: 8877,
 };
+
+export const databaseConstants = {
+  databaseConnection: 'DATABASE_DELAYED_POSTING_CONNECTION',
+};

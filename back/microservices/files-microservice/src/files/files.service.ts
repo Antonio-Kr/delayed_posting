@@ -5,6 +5,8 @@ import { IAttachement } from './interfaces/attachement.interface';
 import { Model } from 'mongoose';
 import { CreateAttachementDto } from './dto/create-attachement.dto';
 import { IAttachementResult } from './interfaces/attachement-result.interface';
+import { IUpdateAttachements } from './interfaces/update-attachements.interface';
+import { IAttachementRemove } from './interfaces/attachement-remove.interface';
 
 @Injectable()
 export class FilesService {
@@ -42,12 +44,35 @@ export class FilesService {
     return await attachementResult;
   }
 
+  async removeAttachement(removeContent: IAttachementRemove) {
+    return new Promise(resolve => {
+      resolve(cloudinary.v2.uploader.destroy(removeContent.fileId));
+    }).then(() => {
+      return this.attachementModel.remove({ fileId: removeContent.fileId });
+    });
+  }
+
+  async updateAttachements(attachements: IUpdateAttachements) {
+    return new Promise(resolve => {
+      attachements.attachements.forEach(async att => {
+        this.attachementModel
+          .update(
+            { fileId: att.fileId },
+            { $set: { postId: attachements.postId } },
+          )
+          .exec();
+      });
+      resolve(true);
+    }).catch();
+  }
+
   private createAttachementDto(saveData): CreateAttachementDto {
     return {
       contentType: saveData.resource_type,
       createdAt: new Date(),
       fileId: saveData.public_id,
       link: saveData.secure_url,
+      postId: '0',
     };
   }
 

@@ -1,5 +1,8 @@
+import { IAttachementResult } from './attachement-result.interface';
+
 export interface IPost {
   title: string;
   body: string;
-  attachements: string[];
+  attachements: IAttachementResult[];
+  templateId: string;
 }

@@ -9,6 +9,10 @@ export const AttachementSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  postId: {
+    type: String,
+    default: '0',
+  },
   contentType: {
     type: String,
     required: true,

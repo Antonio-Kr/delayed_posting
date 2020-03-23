@@ -1,8 +1,6 @@
 import { IAttachementResult } from 'src/files/interfaces/attachement-result.interface';
 
-export interface IPost {
-  title: string;
-  body: string;
+export interface IUpdateAttachements {
   attachements: IAttachementResult[];
-  templateId: string;
+  postId: string;
 }
