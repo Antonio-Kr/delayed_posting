@@ -45,6 +45,10 @@ export const UserSchema = new mongoose.Schema({
   avatarId: {
     type: Number,
   },
+  registerOk:{
+    type: String,
+    default:'peding',
+  },
 });
 
 UserSchema.pre('save', function(next) {

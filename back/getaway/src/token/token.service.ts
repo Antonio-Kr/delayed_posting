@@ -28,4 +28,12 @@ export class TokenService {
       .send<IJwtToken, ITokenCheck>('tokenCheck', token)
       .toPromise();
   }
+  tokenRegisterOk(token: ITokenCheck) {
+    return this.client
+      .send<IJwtToken, ITokenCheck>('tokenRegisterOk', token)
+      .toPromise();
+  }
+  userDelete(token:ITokenCheck){
+    return this.client.send<IJwtToken, ITokenCheck>('userDelete', token).toPromise();
+  }
 }

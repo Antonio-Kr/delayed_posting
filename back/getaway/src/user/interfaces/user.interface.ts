@@ -6,4 +6,5 @@ export interface IUser {
   timezone: string;
   avatar: string;
   avatarId: number;
+  registeOk?:string;
 }

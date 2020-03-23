@@ -29,4 +29,6 @@ export class CreateUserDto {
 
   @IsNumberString()
   readonly avatarId: number;
+
+  readonly registerOk:string = 'pending';
 }

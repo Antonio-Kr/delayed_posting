@@ -24,6 +24,7 @@ export class TokenController {
   @MessagePattern('tokenCheck')
   async tokenCheck(token: ITokenCheck) {
     let tokenItem = await this.tokenService.tokenCheck(token);
+    console.log('tokenItem',tokenItem);
     if (tokenItem) {
       if (this.isTokenValid(tokenItem)) {
         let user = await this.tokenService.takeUserByEmail(token.email);
@@ -34,6 +35,26 @@ export class TokenController {
       }
     }
     return tokenItem;
+  }
+
+  @MessagePattern('tokenRegisterOk')
+  async tokenRegisterOk(token: ITokenCheck) {
+    let x = await this.tokenCheck(token);
+    console.log('token for front',token);
+    if(x){
+      let ok = await this.tokenService.sendOk(x);
+      if(ok){
+        return 'Вы подтвердили адрес электронной почты. Для возврата на страницу нажмите <a href="http://localhost:3000">Домой</a>`;'
+      }
+    }
+  }
+
+  @MessagePattern('tokenRegister')
+  async tokenRegister(email:string){
+    let user = await this.tokenService.takeUserByEmail(email);
+    let token = await this.tokenService.createJwtPayload(user);
+    await this.tokenService.saveToken((token as IJwtToken).token);
+    return await token;
   }
 
   isTokenValid(tokenItem) {
