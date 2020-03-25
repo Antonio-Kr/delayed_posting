@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
 import { Transport } from '@nestjs/common/enums/transport.enum';
 import { IUser } from './interfaces/user.interface';
+import { connectionConstants } from 'src/constants';
 
 @Injectable()
 export class UserService {
@@ -11,8 +12,8 @@ export class UserService {
     this.client = ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
-        host: '127.0.0.1',
-        port: 8878,
+        host: connectionConstants.host,
+        port: connectionConstants.userMicroservicePort,
       },
     });
   }
