@@ -38,6 +38,7 @@ export class FilesService {
       })
       .catch(error => error);
 
+    await console.log(attachementResult);
     if (attachementResult.error) {
       attachementResult = null;
     }
