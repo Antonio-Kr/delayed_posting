@@ -54,8 +54,11 @@ export class FilesService {
   }
 
   async updateAttachements(attachements: IUpdateAttachements) {
-    return new Promise(resolve => {
-      attachements.attachements.forEach(async att => {
+    return await Promise.all(attachements.attachements).then(async () => {
+      await attachements.attachements.map(att => {
+        console.log();
+        console.log(att);
+        console.log();
         this.attachementModel
           .update(
             { fileId: att.fileId },
@@ -63,8 +66,8 @@ export class FilesService {
           )
           .exec();
       });
-      resolve(true);
-    }).catch();
+      return Promise.resolve(true);
+    });
   }
 
   private createAttachementDto(saveData): CreateAttachementDto {
@@ -84,7 +87,7 @@ export class FilesService {
       .save()
       .then(
         async (result): Promise<IAttachementResult> => {
-          return await {
+          return {
             fileId: result.fileId,
             link: result.link,
           };
