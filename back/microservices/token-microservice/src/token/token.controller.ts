@@ -24,7 +24,6 @@ export class TokenController {
   @MessagePattern('tokenCheck')
   async tokenCheck(token: ITokenCheck) {
     let tokenItem = await this.tokenService.tokenCheck(token);
-    console.log('tokenItem',tokenItem);
     if (tokenItem) {
       if (this.isTokenValid(tokenItem)) {
         let user = await this.tokenService.takeUserByEmail(token.email);
@@ -40,7 +39,6 @@ export class TokenController {
   @MessagePattern('tokenRegisterOk')
   async tokenRegisterOk(token: ITokenCheck) {
     let x = await this.tokenCheck(token);
-    console.log('token for front',token);
     if(x){
       let ok = await this.tokenService.sendOk(x);
       if(ok){
@@ -55,6 +53,15 @@ export class TokenController {
     let token = await this.tokenService.createJwtPayload(user);
     await this.tokenService.saveToken((token as IJwtToken).token);
     return await token;
+  }
+
+  @MessagePattern('userDelete')
+  async userDelete(token:ITokenCheck){
+    let tokenCheck = await this.tokenCheck(token);
+    if(!tokenCheck){
+      return 'error';
+    }
+    return await this.tokenService.userDelete(token.email);
   }
 
   isTokenValid(tokenItem) {

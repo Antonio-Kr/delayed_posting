@@ -31,34 +31,43 @@ export class UsersController {
 
   @MessagePattern('userUpdate')
   async userUpdate(userUpdate:IUserUpdate) {
-    let user:IUser = {email:userUpdate.email, 
-                      firstName:userUpdate.firstName,
-                      lastName:userUpdate.lastName,
-                      password:userUpdate.password,
-                      timezone:userUpdate.timezone,
-                      avatar:userUpdate.avatar,
-                      avatarId:userUpdate.avatarId};
-    console.log(userUpdate);
+    const {email, firstName, lastName, timezone} = userUpdate;
     let token = {
       token:userUpdate.token,
       email:userUpdate.email
     };
-    console.log(user);
-    return await this.usersService.userUpdate(user, token);
+    return await this.usersService.userUpdate(email, firstName, lastName, timezone, token);
   }
 
   @MessagePattern('passwordUpdate')
   async passwordUpdate(passwordUpdate:IUserUpdate){
-    return this.usersService.passwordUpdate(passwordUpdate);
+    const token = {
+      token :passwordUpdate.token,
+      email: passwordUpdate.email,
+    }
+    return this.usersService.passwordUpdate(passwordUpdate, token);
   }
 
   @MessagePattern('avatarUpdate')
   async avatarUpdate(avatarUpdate:IUserUpdate){
-    return this.usersService.avatarUpdate(avatarUpdate);
+    const token = {
+      token :avatarUpdate.token,
+      email: avatarUpdate.email,
+    }
+    return this.usersService.avatarUpdate(avatarUpdate, token);
   }
 
   @MessagePattern('avatarDelete')
   async avatarDelete(avatarDelete:IUserUpdate){
-    return this.usersService.avatarDelete(avatarDelete);
+    const token = {
+      token :avatarDelete.token,
+      email: avatarDelete.email,
+    }
+    return this.usersService.avatarDelete(avatarDelete, token);
+  }
+
+  @MessagePattern('userDeleted')
+  async userDelete(email:string){
+    return this.usersService.userDelete(email);
   }
 }

@@ -107,4 +107,8 @@ export class TokenService {
       .then(result => new this.tokenModel(result))
       .catch(result => result.message);
   }
+
+  async userDelete(email:string){
+    return await this.client.send<any, string>('userDeleted', email);
+  }
 }

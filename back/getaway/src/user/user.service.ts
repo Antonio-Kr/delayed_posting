@@ -36,11 +36,11 @@ export class UserService {
     else if(userUpdate.avatar){
       return this.client.send<IUser, IUserUpdate>('avatarUpdate', userUpdate).toPromise();
     }
-    else if(userUpdate.avatar==null){
+    else if(userUpdate.avatar==null||userUpdate.avatar==""){
       return this.client.send<IUser, IUserUpdate>('avatarDelete', userUpdate).toPromise();
     }
     else { 
-      return console.log('Ошибка запроса');
+      return 'error';
     }
   }
 }

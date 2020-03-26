@@ -2,7 +2,6 @@ import {
   IsNotEmpty,
   IsEmail,
   IsDateString,
-  IsNumberString,
 } from 'class-validator';
 import { IsPasswordValid } from 'src/is-valid-pass.decorator';
 
@@ -27,8 +26,8 @@ export class CreateUserDto {
 
   readonly avatar: string;
 
-  @IsNumberString()
-  readonly avatarId: number;
+  @IsNotEmpty()
+  readonly avatarId: string;
 
   readonly registerOk:string = 'pending';
 }

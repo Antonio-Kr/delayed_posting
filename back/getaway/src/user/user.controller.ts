@@ -22,14 +22,4 @@ export class UserController {
   async userUpdate(userUpdate:IUserUpdate) {
     return this.userService.userUpdate(userUpdate);
   }
-
-  // @MessagePattern('avatarUpdate')
-  // async avatarUpdate(avatarUpdate:IUserUpdate) {
-  //   return this.userService.avatarUpdate(avatarUpdate);
-  // }
-
-  // @MessagePattern('passwordUpdate')
-  // async passwordUpdate(passwordUpdate:PasswordUpdate) {
-  //   return this.userService.passwordUpdate(passwordUpdate);
-  // }
 }

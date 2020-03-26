@@ -43,7 +43,7 @@ export const UserSchema = new mongoose.Schema({
     type: String,
   },
   avatarId: {
-    type: Number,
+    type: String,
   },
   registerOk:{
     type: String,

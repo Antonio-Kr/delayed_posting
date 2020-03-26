@@ -7,6 +7,6 @@ export interface IUserUpdate extends Document {
     password?: string;
     newPassword?:string;
     avatar?: string;
-    avatarId?: number;
+    avatarId?: string;
 }
   

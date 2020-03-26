@@ -45,7 +45,6 @@ export class UserService {
   }
 
   public tokenRegisterOk(token:ITokenCheck){
-    console.log(token);
     return this.client
       .send<Promise<IJwtToken>, ITokenCheck>('tokenRegisterOk', token)
       .toPromise();
@@ -58,15 +57,7 @@ export class UserService {
   public userUpdate(userUpdate:IUserUpdate){
     return this.client.send<IUser, IUserUpdate>('userUpdateAll', userUpdate);
   }
-
-  // public avatarUpdate(avatarUpdate:IUserUpdate){
-  //   return this.client.send<Promise<IUser>, IUserUpdate>('avatarUpdate', avatarUpdate);
-  // }
-
-  // public passwordUpdate(passwordUpdate:PasswordUpdate){
-  //   return this.client.send<Promise<IUser>, PasswordUpdate>('passwordUpdate', passwordUpdate);
-  // }
-
+  
   public userDelete(token:ITokenCheck){
     return this.client.send<string, ITokenCheck>('userDelete', token);
   }

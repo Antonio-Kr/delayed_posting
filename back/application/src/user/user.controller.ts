@@ -39,16 +39,6 @@ export class UserController {
     return this.userService.userUpdate(userUpdate);
   }
 
-  // @Patch('profile')
-  // async updateAvatar(@Body('updateAvatar') avatarUpdate:IUserUpdate){
-  //   return this.userService.avatarUpdate(avatarUpdate);
-  // }
-
-  // @Patch('profile')
-  // async updatePassword(@Body('updatePassword') passwordUpdate:PasswordUpdate){
-  //   return this.userService.passwordUpdate(passwordUpdate);
-  // }
-
   @Delete('profile')
   async deleteUser(@Body('deleteUser') token:ITokenCheck){
     return this.userService.userDelete(token);

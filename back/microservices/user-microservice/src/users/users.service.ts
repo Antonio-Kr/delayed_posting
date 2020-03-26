@@ -11,6 +11,18 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { IUserUpdate } from './interfaces/user-update.interface';
+const dotenv = require('dotenv');
+const result = dotenv.config();
+if (result.error) {
+  throw result.error
+}
+console.log(result.parsed);
+const cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME, 
+  api_key: process.env.CLOUDINARY_API_KEY, 
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 @Injectable()
 export class UsersService {
@@ -22,14 +34,6 @@ export class UsersService {
       host: '127.0.0.1',
       port: 8879,
     },
-  });
-  const cloudinary = require('cloudinary');
-  const dotenv = require('dotenv');
-  dotenv.config();
-  cloudinary.config({ 
-    cloud_name: process.env.CLOUD_NAME, 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET
   });
 }
 
@@ -49,11 +53,11 @@ export class UsersService {
       port: 465,
       secure: true,
       auth:{
-        user: 'wlad.scheludko@gmail.com',
-        pass: 'Wlad1999033'
+        user: process.env.LOGIN_EMAIL,
+        pass: process.env.PASSWORD_EMAIL
       }
     }
-
+    
     let transport = nodemailer.createTransport(mailOptions);
     let Options = {
       from: 'user@gmail.com',
@@ -64,7 +68,7 @@ export class UsersService {
       </head><body> <h1>Добро пожаловать!</h1> <p>Поздравляем вас с успешной 
       регистрацией на сайте!</p><ul> <li>Ваш логин: <strong>${createUserDto.email}
       </strong></li><li>Ваш пароль: <strong> ${createUserDto.password}</strong></li>
-      </ul><p>Ссылка для потверждения почты:<a href='http://localhost:3000/user/token?token=${tokenCheck.token}&email=${tokenCheck.email}'>
+      </ul><p>Ссылка для потверждения почты:<a href='${process.env.HOME_PAGE}/user/token?token=${tokenCheck.token}&email=${tokenCheck.email}'>
       Здесь</a></p></body></html>`
     }
     let result = transport.sendMail(Options, function(error, response){
@@ -83,15 +87,12 @@ export class UsersService {
 
   async findOneByEmail(email): Promise<IUser> {
     let x = await this.userModel.findOne({ email: email });
-    console.log(email, x);
     return x;
   }
 
   async forgotPassword(email: string) {
     let userForgot:IUser;
     let a = Math.random().toString(36).slice(2,10);
-    
-    console.log('randomPass:', a);
     userForgot=await this.findOneByEmail(email);
     
     const res = await this.userModel.update({_id:userForgot._id}, {$set:{"password":sha512(a)}});
@@ -108,8 +109,8 @@ export class UsersService {
       port: 465,
       secure: true,
       auth:{
-        user: 'wlad.scheludko@gmail.com',
-        pass: 'Wlad1999033'
+        user: process.env.LOGIN_EMAIL,
+        pass: process.env.PASSWORD_EMAIL
       }
     }
 
@@ -122,7 +123,7 @@ export class UsersService {
       text:'Здравствуйте!',
       html: `<!DOCTYPE html><html lang="ru"><head> <meta charset="UTF-8"> <title>Title</title>
             </head><body> <h1>Здравствуйте!</h1> <p>Ваш пароль был сброшен!</p>Вот ваш временный пароль для входа: <strong>${a}
-            </strong><p>Пожалуйста измените свой пароль в профиле. Ссылка на сайт:<a href='http://localhost:3000'>
+            </strong><p>Пожалуйста измените свой пароль в профиле. Ссылка на сайт:<a href='${process.env.HOME_PAGE}'>
             Здесь</a></p></body></html>`
       }
 
@@ -140,34 +141,34 @@ export class UsersService {
     return await this.userModel.update({_id:user._id}, {$set:{"registerOk":'active'}});
   }
 
-  async userUpdate(userUpdate:IUser, token:any){
-    let user = await this.findOneByEmail(userUpdate.email);
-    if(!userUpdate.firstName){
-      userUpdate.firstName = user.firstName;
-    }
-    if(!userUpdate.lastName){
-      userUpdate.lastName = user.lastName;
-    }
-    if(!userUpdate.password){
-      userUpdate.password = user.password;
-    }
-    if(!userUpdate.timezone){
-      userUpdate.timezone = user.timezone;
-    }
-    if(!userUpdate.avatar){
-      userUpdate.avatar = user.avatar;
-    }
-    if(!userUpdate.avatarId){
-      userUpdate.avatarId = user.avatarId;
-    }
-    await this.userModel.update({email:user.email},
-       {$set:{"firstName":userUpdate.firstName, 
-              "lastName":userUpdate.lastName,
-              "timezone":userUpdate.timezone}});
-    return await this.findOneByEmail(userUpdate.email);
+  async tokenCkeck(email:string){
+    return await this.client.send<Promise<IJwtToken>, string>('tokenCheck', email).toPromise();
   }
 
-  async passwordUpdate(passwordUpdate:IUserUpdate){
+  async userUpdate(email:string, firstName:string, lastName:string, timezone:string, token:any){
+    let tokenCheck = await this.sendToken(email);
+    if(tokenCheck==null) {
+      return 'error';
+    }
+    let user = await this.findOneByEmail(email);
+    if(!firstName){
+      firstName = user.firstName;
+    }
+    if(!lastName){
+      lastName = user.lastName;
+    }
+    if(!timezone){
+      timezone = user.timezone;
+    }
+    await this.userModel.update({email:user.email}, {$set:{"firstName":firstName, "lastName":lastName, "timezone":timezone}});
+    return await this.findOneByEmail(email);
+  }
+
+  async passwordUpdate(passwordUpdate:IUserUpdate, token:any){
+    let tokenCheck = await this.sendToken(token.email);
+    if(tokenCheck==null) {
+      return 'error';
+    }
     let user:IUser = await this.findOneByEmail(passwordUpdate.email);
     if(user.password===sha512(passwordUpdate.password)){
       await this.userModel.update({email:user.email}, {$set:{"password":sha512(passwordUpdate.newPassword)}});
@@ -177,12 +178,31 @@ export class UsersService {
     return 'Старый пароль не совпадает!!!';
   }
 
-  async avatarUpdate(avatarUpdate:IUserUpdate){
-    //avatar Update
+  async avatarUpdate(avatarUpdate:IUserUpdate, token:any){
+    let tokenCheck = await this.sendToken(token.email);
+    if(tokenCheck==null) {
+      return 'error';
+    }
+    let res = await cloudinary.v2.uploader.upload(avatarUpdate.avatar,function(error, result) {console.log(result, error); });
+    await this.userModel.update({email:avatarUpdate.email}, {$set:{"avatar":res.url, "avatarID":res.public_id}});
+    let user = await this.findOneByEmail(avatarUpdate.email);
+    return user.avatar;
   }
 
-  async avatarDelete(avatarDelete:IUserUpdate){
-    //avatar Delete
+  async avatarDelete(avatarDelete:IUserUpdate, token:any){
+    let tokenCheck = await this.sendToken(token.email);
+    if(tokenCheck==null) {
+      return 'error';
+    }
+    await this.userModel.update({email:avatarDelete.email}, {$set:{"avatar":"", "avatarId":""}});
+    return await this.findOneByEmail(avatarDelete.email);
+  }
+
+  async userDelete(email:string){
+    let userDelete = await this.userModel.remove({email:email});
+    if(userDelete.nRemoved==1){
+      return {ok:true};
+    }
   }
 
   private getErrors(result) {

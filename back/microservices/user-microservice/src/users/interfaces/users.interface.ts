@@ -6,6 +6,6 @@ export interface IUser {
   password: string;
   timezone: string;
   avatar: string;
-  avatarId: number;
+  avatarId: string;
   registeOk?:string;
 }
