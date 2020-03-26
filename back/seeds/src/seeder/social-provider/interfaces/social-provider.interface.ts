@@ -1,4 +1,4 @@
 export interface ISocialProvider {
   name: string;
-  logo: string;
+  logoLink: string;
 }

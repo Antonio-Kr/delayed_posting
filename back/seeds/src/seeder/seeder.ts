@@ -1,11 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SocialProviderSeederService } from './social-provider/social-provider.service';
+import { INameIdCouple } from 'src/interfaces/name-id.interface';
+import { PostTemplateSeederService } from './post-template/post-template.service';
 
 @Injectable()
 export class Seeder {
   constructor(
     private readonly logger: Logger,
     private readonly socialProviderSeederService: SocialProviderSeederService,
+    private readonly postTemplateSeederService: PostTemplateSeederService,
   ) {}
 
   async seed() {
@@ -22,14 +25,19 @@ export class Seeder {
 
   async socialProviders() {
     return await Promise.all(this.socialProviderSeederService.create())
-      .then(createdSocialProviders => {
-        this.logger.debug(
-          'count of created social providers: ' +
-            createdSocialProviders.filter(
-              nullValueOrCreated => nullValueOrCreated,
-            ).length,
+      .then(async createdSocialProviders => {
+        const nameIdCouples = createdSocialProviders.map(
+          (socialProvider): INameIdCouple => {
+            return {
+              id: socialProvider['_id'].toString(),
+              name: socialProvider.name.toLowerCase(),
+            };
+          },
         );
-        return Promise.resolve(true);
+
+        await Promise.all(this.postTemplateSeederService.create(nameIdCouples));
+
+        return await Promise.resolve(true);
       })
       .catch(error => Promise.reject(error));
   }

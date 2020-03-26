@@ -5,7 +5,7 @@ export const SocialProviderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  logo: {
+  logoLink: {
     type: String,
     required: true,
   },

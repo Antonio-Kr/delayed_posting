@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SocialProviderSeederService } from './social-provider.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { SocialProviderSchema } from '../schemas/social-provider.schema';
+import { SocialProviderSchema } from './schemas/social-provider.schema';
 
 @Module({
   imports: [

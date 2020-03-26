@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ISocialProvider } from '../interfaces/social-provider.interface';
-import { socialProviders } from 'src/social-provider.data';
+import { ISocialProvider } from './interfaces/social-provider.interface';
+import { socialProviders } from 'src/seeder/social-provider/social-provider.data';
 
 @Injectable()
 export class SocialProviderSeederService {
