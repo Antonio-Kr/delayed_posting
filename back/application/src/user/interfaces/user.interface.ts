@@ -6,4 +6,5 @@ export interface IUser extends Document {
   timezone: string;
   avatar: string;
   avatarId: number;
+  registeOk?:string;
 }
