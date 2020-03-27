@@ -24,6 +24,11 @@ export class UserController {
     return this.userService.tokenCheck(token);
   }
 
+  @Post('info')
+  async user(@Body('token') token: ITokenCheck) {
+    return this.userService.userInfo(token);
+  }
+
   @Get('token')
   async token(@Query() token:ITokenCheck) {
     return this.userService.tokenRegisterOk(token);
