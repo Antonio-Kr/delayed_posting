@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { IUser } from './interfaces/user.interface';
 import {
-  ClientProxyFactory,
   ClientProxy,
+  ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
 
 @Injectable()
-export class UserService {
+export class AppService {
   private client: ClientProxy;
 
   constructor() {
@@ -15,20 +15,18 @@ export class UserService {
       transport: Transport.TCP,
       options: {
         host: '127.0.0.1',
-        port: 8877,
+        port: 8878,
       },
     });
   }
 
-  public login(user: IUser) {
-    return this.client.send<string, IUser>('login', user);
+  login(user: IUser) {
+    return this.client.send<IUser, IUser>('login', user);
   }
-
-  public register(user: IUser) {
-    return this.client.send<string, IUser>('register', user);
+  register(user: IUser) {
+    return this.client.send<IUser, IUser>('registerUser', user);
   }
-
-  public forgotPassword(email: any) {
-    return this.client.send<Promise<IUser>, any>('forgot', email);
+  forgotPassword(email: any) {
+    return this.client.send<Promise<IUser>, any>('forgotPassword', email);
   }
 }
