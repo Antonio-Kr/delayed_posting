@@ -72,6 +72,11 @@ export class TokenService {
       .toPromise();
   }
 
+  async sendOk(token:IJwtToken){
+    let user:IUser = await this.takeUserByEmail(token.email);
+    return await this.client.send<IUser, IUser>('registerOk', user).toPromise();
+  }
+
   createJwtPayload(user) {
     let data: IJwtPayload = {
       email: user.email,
@@ -101,5 +106,9 @@ export class TokenService {
     })
       .then(result => new this.tokenModel(result))
       .catch(result => result.message);
+  }
+
+  async userDelete(email:string){
+    return await this.client.send<any, string>('userDeleted', email);
   }
 }

@@ -17,4 +17,14 @@ export class TokenController {
   async tokenCheck(token: ITokenCheck) {
     return this.tokenService.tokenCheck(token);
   }
+
+  @MessagePattern('tokenRegisterOk')
+  async tokenRegisterOk(token: ITokenCheck) {
+    return this.tokenService.tokenRegisterOk(token);
+  }
+
+  @MessagePattern('userDelete')
+  async userDelete(token: ITokenCheck) {
+    return this.tokenService.userDelete(token);
+  }
 }

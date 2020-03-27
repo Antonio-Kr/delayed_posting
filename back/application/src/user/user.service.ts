@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { IUser } from './interfaces/user.interface';
+import { IUserUpdate } from './interfaces/user-update.interface';
 import { IJwtToken } from './interfaces/jwt-token.interface';
+require('dotenv').config();
 import {
   ClientProxyFactory,
   ClientProxy,
@@ -43,7 +45,21 @@ export class UserService {
       .toPromise();
   }
 
+  public tokenRegisterOk(token:ITokenCheck){
+    return this.client
+      .send<Promise<IJwtToken>, ITokenCheck>('tokenRegisterOk', token)
+      .toPromise();
+  }
+
   public forgotPassword(email) {
     return this.client.send<string, string>('forgotPassword', email);
+  }
+
+  public userUpdate(userUpdate:IUserUpdate){
+    return this.client.send<IUser, IUserUpdate>('userUpdateAll', userUpdate);
+  }
+  
+  public userDelete(token:ITokenCheck){
+    return this.client.send<string, ITokenCheck>('userDelete', token);
   }
 }
