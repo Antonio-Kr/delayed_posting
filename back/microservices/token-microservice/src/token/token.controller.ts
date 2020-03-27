@@ -64,6 +64,15 @@ export class TokenController {
     return await this.tokenService.userDelete(token.email);
   }
 
+  @MessagePattern('userInfo')
+  async userInfo(token:ITokenCheck){
+    let tokenCheck = await this.tokenCheck(token);
+    if(!tokenCheck){
+      return 'error';
+    }
+    return await this.tokenService.takeUserByEmail(token.email);
+  }
+
   isTokenValid(tokenItem) {
     return new Date(tokenItem.expires) > new Date();
   }
