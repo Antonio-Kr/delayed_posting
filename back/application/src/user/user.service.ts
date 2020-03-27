@@ -10,6 +10,7 @@ import {
 } from '@nestjs/microservices';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ITokenCheck } from './interfaces/token-check.interface';
+import { connectionConstants } from 'src/constants';
 
 @Injectable()
 export class UserService {
@@ -19,8 +20,8 @@ export class UserService {
     this.client = ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
-        host: '127.0.0.1',
-        port: 8877,
+        host: connectionConstants.host,
+        port: connectionConstants.getawayPort,
       },
     });
   }
