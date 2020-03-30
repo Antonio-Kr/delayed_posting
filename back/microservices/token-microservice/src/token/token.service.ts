@@ -45,6 +45,9 @@ export class TokenService {
 
   async validateUserByPassword(loginAttempt: LoginUserDto) {
     let userToAttempt = await this.takeUserByEmail(loginAttempt.email);
+    if(userToAttempt.registerOk!='active'){
+      return {'error': {"error_message":"Need confirm email", code: 3078}};
+    }
     return await new Promise(async (resolve, reject) => {
       if (
         userToAttempt &&
@@ -70,6 +73,11 @@ export class TokenService {
     return await this.client
       .send<IUser, string>('findOneByEmail', email)
       .toPromise();
+  }
+
+  async takeInfoFromUser(email) {
+    return await this.client
+      .send<any, string>('findInfoFromUser', email);
   }
 
   async sendOk(token:IJwtToken){

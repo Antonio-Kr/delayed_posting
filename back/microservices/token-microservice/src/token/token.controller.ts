@@ -14,6 +14,7 @@ export class TokenController {
     let jwt: any = await this.tokenService
       .validateUserByPassword(loginUserDto)
       .catch(result => result.message);
+      console.log()
     if (!jwt.error) {
       console.log('hello world');
       await this.tokenService.saveToken((jwt as IJwtToken).token);
@@ -70,7 +71,7 @@ export class TokenController {
     if(!tokenCheck){
       return 'error';
     }
-    return await this.tokenService.takeUserByEmail(token.email);
+    return await this.tokenService.takeInfoFromUser(token.email);
   }
 
   isTokenValid(tokenItem) {

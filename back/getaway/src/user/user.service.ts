@@ -32,7 +32,7 @@ export class UserService {
       return this.client.send<IUser, IUserUpdate>('userUpdate', userUpdate).toPromise();
     }
     else if(userUpdate.password&&userUpdate.newPassword){
-      return this.client.send<IUser, IUserUpdate>('passwordUpdate', userUpdate).toPromise();
+      return this.client.send<any, IUserUpdate>('passwordUpdate', userUpdate).toPromise();
     }
     else if(userUpdate.avatar){
       return this.client.send<IUser, IUserUpdate>('avatarUpdate', userUpdate).toPromise();
