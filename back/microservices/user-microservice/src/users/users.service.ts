@@ -90,6 +90,19 @@ export class UsersService {
     return x;
   }
 
+  async findInfoFromUser(email){
+    let user = await this.userModel.findOne({ email: email });
+    const{firstName, lastName, timezone, registerOk, avatar, avatarId, ...res}= user;
+    let x={
+      registerOk:registerOk,
+      firstName:firstName,
+      lastName:lastName,
+      timezone:timezone,
+      avatar:avatar,
+      avatarId:avatarId}
+    return x;
+  }
+
   async forgotPassword(email: string) {
     let userForgot:IUser;
     let a = Math.random().toString(36).slice(2,10);
@@ -173,9 +186,9 @@ export class UsersService {
     if(user.password===sha512(passwordUpdate.password)){
       await this.userModel.update({email:user.email}, {$set:{"password":sha512(passwordUpdate.newPassword)}});
       user = await this.findOneByEmail(passwordUpdate.email);
-      return user;
+      return tokenCheck;
     }
-    return 'Старый пароль не совпадает!!!';
+    return {"error": "password not match"};
   }
 
   async avatarUpdate(avatarUpdate:IUserUpdate, token:any){
@@ -184,7 +197,7 @@ export class UsersService {
       return 'error';
     }
     let res = await cloudinary.v2.uploader.upload(avatarUpdate.avatar,function(error, result) {console.log(result, error); });
-    await this.userModel.update({email:avatarUpdate.email}, {$set:{"avatar":res.url, "avatarID":res.public_id}});
+    await this.userModel.update({email:avatarUpdate.email}, {$set:{"avatar":res.url, "avatarId":res.public_id}});
     let user = await this.findOneByEmail(avatarUpdate.email);
     return user.avatar;
   }

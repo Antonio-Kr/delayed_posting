@@ -37,6 +37,6 @@ export class TokenService {
     return this.client.send<IJwtToken, ITokenCheck>('userDelete', token).toPromise();
   }
   userInfo(token:ITokenCheck){
-    return this.client.send<any, ITokenCheck>('userInfo', token).toPromise();
+    return this.client.send<any, ITokenCheck>('userInfo', token);
   }
 }

@@ -63,6 +63,6 @@ export class UserService {
   }
 
   public userInfo(token:ITokenCheck){
-    return this.client.send<Promise<IUser>, ITokenCheck>('userInfo', token);
+    return this.client.send<any, ITokenCheck>('userInfo', token);
   }
 }
