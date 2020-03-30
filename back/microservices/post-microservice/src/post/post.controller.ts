@@ -11,4 +11,14 @@ export class PostController {
   async createPost(postContent: IPost) {
     return await this.postService.createPost(postContent);
   }
+
+  @MessagePattern('getProviders')
+  async getProviders() {
+    return await this.postService.getProviders();
+  }
+
+  @MessagePattern('getProviderById')
+  async getProviderById(id: string) {
+    return this.postService.getProviderById(id);
+  }
 }

@@ -22,4 +22,14 @@ export class PostController {
     });
     return await [createdPost, updatedAttachements];
   }
+
+  @MessagePattern('getProviders')
+  async getProviders() {
+    return await this.postService.getProviders();
+  }
+
+  @MessagePattern('getProviderById')
+  async getProviderById(id: string) {
+    return this.postService.getProviderById(id);
+  }
 }
