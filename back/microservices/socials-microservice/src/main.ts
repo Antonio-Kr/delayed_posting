@@ -7,7 +7,7 @@ const microserviceOptions = {
   transport: Transport.TCP,
   options: {
     host: connectionConstants.host,
-    port: connectionConstants.getawayPort,
+    port: connectionConstants.socialProvidersPort,
   },
 };
 
@@ -16,9 +16,8 @@ async function bootstrap() {
     AppModule,
     microserviceOptions,
   );
-  app.listen(() => {
-    console.debug('Getaway is listening');
+  await app.listen(() => {
+    console.debug('Socials microservice is listening');
   });
 }
-
 bootstrap();

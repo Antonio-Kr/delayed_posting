@@ -4,13 +4,12 @@ import { PassportModule } from '@nestjs/passport';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { UserSchema } from './schemas/users.schema';
- 
+
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     PassportModule.register({ defaultStrategy: 'jwt', session: false }),
   ],
-  exports: [UsersService],
   controllers: [UsersController],
   providers: [UsersService],
 })

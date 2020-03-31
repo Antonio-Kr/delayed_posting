@@ -16,6 +16,7 @@ export class UsersController {
 
   @MessagePattern('findOneByEmail')
   async findOneByEmail(email: string) {
+    console.log(1323);
     return await this.usersService.findOneByEmail(email);
   }
 
@@ -25,49 +26,55 @@ export class UsersController {
   }
 
   @MessagePattern('registerOk')
-  async registerOk(user:IUser) {
+  async registerOk(user: IUser) {
     return await this.usersService.registerOk(user);
   }
 
   @MessagePattern('userUpdate')
-  async userUpdate(userUpdate:IUserUpdate) {
-    const {email, firstName, lastName, timezone} = userUpdate;
+  async userUpdate(userUpdate: IUserUpdate) {
+    const { email, firstName, lastName, timezone } = userUpdate;
     let token = {
-      token:userUpdate.token,
-      email:userUpdate.email
+      token: userUpdate.token,
+      email: userUpdate.email,
     };
-    return await this.usersService.userUpdate(email, firstName, lastName, timezone, token);
+    return await this.usersService.userUpdate(
+      email,
+      firstName,
+      lastName,
+      timezone,
+      token,
+    );
   }
 
   @MessagePattern('passwordUpdate')
-  async passwordUpdate(passwordUpdate:IUserUpdate){
+  async passwordUpdate(passwordUpdate: IUserUpdate) {
     const token = {
-      token :passwordUpdate.token,
+      token: passwordUpdate.token,
       email: passwordUpdate.email,
-    }
+    };
     return this.usersService.passwordUpdate(passwordUpdate, token);
   }
 
   @MessagePattern('avatarUpdate')
-  async avatarUpdate(avatarUpdate:IUserUpdate){
+  async avatarUpdate(avatarUpdate: IUserUpdate) {
     const token = {
-      token :avatarUpdate.token,
+      token: avatarUpdate.token,
       email: avatarUpdate.email,
-    }
+    };
     return this.usersService.avatarUpdate(avatarUpdate, token);
   }
 
   @MessagePattern('avatarDelete')
-  async avatarDelete(avatarDelete:IUserUpdate){
+  async avatarDelete(avatarDelete: IUserUpdate) {
     const token = {
-      token :avatarDelete.token,
+      token: avatarDelete.token,
       email: avatarDelete.email,
-    }
+    };
     return this.usersService.avatarDelete(avatarDelete, token);
   }
 
   @MessagePattern('userDeleted')
-  async userDelete(email:string){
+  async userDelete(email: string) {
     return this.usersService.userDelete(email);
   }
 }

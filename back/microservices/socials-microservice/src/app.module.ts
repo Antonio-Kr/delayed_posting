@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
-import { PostModule } from './post/post.module';
 import { SocialConnectionsModule } from './social-connections/social-connections.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [UserModule, PostModule, SocialConnectionsModule],
+  imports: [
+    SocialConnectionsModule,
+    MongooseModule.forRoot('mongodb://localhost/delayed_posting'),
+  ],
 })
 export class AppModule {}

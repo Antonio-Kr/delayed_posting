@@ -4,6 +4,7 @@ import { Transport } from '@nestjs/common/enums/transport.enum';
 import { IUser } from './interfaces/user.interface';
 import { IUserUpdate } from './interfaces/user-update.interface';
 import { connectionConstants } from 'src/constants';
+import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
 
 @Injectable()
 export class UserService {
@@ -28,19 +29,23 @@ export class UserService {
       .toPromise();
   }
   userUpdate(userUpdate: IUserUpdate) {
-    if(userUpdate.firstName||userUpdate.lastName||userUpdate.timezone){
-      return this.client.send<IUser, IUserUpdate>('userUpdate', userUpdate).toPromise();
-    }
-    else if(userUpdate.password&&userUpdate.newPassword){
-      return this.client.send<IUser, IUserUpdate>('passwordUpdate', userUpdate).toPromise();
-    }
-    else if(userUpdate.avatar){
-      return this.client.send<IUser, IUserUpdate>('avatarUpdate', userUpdate).toPromise();
-    }
-    else if(userUpdate.avatar==null||userUpdate.avatar==""){
-      return this.client.send<IUser, IUserUpdate>('avatarDelete', userUpdate).toPromise();
-    }
-    else { 
+    if (userUpdate.firstName || userUpdate.lastName || userUpdate.timezone) {
+      return this.client
+        .send<IUser, IUserUpdate>('userUpdate', userUpdate)
+        .toPromise();
+    } else if (userUpdate.password && userUpdate.newPassword) {
+      return this.client
+        .send<IUser, IUserUpdate>('passwordUpdate', userUpdate)
+        .toPromise();
+    } else if (userUpdate.avatar) {
+      return this.client
+        .send<IUser, IUserUpdate>('avatarUpdate', userUpdate)
+        .toPromise();
+    } else if (userUpdate.avatar == null || userUpdate.avatar == '') {
+      return this.client
+        .send<IUser, IUserUpdate>('avatarDelete', userUpdate)
+        .toPromise();
+    } else {
       return 'error';
     }
   }

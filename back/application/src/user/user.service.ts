@@ -11,6 +11,7 @@ import {
 import { LoginUserDto } from './dto/login-user.dto';
 import { ITokenCheck } from './interfaces/token-check.interface';
 import { connectionConstants } from 'src/constants';
+import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
 
 @Injectable()
 export class UserService {
@@ -45,7 +46,7 @@ export class UserService {
       .toPromise();
   }
 
-  public tokenRegisterOk(token:ITokenCheck){
+  public tokenRegisterOk(token: ITokenCheck) {
     return this.client
       .send<Promise<IJwtToken>, ITokenCheck>('tokenRegisterOk', token)
       .toPromise();
@@ -55,15 +56,15 @@ export class UserService {
     return this.client.send<string, string>('forgotPassword', email);
   }
 
-  public userUpdate(userUpdate:IUserUpdate){
+  public userUpdate(userUpdate: IUserUpdate) {
     return this.client.send<IUser, IUserUpdate>('userUpdateAll', userUpdate);
   }
-  
-  public userDelete(token:ITokenCheck){
+
+  public userDelete(token: ITokenCheck) {
     return this.client.send<string, ITokenCheck>('userDelete', token);
   }
 
-  public userInfo(token:ITokenCheck){
+  public userInfo(token: ITokenCheck) {
     return this.client.send<Promise<IUser>, ITokenCheck>('userInfo', token);
   }
 }
