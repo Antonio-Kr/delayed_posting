@@ -64,7 +64,7 @@ export class UserService {
     return this.client.send<string, ITokenCheck>('userDelete', token);
   }
 
-  public userInfo(token: ITokenCheck) {
-    return this.client.send<Promise<IUser>, ITokenCheck>('userInfo', token);
+  public userInfo(token:ITokenCheck){
+    return this.client.send<any, ITokenCheck>('userInfo', token);
   }
 }

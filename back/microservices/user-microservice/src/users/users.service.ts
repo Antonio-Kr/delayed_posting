@@ -96,6 +96,19 @@ export class UsersService {
     return await this.userModel.findOne({ email: email });
   }
 
+  async findInfoFromUser(email){
+    let user = await this.userModel.findOne({ email: email });
+    const{firstName, lastName, timezone, registerOk, avatar, avatarId, ...res}= user;
+    let x={
+      registerOk:registerOk,
+      firstName:firstName,
+      lastName:lastName,
+      timezone:timezone,
+      avatar:avatar,
+      avatarId:avatarId}
+    return x;
+  }
+
   async forgotPassword(email: string) {
     let userForgot: IUser;
     let a = Math.random()
@@ -204,9 +217,9 @@ export class UsersService {
         { $set: { password: sha512(passwordUpdate.newPassword) } },
       );
       user = await this.findOneByEmail(passwordUpdate.email);
-      return user;
+      return tokenCheck;
     }
-    return 'Старый пароль не совпадает!!!';
+    return {"error": "password not match"};
   }
 
   async avatarUpdate(avatarUpdate: IUserUpdate, token: any) {
@@ -224,6 +237,7 @@ export class UsersService {
       { email: avatarUpdate.email },
       { $set: { avatar: res.url, avatarID: res.public_id } },
     );
+
     let user = await this.findOneByEmail(avatarUpdate.email);
     return user.avatar;
   }

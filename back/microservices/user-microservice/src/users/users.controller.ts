@@ -19,6 +19,11 @@ export class UsersController {
     return await this.usersService.findOneByEmail(email);
   }
 
+  @MessagePattern('findInfoFromUser')
+  async findInfoFromUser(email: string) {
+    return await this.usersService.findInfoFromUser(email);
+  }
+
   @MessagePattern('forgotPassword')
   async forgotPassword(email: string) {
     return await this.usersService.forgotPassword(email);

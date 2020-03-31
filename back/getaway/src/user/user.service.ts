@@ -29,23 +29,20 @@ export class UserService {
       .toPromise();
   }
   userUpdate(userUpdate: IUserUpdate) {
-    if (userUpdate.firstName || userUpdate.lastName || userUpdate.timezone) {
-      return this.client
-        .send<IUser, IUserUpdate>('userUpdate', userUpdate)
-        .toPromise();
-    } else if (userUpdate.password && userUpdate.newPassword) {
-      return this.client
-        .send<IUser, IUserUpdate>('passwordUpdate', userUpdate)
-        .toPromise();
-    } else if (userUpdate.avatar) {
-      return this.client
-        .send<IUser, IUserUpdate>('avatarUpdate', userUpdate)
-        .toPromise();
-    } else if (userUpdate.avatar == null || userUpdate.avatar == '') {
-      return this.client
-        .send<IUser, IUserUpdate>('avatarDelete', userUpdate)
-        .toPromise();
-    } else {
+
+    if(userUpdate.firstName||userUpdate.lastName||userUpdate.timezone){
+      return this.client.send<IUser, IUserUpdate>('userUpdate', userUpdate).toPromise();
+    }
+    else if(userUpdate.password&&userUpdate.newPassword){
+      return this.client.send<any, IUserUpdate>('passwordUpdate', userUpdate).toPromise();
+    }
+    else if(userUpdate.avatar){
+      return this.client.send<IUser, IUserUpdate>('avatarUpdate', userUpdate).toPromise();
+    }
+    else if(userUpdate.avatar==null||userUpdate.avatar==""){
+      return this.client.send<IUser, IUserUpdate>('avatarDelete', userUpdate).toPromise();
+    }
+    else { 
       return 'error';
     }
   }
