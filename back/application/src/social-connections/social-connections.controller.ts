@@ -10,14 +10,12 @@ export class SocialConnectionsController {
 
   @Post('linkedin')
   async linkedInLogin(@Body() socialConnection) {
-    console.log(socialConnection);
     const linkedInSocialConnection: ILinkedInSocialConnection = {
       userId: socialConnection.userId,
       expiresAt: socialConnection.expires_at,
       providerId: socialConnection.providerId,
       token: socialConnection.token,
     };
-    console.log(linkedInSocialConnection);
     return this.socialConnectionService.linkedInLogin(linkedInSocialConnection);
   }
 }

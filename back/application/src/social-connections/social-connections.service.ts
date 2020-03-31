@@ -19,7 +19,6 @@ export class SocialConnectionsService {
   }
 
   async linkedInLogin(linkedInSocialConnection: ILinkedInSocialConnection) {
-    console.log(linkedInSocialConnection);
     return this.client.send<any, ILinkedInSocialConnection>(
       'linkedInLogin',
       linkedInSocialConnection,

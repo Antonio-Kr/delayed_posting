@@ -16,7 +16,6 @@ export class UsersController {
 
   @MessagePattern('findOneByEmail')
   async findOneByEmail(email: string) {
-    console.log(1323);
     return await this.usersService.findOneByEmail(email);
   }
 

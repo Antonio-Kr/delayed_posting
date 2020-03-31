@@ -11,11 +11,9 @@ export class SocialConnectionsController {
 
   @MessagePattern('linkedInLogin')
   async linkedInLogin(socialConnection: ILinkedInSocialConnection) {
-    console.log(socialConnection);
     await this.socialConnetionsService
       .updateUserIdByEmail(socialConnection.userId)
       .then(user => (socialConnection.userId = user._id));
-    console.log(socialConnection);
     return await this.socialConnetionsService.createSocialConnection(
       socialConnection,
     );
