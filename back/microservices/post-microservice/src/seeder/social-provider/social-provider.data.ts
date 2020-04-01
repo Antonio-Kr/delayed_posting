@@ -1,4 +1,4 @@
-import { ISocialProvider } from './interfaces/social-provider.interface';
+import { ISocialProvider } from '../../interfaces/social-provider.interface';
 
 export const socialProviders: ISocialProvider[] = [
   {

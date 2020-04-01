@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { IPostTemplate } from './interfaces/post-template.interface';
 import { postTemplates } from './post-templates.data';
-import { INameIdCouple } from 'src/interfaces/name-id.interface';
+import { INameIdCouple } from '../interfaces/name-id.interface';
+import { IPostTemplate } from 'src/interfaces/post-template.interface';
 
 @Injectable()
 export class PostTemplateSeederService {
@@ -13,7 +13,6 @@ export class PostTemplateSeederService {
   ) {}
 
   create(nameIdCouples: INameIdCouple[]): Array<Promise<IPostTemplate>> {
-    let i = 0;
     return postTemplates.map(async (postTemplate: IPostTemplate) => {
       const nameIdCouple = nameIdCouples.filter(
         v => v.name === postTemplate.providerId,

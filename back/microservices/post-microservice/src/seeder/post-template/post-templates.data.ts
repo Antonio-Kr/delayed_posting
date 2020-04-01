@@ -1,4 +1,4 @@
-import { IPostTemplate } from './interfaces/post-template.interface';
+import { IPostTemplate } from 'src/interfaces/post-template.interface';
 
 export const postTemplates: IPostTemplate[] = [
   {
