@@ -4,5 +4,6 @@ export const connectionConstants = {
   tokenMicroservicePort: 8879,
   filesMicroservicePort: 8870,
   postMicroservicePort: 8871,
+  socialProvidersPort: 8872,
   getawayPort: 8877,
 };

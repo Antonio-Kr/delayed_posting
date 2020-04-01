@@ -4,6 +4,7 @@ import { Transport } from '@nestjs/common/enums/transport.enum';
 import { IUser } from './interfaces/user.interface';
 import { IUserUpdate } from './interfaces/user-update.interface';
 import { connectionConstants } from 'src/constants';
+import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
 
 @Injectable()
 export class UserService {
@@ -28,6 +29,7 @@ export class UserService {
       .toPromise();
   }
   userUpdate(userUpdate: IUserUpdate) {
+
     if(userUpdate.firstName||userUpdate.lastName||userUpdate.timezone){
       return this.client.send<IUser, IUserUpdate>('userUpdate', userUpdate).toPromise();
     }
