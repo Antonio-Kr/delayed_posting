@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SocialProviderSeederService } from './social-provider/social-provider.service';
-import { INameIdCouple } from 'src/interfaces/name-id.interface';
 import { PostTemplateSeederService } from './post-template/post-template.service';
+import { INameIdCouple } from './interfaces/name-id.interface';
 
 @Injectable()
 export class Seeder {
@@ -24,21 +24,29 @@ export class Seeder {
   }
 
   async socialProviders() {
-    return await Promise.all(this.socialProviderSeederService.create())
+    return await Promise.all(await this.socialProviderSeederService.create())
       .then(async createdSocialProviders => {
-        const nameIdCouples = createdSocialProviders.map(
-          (socialProvider): INameIdCouple => {
-            return {
-              id: socialProvider['_id'].toString(),
-              name: socialProvider.name.toLowerCase(),
-            };
-          },
+        createdSocialProviders = createdSocialProviders.filter(
+          provider => provider,
         );
-
-        await Promise.all(this.postTemplateSeederService.create(nameIdCouples));
+        if (createdSocialProviders.length > 0) {
+          const nameIdCouples = createdSocialProviders.map(
+            (socialProvider): INameIdCouple => {
+              return {
+                id: socialProvider['_id'].toString(),
+                name: socialProvider.name.toLowerCase(),
+              };
+            },
+          );
+          await Promise.all(
+            this.postTemplateSeederService.create(nameIdCouples),
+          );
+        }
 
         return await Promise.resolve(true);
       })
-      .catch(error => Promise.reject(error));
+      .catch(error => {
+        Promise.reject(error);
+      });
   }
 }

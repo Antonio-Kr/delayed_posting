@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { PostTemplateSeederService } from './post-template.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PostTemplateSchema } from './schemas/post-template.schema';
+import { PostTemplateSchema } from 'src/schemas/post-template.schema';
 
 @Module({
   imports: [
@@ -12,4 +12,4 @@ import { PostTemplateSchema } from './schemas/post-template.schema';
   providers: [PostTemplateSeederService],
   exports: [PostTemplateSeederService],
 })
-export class PostTemplateModule {}
+export class PostTemplateSeederModule {}

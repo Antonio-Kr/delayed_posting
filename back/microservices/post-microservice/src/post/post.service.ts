@@ -3,15 +3,15 @@ import { IPost } from './interfaces/post.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreatePostDto } from './dto/create-post.dto';
-import { IProvider } from './interfaces/provider.interface';
-import { IPostTemplate } from './interfaces/post-template.interface';
+import { IPostTemplate } from 'src/interfaces/post-template.interface';
+import { ISocialProvider } from 'src/interfaces/social-provider.interface';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectModel('Post') private postModel: Model<IPost>,
     @InjectModel('SocialProvider')
-    private readonly socialProviderModel: Model<IProvider>,
+    private readonly socialProviderModel: Model<ISocialProvider>,
     @InjectModel('PostTemplate')
     private readonly postTemplateModel: Model<IPostTemplate>,
   ) {}
