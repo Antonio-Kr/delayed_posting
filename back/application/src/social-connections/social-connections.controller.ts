@@ -9,6 +9,11 @@ export class SocialConnectionsController {
     private readonly socialConnectionService: SocialConnectionsService,
   ) {}
 
+  @Get('connections')
+  async getConnections(@Query('email') email) {
+    return await this.socialConnectionService.getConnections(email);
+  }
+
   @Post('linkedin')
   async linkedInLogin(@Body() linkedInLoginData) {
     const tokenJson = await fetch(
@@ -22,20 +27,17 @@ export class SocialConnectionsController {
       },
     ).then(result => result.json());
 
+    const expires_inSeconds = new Date().getSeconds() + tokenJson.expires_in;
+
     const linkedInSocialConnection: ILinkedInSocialConnection = {
       userId: linkedInLoginData.email,
-      expiresAt: new Date(tokenJson.expires_in).toString(),
+      expiresAt: new Date(expires_inSeconds).toString(),
       providerId: linkedInLoginData.providerId,
-      token: tokenJson.token,
+      token: tokenJson.access_token,
     };
+
     return await this.socialConnectionService.linkedInLogin(
       linkedInSocialConnection,
     );
   }
 }
-
-// https://www.linkedin.com/oauth/v2/authorization?
-//    response_type=code&
-//    client_id=7803ckbs49p3y1&
-//    redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fsocial%2Flink&
-//    scope=r_liteprofile%20r_emailaddress%20w_member_social
