@@ -11,21 +11,28 @@ export class SocialProviderSeederService {
     private readonly socialProviderModel: Model<ISocialProvider>,
   ) {}
 
-  create(): Array<Promise<ISocialProvider>> {
-    return socialProviders.map(async (socialProvider: ISocialProvider) => {
-      return await this.socialProviderModel
-        .findOne({ name: socialProvider.name })
-        .exec()
-        .then(async dbSocialProvider => {
-          if (dbSocialProvider) {
-            return Promise.resolve(null);
-          }
+  async create(): Promise<Array<Promise<ISocialProvider>>> {
+    const providerNameArr = socialProviders.map(provider => provider.name);
 
+    return await this.socialProviderModel
+      .find({
+        name: providerNameArr,
+      })
+      .exec()
+      .then(result => {
+        const existsInBase = result.map(res => res.name);
+        const diff = providerNameArr.filter(x => !existsInBase.includes(x));
+        const socialProvidersToCreate = socialProviders.filter(provider =>
+          diff.includes(provider.name),
+        );
+        if (socialProvidersToCreate.length == 0) return Promise.resolve([null]);
+        else
           return Promise.resolve(
-            await this.socialProviderModel.create(socialProvider),
+            this.socialProviderModel.create(socialProvidersToCreate),
           );
-        })
-        .catch(error => Promise.reject(error));
-    });
+      })
+      .catch(error => {
+        Promise.reject(error);
+      });
   }
 }

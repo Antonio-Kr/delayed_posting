@@ -14,29 +14,28 @@ const microserviceOptions = {
 };
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice(
-    AppModule,
-    microserviceOptions,
-  ).then(appContext => {
-    const logger = appContext.get(Logger);
-    const seeder = appContext.get(Seeder);
+  await NestFactory.createMicroservice(AppModule, microserviceOptions)
+    .then(async appContext => {
+      const logger = appContext.get(Logger);
+      const seeder = appContext.get(Seeder);
 
-    seeder
-      .seed()
-      .then(() => {
-        logger.debug('Seeding success');
-      })
-      .catch(error => {
-        logger.debug('Seeding error');
-        throw error;
+      await seeder
+        .seed()
+        .then(() => {
+          logger.debug('Seeding success');
+        })
+        .catch(error => {
+          logger.debug('Seeding error');
+          throw error;
+        });
+
+      return Promise.resolve(appContext);
+    })
+    .then(async app => {
+      await app.listen(() => {
+        console.log('Post microservice is listening');
       });
-
-    return Promise.resolve(appContext);
-  });
-
-  await app.listen(() => {
-    console.log('Post microservice is listening');
-  });
+    });
 }
 
 bootstrap();

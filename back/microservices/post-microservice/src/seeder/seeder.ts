@@ -24,7 +24,7 @@ export class Seeder {
   }
 
   async socialProviders() {
-    return await Promise.all(this.socialProviderSeederService.create())
+    return await Promise.all(await this.socialProviderSeederService.create())
       .then(async createdSocialProviders => {
         createdSocialProviders = createdSocialProviders.filter(
           provider => provider,
