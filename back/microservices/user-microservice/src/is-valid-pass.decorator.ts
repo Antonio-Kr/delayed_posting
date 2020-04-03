@@ -9,7 +9,6 @@ import {
 @ValidatorConstraint({ async: true })
 export class IsPasswordValidConstraint implements ValidatorConstraintInterface {
   validate(password: any, args: ValidationArguments) {
-    console.log('hello world');
     return /^^(?=.*[0-9])(?=.*[\w])(?=.*[\W])[\d\W\w\s]{6,}$$/.test(password);
   }
 }
