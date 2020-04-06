@@ -3,6 +3,7 @@ import { ILinkedInSocialConnection } from './interfaces/social-connection-linked
 import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
 import { Transport } from '@nestjs/common/enums/transport.enum';
 import { connectionConstants } from 'src/constants';
+import { ISocialConnection } from './interfaces/social-connection.interface';
 
 @Injectable()
 export class SocialConnectionsService {
@@ -16,6 +17,13 @@ export class SocialConnectionsService {
         port: connectionConstants.getawayPort,
       },
     });
+  }
+
+  async getConnections(email: string) {
+    return this.client.send<Promise<ISocialConnection[]>, string>(
+      'getConnections',
+      email,
+    );
   }
 
   async linkedInLogin(linkedInSocialConnection: ILinkedInSocialConnection) {

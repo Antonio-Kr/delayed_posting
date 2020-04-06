@@ -10,6 +10,11 @@ export class SocialConnectionsController {
     private readonly socialConnectionService: SocialConnectionsService,
   ) {}
 
+  @MessagePattern('getConnections')
+  async getConnections(email) {
+    return await this.socialConnectionService.getConnections(email);
+  }
+
   @MessagePattern('linkedInLogin')
   async linkedInLogin(socialConnection: ILinkedInSocialConnection) {
     return this.socialConnectionService.linkedInLogin(socialConnection);

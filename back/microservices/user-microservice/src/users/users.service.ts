@@ -96,16 +96,25 @@ export class UsersService {
     return await this.userModel.findOne({ email: email });
   }
 
-  async findInfoFromUser(email){
+  async findInfoFromUser(email) {
     let user = await this.userModel.findOne({ email: email });
-    const{firstName, lastName, timezone, registerOk, avatar, avatarId, ...res}= user;
-    let x={
-      registerOk:registerOk,
-      firstName:firstName,
-      lastName:lastName,
-      timezone:timezone,
-      avatar:avatar,
-      avatarId:avatarId}
+    const {
+      firstName,
+      lastName,
+      timezone,
+      registerOk,
+      avatar,
+      avatarId,
+      ...res
+    } = user;
+    let x = {
+      registerOk: registerOk,
+      firstName: firstName,
+      lastName: lastName,
+      timezone: timezone,
+      avatar: avatar,
+      avatarId: avatarId,
+    };
     return x;
   }
 
@@ -219,7 +228,7 @@ export class UsersService {
       user = await this.findOneByEmail(passwordUpdate.email);
       return tokenCheck;
     }
-    return {"error": "password not match"};
+    return { error: 'password not match' };
   }
 
   async avatarUpdate(avatarUpdate: IUserUpdate, token: any) {
