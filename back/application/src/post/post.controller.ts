@@ -14,14 +14,35 @@ import { IAttachementRemove } from './interfaces/attachement-remove.interface';
 import { IProvider } from './interfaces/service-provider.interface';
 import { IPostTemplate } from './interfaces/post-template.interface';
 import { IPost } from './interfaces/post.interface';
+import { ISchedule } from './interfaces/schedule.interface';
 
 @Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Post('create')
-  async createPost(@Body() postContent: IPost) {
-    return await this.postService.createPost(postContent);
+  async createPost(
+    @Body('postContent') postContent: IPost,
+    @Body('schedule') schedule,
+  ) {
+    return await this.postService
+      .createPost(postContent)
+      .toPromise()
+      .then(
+        (createdPost): ISchedule => {
+          return {
+            notify: schedule.notify,
+            postId: createdPost._id,
+            providerId: schedule.providerId,
+            startsAt: schedule.startsAt,
+            status: 'pending',
+            userId: schedule.userEmail,
+          };
+        },
+      )
+      .then(scheduleContent => {
+        return this.postService.createSchedule(scheduleContent);
+      });
   }
 
   @Post('upload')
