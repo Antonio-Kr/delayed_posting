@@ -26,10 +26,14 @@ export class SocialConnectionsService {
       },
     });
   }
-  async updateUserIdByEmail(email: string): Promise<IUser> {
+  async userIdByEmail(email: string): Promise<IUser> {
     return await this.client
       .send<IUser, string>('findOneByEmail', email)
       .toPromise();
+  }
+
+  async getConnections(userId: string) {
+    return await this.socialConnectionModel.find({ userId }).exec();
   }
 
   async createSocialConnection(
