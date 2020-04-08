@@ -1,3 +1,4 @@
+
 import { Controller, Post, Body, Query, Get } from '@nestjs/common';
 import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
 import { SocialConnectionsService } from './social-connections.service';
@@ -39,5 +40,18 @@ export class SocialConnectionsController {
     return await this.socialConnectionService.linkedInLogin(
       linkedInSocialConnection,
     );
+  }
+
+  @Post('linkedin/me')
+  async linkedInMe(@Body() token) {
+    return await fetch(
+      'https://api.linkedin.com/v2/me?projection=(id,firstName,lastName,profilePicture(displayImage~:playableStreams))',
+      {
+        headers: {
+          Connection: 'Keep-Alive',
+          Authorization: `Bearer ${token.token}`,
+        },
+      },
+    ).then(response => response.json());
   }
 }
