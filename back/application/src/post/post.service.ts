@@ -10,6 +10,7 @@ import { IPost } from './interfaces/post.interface';
 import { IAttachementRemove } from './interfaces/attachement-remove.interface';
 import { IProvider } from './interfaces/service-provider.interface';
 import { IPostTemplate } from './interfaces/post-template.interface';
+import { ISchedule } from './interfaces/schedule.interface';
 
 @Injectable()
 export class PostService {
@@ -39,8 +40,12 @@ export class PostService {
     );
   }
 
-  async createPost(postContent: IPost) {
-    return await this.client.send<any, IPost>('createPost', postContent);
+  createPost(postContent: IPost) {
+    return this.client.send<any, IPost>('createPost', postContent);
+  }
+
+  createSchedule(scheduleContent: ISchedule) {
+    return this.client.send<any, ISchedule>('createSchedule', scheduleContent);
   }
 
   async getProviders() {

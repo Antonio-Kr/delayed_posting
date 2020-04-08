@@ -38,7 +38,6 @@ export class FilesService {
   }
 
   async updateAttachements(updateAttachements: IUpdateAttachements) {
-    console.log(updateAttachements);
     return await this.client
       .send<any, IUpdateAttachements>('updateAttachements', updateAttachements)
       .toPromise();

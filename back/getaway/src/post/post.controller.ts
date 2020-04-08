@@ -20,7 +20,7 @@ export class PostController {
       attachements: postContent.attachements,
       postId: createdPost['_id'],
     });
-    return await [createdPost, updatedAttachements];
+    return await createdPost;
   }
 
   @MessagePattern('getProviders')
