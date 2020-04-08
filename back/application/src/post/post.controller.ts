@@ -25,24 +25,18 @@ export class PostController {
     @Body('postContent') postContent: IPost,
     @Body('schedule') schedule,
   ) {
-    return await this.postService
+    const createdPost = await this.postService
       .createPost(postContent)
-      .toPromise()
-      .then(
-        (createdPost): ISchedule => {
-          return {
-            notify: schedule.notify,
-            postId: createdPost._id,
-            providerId: schedule.providerId,
-            startsAt: schedule.startsAt,
-            status: 'pending',
-            userId: schedule.userEmail,
-          };
-        },
-      )
-      .then(scheduleContent => {
-        return this.postService.createSchedule(scheduleContent);
-      });
+      .toPromise();
+    const scheduleContent: ISchedule = {
+      notify: schedule.notify,
+      postId: createdPost._id,
+      providerId: schedule.providerId,
+      startsAt: schedule.startsAt,
+      status: 'pending',
+      userId: schedule.userEmail,
+    };
+    return this.postService.createSchedule(scheduleContent);
   }
 
   @Post('upload')
