@@ -3,6 +3,8 @@ import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
 import { Transport } from '@nestjs/common/enums/transport.enum';
 import { IUser } from './interfaces/user.interface';
 import { IUserUpdate } from './interfaces/user-update.interface';
+import { connectionConstants } from 'src/constants';
+import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
 
 @Injectable()
 export class UserService {
@@ -12,8 +14,8 @@ export class UserService {
     this.client = ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
-        host: '127.0.0.1',
-        port: 8878,
+        host: connectionConstants.host,
+        port: connectionConstants.userMicroservicePort,
       },
     });
   }
@@ -27,11 +29,12 @@ export class UserService {
       .toPromise();
   }
   userUpdate(userUpdate: IUserUpdate) {
+
     if(userUpdate.firstName||userUpdate.lastName||userUpdate.timezone){
       return this.client.send<IUser, IUserUpdate>('userUpdate', userUpdate).toPromise();
     }
     else if(userUpdate.password&&userUpdate.newPassword){
-      return this.client.send<IUser, IUserUpdate>('passwordUpdate', userUpdate).toPromise();
+      return this.client.send<any, IUserUpdate>('passwordUpdate', userUpdate).toPromise();
     }
     else if(userUpdate.avatar){
       return this.client.send<IUser, IUserUpdate>('avatarUpdate', userUpdate).toPromise();

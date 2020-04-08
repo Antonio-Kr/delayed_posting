@@ -1,12 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Transport } from '@nestjs/common/enums/transport.enum';
+import { Transport } from '@nestjs/microservices';
+import { connectionConstants } from './constants';
 
 const microserviceOptions = {
   transport: Transport.TCP,
   options: {
-    host: '127.0.0.1',
-    port: 8877,
+    host: connectionConstants.host,
+    port: connectionConstants.getawayPort,
   },
 };
 
@@ -16,7 +17,7 @@ async function bootstrap() {
     microserviceOptions,
   );
   app.listen(() => {
-    console.log('Getaway is listening');
+    console.debug('Getaway is listening');
   });
 }
 

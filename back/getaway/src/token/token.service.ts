@@ -4,6 +4,7 @@ import { IJwtToken } from './interfaces/jwt-token.interface';
 import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
 import { Transport } from '@nestjs/common/enums/transport.enum';
 import { ITokenCheck } from './interfaces/token-check.interface';
+import { connectionConstants } from 'src/constants';
 
 @Injectable()
 export class TokenService {
@@ -13,8 +14,8 @@ export class TokenService {
     this.client = ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
-        host: '127.0.0.1',
-        port: 8879,
+        host: connectionConstants.host,
+        port: connectionConstants.tokenMicroservicePort,
       },
     });
   }
@@ -37,6 +38,6 @@ export class TokenService {
     return this.client.send<IJwtToken, ITokenCheck>('userDelete', token).toPromise();
   }
   userInfo(token:ITokenCheck){
-    return this.client.send<any, ITokenCheck>('userInfo', token).toPromise();
+    return this.client.send<any, ITokenCheck>('userInfo', token);
   }
 }

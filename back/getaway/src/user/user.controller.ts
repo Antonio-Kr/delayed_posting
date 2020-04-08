@@ -3,6 +3,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { IUser } from './interfaces/user.interface';
 import { UserService } from './user.service';
 import { IUserUpdate } from './interfaces//user-update.interface';
+import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
 
 @Controller()
 export class UserController {
@@ -19,7 +20,7 @@ export class UserController {
   }
 
   @MessagePattern('userUpdateAll')
-  async userUpdate(userUpdate:IUserUpdate) {
+  async userUpdate(userUpdate: IUserUpdate) {
     return this.userService.userUpdate(userUpdate);
   }
 }
