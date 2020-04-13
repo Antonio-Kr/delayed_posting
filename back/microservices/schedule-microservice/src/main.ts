@@ -17,7 +17,7 @@ async function bootstrap() {
     microserviceOptions,
   );
   app.listen(() => {
-    console.debug('Getaway is listening');
+    console.debug('Schedule microservice is listening');
   });
 }
 bootstrap();

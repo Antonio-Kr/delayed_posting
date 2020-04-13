@@ -17,7 +17,7 @@ export class PostService {
   ) {}
 
   async createPost(postContent: IPost) {
-    const createdPost = this.postModel(postContent);
+    const createdPost = new this.postModel(postContent);
     return await createdPost.save();
   }
 

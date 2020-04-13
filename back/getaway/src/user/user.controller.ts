@@ -2,8 +2,7 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { IUser } from './interfaces/user.interface';
 import { UserService } from './user.service';
-import { IUserUpdate } from './interfaces//user-update.interface';
-import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
+import { IUserUpdate } from './interfaces/user-update.interface';
 
 @Controller()
 export class UserController {

@@ -9,27 +9,27 @@ export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 
   @MessagePattern('login')
-  async login(user: LoginUserDto) {
+  login(user: LoginUserDto) {
     return this.tokenService.login(user);
   }
 
   @MessagePattern('tokenCheck')
-  async tokenCheck(token: ITokenCheck) {
+  tokenCheck(token: ITokenCheck) {
     return this.tokenService.tokenCheck(token);
   }
 
   @MessagePattern('tokenRegisterOk')
-  async tokenRegisterOk(token: ITokenCheck) {
+  tokenRegisterOk(token: ITokenCheck) {
     return this.tokenService.tokenRegisterOk(token);
   }
 
   @MessagePattern('userDelete')
-  async userDelete(token: ITokenCheck) {
+  userDelete(token: ITokenCheck) {
     return this.tokenService.userDelete(token);
   }
 
   @MessagePattern('userInfo')
-  async userInfo(token: ITokenCheck) {
+  userInfo(token: ITokenCheck) {
     return this.tokenService.userInfo(token);
   }
 }

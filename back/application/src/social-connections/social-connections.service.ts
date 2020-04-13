@@ -19,8 +19,8 @@ export class SocialConnectionsService {
     });
   }
 
-  async getConnections(email: string) {
-    return this.client.send<Promise<ISocialConnection[]>, string>(
+  getConnections(email: string) {
+    return this.client.send<ISocialConnection[], string>(
       'getConnections',
       email,
     );

@@ -23,15 +23,12 @@ export class FilesService {
     });
   }
 
-  async uploadFile(file: any) {
-    return await this.client.send<IAttachementResult, string>(
-      'uploadFile',
-      file,
-    );
+  uploadFile(file) {
+    return this.client.send<IAttachementResult, string>('uploadFile', file);
   }
 
-  async removeAttachement(removeContent: IAttachementRemove) {
-    return await this.client.send<any, IAttachementRemove>(
+  removeAttachement(removeContent: IAttachementRemove) {
+    return this.client.send<any, IAttachementRemove>(
       'removeAttachement',
       removeContent,
     );

@@ -36,7 +36,7 @@ export class SocialConnectionsService {
     return await this.socialConnectionModel.find({ userId }).exec();
   }
 
-  async createSocialConnection(
+  async createLinkedInSocialConnection(
     createSocialConnectionDto: ILinkedInSocialConnection,
   ) {
     const createdSocialConnection = new this.socialConnectionModel(

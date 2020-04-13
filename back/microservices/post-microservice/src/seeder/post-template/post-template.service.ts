@@ -17,7 +17,6 @@ export class PostTemplateSeederService {
       const nameIdCouple = nameIdCouples.filter(
         v => v.name === postTemplate.providerId,
       )[0];
-      console.log(postTemplate.providerId, nameIdCouple.name);
       postTemplate.providerId = nameIdCouple.id;
       return await this.postTemplateModel.create(postTemplate);
     });

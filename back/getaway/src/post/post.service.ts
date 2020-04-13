@@ -23,18 +23,15 @@ export class PostService {
     });
   }
 
-  async createPost(postContent: IPost) {
-    return await this.client.send<any, IPost>('createPost', postContent);
+  createPost(postContent: IPost) {
+    return this.client.send<any, IPost>('createPost', postContent);
   }
 
-  async getProviders() {
-    return await this.client.send<Promise<IProvider[]>, any>(
-      'getProviders',
-      '',
-    );
+  getProviders() {
+    return this.client.send<Promise<IProvider[]>, any>('getProviders', '');
   }
 
-  async getProviderById(id: string) {
-    return await this.client.send<IPostTemplate, string>('getProviderById', id);
+  getProviderById(id: string) {
+    return this.client.send<IPostTemplate, string>('getProviderById', id);
   }
 }

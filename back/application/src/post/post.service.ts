@@ -26,15 +26,12 @@ export class PostService {
     });
   }
 
-  async uploadFile(file: any) {
-    return await this.client.send<IAttachementResult, string>(
-      'uploadFile',
-      file,
-    );
+  uploadFile(file: any) {
+    return this.client.send<IAttachementResult, string>('uploadFile', file);
   }
 
-  async removeAttachement(removeContent: IAttachementRemove) {
-    return await this.client.send<any, IAttachementRemove>(
+  removeAttachement(removeContent: IAttachementRemove) {
+    return this.client.send<any, IAttachementRemove>(
       'removeAttachement',
       removeContent,
     );
@@ -64,7 +61,7 @@ export class PostService {
     );
   }
 
-  async getProviderById(id: string) {
-    return await this.client.send<IPostTemplate, string>('getProviderById', id);
+  getProviderById(id: string) {
+    return this.client.send<IPostTemplate, string>('getProviderById', id);
   }
 }

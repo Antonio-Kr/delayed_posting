@@ -10,7 +10,7 @@ export class FilesController {
 
   @MessagePattern('uploadFile')
   async uploadFile(file) {
-    return await this.fileService.uploadFile(file);
+    return this.fileService.uploadFile(file);
   }
 
   @MessagePattern('removeAttachement')

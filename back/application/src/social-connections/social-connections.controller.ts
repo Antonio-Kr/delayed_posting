@@ -1,4 +1,3 @@
-
 import { Controller, Post, Body, Query, Get } from '@nestjs/common';
 import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
 import { SocialConnectionsService } from './social-connections.service';
@@ -11,8 +10,8 @@ export class SocialConnectionsController {
   ) {}
 
   @Get('connections')
-  async getConnections(@Query('email') email) {
-    return await this.socialConnectionService.getConnections(email);
+  getConnections(@Query('email') email) {
+    return this.socialConnectionService.getConnections(email);
   }
 
   @Post('linkedin')

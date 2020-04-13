@@ -22,7 +22,7 @@ export class SocialConnectionsController {
     await this.socialConnetionsService
       .userIdByEmail(socialConnection.userId)
       .then(user => (socialConnection.userId = user._id));
-    return await this.socialConnetionsService.createSocialConnection(
+    return await this.socialConnetionsService.createLinkedInSocialConnection(
       socialConnection,
     );
   }

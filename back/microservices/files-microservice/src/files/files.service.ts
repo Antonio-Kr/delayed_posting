@@ -20,7 +20,7 @@ export class FilesService {
     });
   }
 
-  async uploadFile(file: any): Promise<IAttachementResult> {
+  async uploadFile(file): Promise<IAttachementResult> {
     let b64 = Buffer.from(file.buffer.data).toString('base64');
     const resourceType = file.mimetype.replace(/\/.+/, '');
 
@@ -32,13 +32,12 @@ export class FilesService {
         let attachementDto: CreateAttachementDto = this.createAttachementDto(
           result,
         );
-        const createdAttachement = this.attachementModel(attachementDto);
+        const createdAttachement = new this.attachementModel(attachementDto);
         const saveResult = this.saveAttachement(createdAttachement);
         return await saveResult;
       })
       .catch(error => error);
 
-    await console.log(attachementResult);
     if (attachementResult.error) {
       attachementResult = null;
     }
@@ -54,11 +53,8 @@ export class FilesService {
   }
 
   async updateAttachements(attachements: IUpdateAttachements) {
-    return await Promise.all(attachements.attachements).then(async () => {
-      await attachements.attachements.map(att => {
-        console.log();
-        console.log(att);
-        console.log();
+    return await Promise.all(attachements.attachements).then(() => {
+      attachements.attachements.map(att => {
         this.attachementModel
           .update(
             { fileId: att.fileId },

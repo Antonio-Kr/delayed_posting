@@ -11,8 +11,6 @@ import {
 import { LoginUserDto } from './dto/login-user.dto';
 import { ITokenCheck } from './interfaces/token-check.interface';
 import { connectionConstants } from 'src/constants';
-import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
-
 @Injectable()
 export class UserService {
   private client: ClientProxy;
@@ -27,44 +25,43 @@ export class UserService {
     });
   }
 
-  public login(user: LoginUserDto) {
+  login(user: LoginUserDto) {
     return this.client
       .send<Promise<IJwtToken>, LoginUserDto>('login', user)
       .toPromise();
   }
 
-  public register(user: IUser) {
+  register(user: IUser) {
     return this.client
       .send<Promise<IUser>, IUser>('register', user)
       .toPromise();
   }
 
-  public tokenCheck(token: ITokenCheck) {
-    console.log(token);
+  tokenCheck(token: ITokenCheck) {
     return this.client
       .send<Promise<IJwtToken>, ITokenCheck>('tokenCheck', token)
       .toPromise();
   }
 
-  public tokenRegisterOk(token: ITokenCheck) {
+  tokenRegisterOk(token: ITokenCheck) {
     return this.client
       .send<Promise<IJwtToken>, ITokenCheck>('tokenRegisterOk', token)
       .toPromise();
   }
 
-  public forgotPassword(email) {
+  forgotPassword(email) {
     return this.client.send<string, string>('forgotPassword', email);
   }
 
-  public userUpdate(userUpdate: IUserUpdate) {
+  userUpdate(userUpdate: IUserUpdate) {
     return this.client.send<IUser, IUserUpdate>('userUpdateAll', userUpdate);
   }
 
-  public userDelete(token: ITokenCheck) {
+  userDelete(token: ITokenCheck) {
     return this.client.send<string, ITokenCheck>('userDelete', token);
   }
 
-  public userInfo(token:ITokenCheck){
+  userInfo(token: ITokenCheck) {
     return this.client.send<any, ITokenCheck>('userInfo', token);
   }
 }

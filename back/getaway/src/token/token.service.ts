@@ -19,6 +19,7 @@ export class TokenService {
       },
     });
   }
+
   login(loginUserDto: LoginUserDto) {
     return this.client
       .send<IJwtToken, LoginUserDto>('login', loginUserDto)
@@ -34,10 +35,12 @@ export class TokenService {
       .send<IJwtToken, ITokenCheck>('tokenRegisterOk', token)
       .toPromise();
   }
-  userDelete(token:ITokenCheck){
-    return this.client.send<IJwtToken, ITokenCheck>('userDelete', token).toPromise();
+  userDelete(token: ITokenCheck) {
+    return this.client
+      .send<IJwtToken, ITokenCheck>('userDelete', token)
+      .toPromise();
   }
-  userInfo(token:ITokenCheck){
+  userInfo(token: ITokenCheck) {
     return this.client.send<any, ITokenCheck>('userInfo', token);
   }
 }

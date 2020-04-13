@@ -13,10 +13,10 @@ export class PostController {
 
   @MessagePattern('createPost')
   async createPost(postContent: IPost) {
-    const createdPost = await (
-      await this.postService.createPost(postContent)
-    ).toPromise();
-    const updatedAttachements = await this.fileService.updateAttachements({
+    const createdPost = await this.postService
+      .createPost(postContent)
+      .toPromise();
+    await this.fileService.updateAttachements({
       attachements: postContent.attachements,
       postId: createdPost['_id'],
     });
@@ -25,7 +25,7 @@ export class PostController {
 
   @MessagePattern('getProviders')
   async getProviders() {
-    return await this.postService.getProviders();
+    return this.postService.getProviders();
   }
 
   @MessagePattern('getProviderById')

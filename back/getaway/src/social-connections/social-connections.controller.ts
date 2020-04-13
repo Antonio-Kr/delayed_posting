@@ -12,7 +12,7 @@ export class SocialConnectionsController {
 
   @MessagePattern('getConnections')
   async getConnections(email) {
-    return await this.socialConnectionService.getConnections(email);
+    return this.socialConnectionService.getConnections(email);
   }
 
   @MessagePattern('linkedInLogin')
