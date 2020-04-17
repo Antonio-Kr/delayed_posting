@@ -40,12 +40,20 @@ export class PostService {
     );
   }
 
-  createPost(postContent: IPost) {
+  async removePost(scheduleId: string) {
+    return await this.client.send<any, string>('removePost', scheduleId);
+  }
+
+  async createPost(postContent: IPost) {
     return this.client.send<any, IPost>('createPost', postContent);
   }
 
-  createSchedule(scheduleContent: ISchedule) {
+  async createSchedule(scheduleContent: ISchedule) {
     return this.client.send<any, ISchedule>('createSchedule', scheduleContent);
+  }
+
+  async getAllPostsToGo(params) {
+    return this.client.send<any, any>('getAllPostsToGo', params);
   }
 
   async getProviders() {

@@ -12,6 +12,16 @@ export class PostController {
     return await this.postService.createPost(postContent);
   }
 
+  @MessagePattern('removePost')
+  async removePost(postId: string) {
+    return await this.postService.removePost(postId);
+  }
+
+  @MessagePattern('getPostById')
+  async getPostById(postId: string) {
+    return await this.postService.getPostById(postId);
+  }
+
   @MessagePattern('getProviders')
   async getProviders() {
     return await this.postService.getProviders();

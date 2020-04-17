@@ -6,6 +6,7 @@ import {
   UploadedFile,
   Get,
   Param,
+  Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -25,9 +26,9 @@ export class PostController {
     @Body('postContent') postContent: IPost,
     @Body('schedule') schedule,
   ) {
-    const createdPost = await this.postService
-      .createPost(postContent)
-      .toPromise();
+    const createdPost = await (
+      await this.postService.createPost(postContent)
+    ).toPromise();
     const scheduleContent: ISchedule = {
       notify: schedule.notify,
       postId: createdPost._id,
@@ -39,15 +40,29 @@ export class PostController {
     return this.postService.createSchedule(scheduleContent);
   }
 
+  @Get('all/togo')
+  async getAllPostsToGo(
+    @Query('email') email: string,
+    @Query('dateTime') dateTime: Date,
+  ) {
+    let params = { email, dateTime };
+    return await this.postService.getAllPostsToGo(params);
+  }
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file) {
     return await this.postService.uploadFile(file);
   }
 
-  @Post('remove')
+  @Post('remove/attachement')
   async removeAttachement(@Body() removeContent: IAttachementRemove) {
     return await this.postService.removeAttachement(removeContent);
+  }
+
+  @Post('remove')
+  async removePost(@Body() scheduleId) {
+    return await this.postService.removePost(scheduleId.scheduleId);
   }
 
   @Get('providers')

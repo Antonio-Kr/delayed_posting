@@ -1,8 +1,11 @@
-export interface ISchedule {
+import { Document } from 'mongoose';
+
+export interface ISchedule extends Document {
+  _id: string|undefined;
   providerId: string;
   postId: string;
   userId: string;
-  startsAt: string;
+  startsAt: Date;
   notify: boolean;
   status: string;
 }

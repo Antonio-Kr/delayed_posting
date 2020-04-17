@@ -45,12 +45,20 @@ export class FilesService {
     return await attachementResult;
   }
 
+  async getAttachementsByPostId(postId: string) {
+    return await this.attachementModel.find({ postId }).exec();
+  }
+
   async removeAttachement(removeContent: IAttachementRemove) {
     return new Promise(resolve => {
       resolve(cloudinary.v2.uploader.destroy(removeContent.fileId));
     }).then(() => {
       return this.attachementModel.remove({ fileId: removeContent.fileId });
     });
+  }
+
+  async removeAttachementsByPostId(postId: string) {
+    return await this.attachementModel.remove({ postId }).exec();
   }
 
   async updateAttachements(attachements: IUpdateAttachements) {

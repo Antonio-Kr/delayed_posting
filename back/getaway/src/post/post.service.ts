@@ -27,6 +27,14 @@ export class PostService {
     return await this.client.send<any, IPost>('createPost', postContent);
   }
 
+  async removePost(postId: string) {
+    return await this.client.send<any, string>('removePost', postId);
+  }
+
+  async getPostById(postId: string) {
+    return await this.client.send<IPost, string>('getPostById', postId);
+  }
+
   async getProviders() {
     return await this.client.send<Promise<IProvider[]>, any>(
       'getProviders',

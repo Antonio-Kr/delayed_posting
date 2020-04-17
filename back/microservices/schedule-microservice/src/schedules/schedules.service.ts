@@ -32,9 +32,56 @@ export class SchedulesService {
     scheduleContent.userId = await this.client
       .send<IUser, string>('findOneByEmail', scheduleContent.userId)
       .toPromise()
-      .then(user => user._id);
+      .then(user => user._id)
+      .catch();
 
     const createdSchedule = new this.scheduleModel(scheduleContent);
     return await createdSchedule.save();
+  }
+
+  async getAllPostsToGo(params) {
+    const userId = await this.client
+      .send<IUser, string>('findOneByEmail', params.email)
+      .toPromise()
+      .then(user => user._id)
+      .catch();
+
+    if (!userId) return [];
+
+    let results: ISchedule[] = await this.scheduleModel
+      .find({ userId, startsAt: { $gt: params.dateTime } })
+      .exec();
+
+    if (results.length == 0) return null;
+
+    const minDate = results.reduce((prev, curr) =>
+      prev.startsAt < curr.startsAt ? prev : curr,
+    ).startsAt;
+
+    results = results.filter(
+      sch => sch.startsAt.toLocaleDateString() == minDate.toLocaleDateString(),
+    );
+    const mappedResults = results.map(sch => {
+      return {
+        _id: sch._id,
+        postId: sch.postId,
+        postTime: sch.startsAt.toLocaleTimeString(),
+      };
+    });
+
+    return {
+      results: mappedResults,
+      nextDate: new Date().setDate(minDate.getDate() + 1),
+    };
+  }
+
+  async removeSchedule(scheduleId: string) {
+    let res = await this.scheduleModel
+      .findByIdAndRemove(scheduleId, {
+        select: ['postId'],
+      })
+      .exec();
+    console.log(res);
+    return res;
   }
 }
