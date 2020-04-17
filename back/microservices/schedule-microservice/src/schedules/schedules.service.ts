@@ -75,6 +75,25 @@ export class SchedulesService {
     };
   }
 
+  async getAllPostsDateRange(range) {
+    let results = await this.scheduleModel
+      .find({
+        startsAt: { $gt: range.from, $lt: range.to },
+      })
+      .exec();
+    if (results.length == 0) return null;
+
+    const mappedResults = results.map(sch => {
+      return {
+        _id: sch._id,
+        postId: sch.postId,
+        postTime: sch.startsAt.toLocaleTimeString(),
+      };
+    });
+
+    return mappedResults;
+  }
+
   async removeSchedule(scheduleId: string) {
     let res = await this.scheduleModel
       .findByIdAndRemove(scheduleId, {

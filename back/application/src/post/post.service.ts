@@ -56,6 +56,10 @@ export class PostService {
     return this.client.send<any, any>('getAllPostsToGo', params);
   }
 
+  async getAllPostsDateRange(range: { from: Date; to: Date }) {
+    return this.client.send<any, any>('getAllPostsDateRange', range);
+  }
+
   async getProviders() {
     const providers = await this.client
       .send<Promise<IProvider[]>, any>('getProviders', '')

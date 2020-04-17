@@ -49,6 +49,11 @@ export class PostController {
     return await this.postService.getAllPostsToGo(params);
   }
 
+  @Get('all/range')
+  async getAllPostsDateRange(@Query('from') from: Date, @Query('to') to: Date) {
+    return await this.postService.getAllPostsDateRange({ from, to });
+  }
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file) {

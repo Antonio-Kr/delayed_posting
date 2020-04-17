@@ -59,6 +59,17 @@ export class SchedulesService {
     return await result;
   }
 
+  async getAllPostsDateRange(range) {
+    let result = await this.client
+      .send<any, any>('getAllPostsDateRange', range)
+      .toPromise();
+
+    if (!result) return null;
+    result = await this.createPostsReport(result);
+
+    return await result;
+  }
+
   async createPostsReport(array) {
     return await Promise.all(
       array.map(async item => {

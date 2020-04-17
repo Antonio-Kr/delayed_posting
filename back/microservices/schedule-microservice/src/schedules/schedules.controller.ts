@@ -18,6 +18,11 @@ export class SchedulesController {
     return this.scheduleService.getAllPostsToGo(params);
   }
 
+  @MessagePattern('getAllPostsDateRange')
+  async getAllPostsDateRange(range) {
+    return this.scheduleService.getAllPostsDateRange(range);
+  }
+
   @MessagePattern('removeSchedule')
   async removeSchedule(scheduleId: string) {
     return this.scheduleService.removeSchedule(scheduleId);
