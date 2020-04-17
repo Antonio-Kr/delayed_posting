@@ -9,6 +9,7 @@ import { ISchedule } from './interfaces/schedule.interface';
 import { IUser } from '../user/interfaces/user.interface';
 import { PostService } from 'src/post/post.service';
 import { FilesService } from 'src/files/files.service';
+import { SocialConnectionsService } from 'src/social-connections/social-connections.service';
 
 @Injectable()
 export class SchedulesService {
@@ -17,6 +18,7 @@ export class SchedulesService {
   constructor(
     private readonly postService: PostService,
     private readonly fileService: FilesService,
+    private readonly socialConnectionService: SocialConnectionsService,
   ) {
     this.client = ClientProxyFactory.create({
       transport: Transport.TCP,
@@ -80,9 +82,13 @@ export class SchedulesService {
           item.postId,
         );
 
+        const provider = await this.postService.getProviderNameById(
+          item.providerId,
+        );
         return {
           schdeuleId: item._id,
           postInfo,
+          providerName: provider.name,
           postAttachements: postAttachements,
           postTime: item.postTime,
         };

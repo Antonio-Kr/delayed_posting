@@ -50,8 +50,12 @@ export class PostController {
   }
 
   @Get('all/range')
-  async getAllPostsDateRange(@Query('from') from: Date, @Query('to') to: Date) {
-    return await this.postService.getAllPostsDateRange({ from, to });
+  async getAllPostsDateRange(
+    @Query('email') email: string,
+    @Query('from') from: Date,
+    @Query('to') to: Date,
+  ) {
+    return await this.postService.getAllPostsDateRange({ email, from, to });
   }
 
   @Post('upload')

@@ -31,4 +31,9 @@ export class PostController {
   async getProviderById(id: string) {
     return this.postService.getProviderById(id);
   }
+
+  @MessagePattern('getProviderNameById')
+  async getProviderNameById(providerId) {
+    return await this.postService.getProviderNameById(providerId);
+  }
 }

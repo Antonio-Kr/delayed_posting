@@ -45,4 +45,10 @@ export class PostService {
   async getProviderById(id: string) {
     return await this.client.send<IPostTemplate, string>('getProviderById', id);
   }
+
+  async getProviderNameById(providerId) {
+    return this.client
+      .send<any, any>('getProviderNameById', providerId)
+      .toPromise();
+  }
 }

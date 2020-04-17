@@ -65,6 +65,7 @@ export class SchedulesService {
       return {
         _id: sch._id,
         postId: sch.postId,
+        providerId: sch.providerId,
         postTime: sch.startsAt.toLocaleTimeString(),
       };
     });
@@ -76,10 +77,15 @@ export class SchedulesService {
   }
 
   async getAllPostsDateRange(range) {
+    const userId = await this.client
+      .send<IUser, string>('findOneByEmail', range.email)
+      .toPromise()
+      .then(user => user._id)
+      .catch();
+    if (!userId) return [];
+
     let results = await this.scheduleModel
-      .find({
-        startsAt: { $gt: range.from, $lt: range.to },
-      })
+      .find({ userId, startsAt: { $gt: range.from, $lt: range.to } })
       .exec();
     if (results.length == 0) return null;
 
@@ -87,11 +93,12 @@ export class SchedulesService {
       return {
         _id: sch._id,
         postId: sch.postId,
+        providerId: sch.providerId,
         postTime: sch.startsAt.toLocaleTimeString(),
       };
     });
 
-    return mappedResults;
+    return { mappedResults };
   }
 
   async removeSchedule(scheduleId: string) {
@@ -100,7 +107,6 @@ export class SchedulesService {
         select: ['postId'],
       })
       .exec();
-    console.log(res);
     return res;
   }
 }
