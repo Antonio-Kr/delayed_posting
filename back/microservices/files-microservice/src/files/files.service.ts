@@ -32,7 +32,7 @@ export class FilesService {
         let attachementDto: CreateAttachementDto = this.createAttachementDto(
           result,
         );
-        const createdAttachement = this.attachementModel(attachementDto);
+        const createdAttachement = new this.attachementModel(attachementDto);
         const saveResult = this.saveAttachement(createdAttachement);
         return await saveResult;
       })
@@ -50,23 +50,21 @@ export class FilesService {
   }
 
   async removeAttachement(removeContent: IAttachementRemove) {
-    return new Promise(resolve => {
-      resolve(cloudinary.v2.uploader.destroy(removeContent.fileId));
-    }).then(() => {
-      return this.attachementModel.remove({ fileId: removeContent.fileId });
-    });
+    await cloudinary.v2.uploader.destroy(removeContent.fileId);
+    return await this.attachementModel.remove({ fileId: removeContent.fileId });
   }
 
   async removeAttachementsByPostId(postId: string) {
+    const attachements = await this.attachementModel.find({ postId }).exec();
+    attachements.forEach(
+      async att => await cloudinary.v2.uploader.destroy(att.fileId),
+    );
     return await this.attachementModel.remove({ postId }).exec();
   }
 
   async updateAttachements(attachements: IUpdateAttachements) {
     return await Promise.all(attachements.attachements).then(async () => {
       await attachements.attachements.map(att => {
-        console.log();
-        console.log(att);
-        console.log();
         this.attachementModel
           .update(
             { fileId: att.fileId },

@@ -15,7 +15,7 @@ export class SchedulesController {
 
   @MessagePattern('getAllPostsToGo')
   async getAllPostsToGo(params) {
-    return this.scheduleService.getAllPostsToGo(params);
+    return await this.scheduleService.getAllPostsToGo(params);
   }
 
   @MessagePattern('getAllPostsDateRange')

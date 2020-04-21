@@ -58,6 +58,12 @@ export class PostController {
     return await this.postService.getAllPostsDateRange({ email, from, to });
   }
 
+  @Get('all/arch')
+  async getAllPostsArchive(
+    @Query('email') email: string,
+    @Query('dateTime') dateTime: Date,
+  ) {}
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file) {

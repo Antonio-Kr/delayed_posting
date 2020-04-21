@@ -40,7 +40,6 @@ export class SchedulesService {
     let removedSchedule = await this.client
       .send<any, string>('removeSchedule', scheduleId)
       .toPromise();
-    console.log(removedSchedule);
     await (
       await this.postService.removePost(removedSchedule.postId)
     ).toPromise();

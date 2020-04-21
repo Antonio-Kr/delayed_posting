@@ -61,6 +61,8 @@ export class SchedulesService {
     results = results.filter(
       sch => sch.startsAt.toLocaleDateString() == minDate.toLocaleDateString(),
     );
+
+    minDate.setDate(minDate.getDate() + 1);
     const mappedResults = results.map(sch => {
       return {
         _id: sch._id,
@@ -72,7 +74,7 @@ export class SchedulesService {
 
     return {
       results: mappedResults,
-      nextDate: new Date().setDate(minDate.getDate() + 1),
+      nextDate: minDate,
     };
   }
 
