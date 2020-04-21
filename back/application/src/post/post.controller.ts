@@ -55,14 +55,20 @@ export class PostController {
     @Query('from') from: Date,
     @Query('to') to: Date,
   ) {
-    return await this.postService.getAllPostsDateRange({ email, from, to });
+    let params = { email, from, to };
+    return await this.postService.getAllPostsDateRange(params);
   }
 
   @Get('all/arch')
   async getAllPostsArchive(
     @Query('email') email: string,
     @Query('dateTime') dateTime: Date,
-  ) {}
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    let params = { email, dateTime, page, limit };
+    return await this.postService.getAllPostsArch(params);
+  }
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))

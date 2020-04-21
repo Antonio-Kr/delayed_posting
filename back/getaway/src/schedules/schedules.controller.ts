@@ -23,6 +23,11 @@ export class SchedulesController {
     return this.scheduleService.getAllPostsDateRange(range);
   }
 
+  @MessagePattern('getAllPostsArch')
+  async getAllPostsArch(params) {
+    return await this.scheduleService.getAllPostsArch(params);
+  }
+
   @MessagePattern('removePost')
   async removePost(scheduleId: string) {
     return this.scheduleService.removePost(scheduleId);

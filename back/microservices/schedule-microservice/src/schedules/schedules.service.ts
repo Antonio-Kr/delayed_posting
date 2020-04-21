@@ -29,22 +29,14 @@ export class SchedulesService {
   }
 
   async createSchedule(scheduleContent: CreateScheduleDto): Promise<ISchedule> {
-    scheduleContent.userId = await this.client
-      .send<IUser, string>('findOneByEmail', scheduleContent.userId)
-      .toPromise()
-      .then(user => user._id)
-      .catch();
+    scheduleContent.userId = await this.getUserId(scheduleContent.userId);
 
     const createdSchedule = new this.scheduleModel(scheduleContent);
     return await createdSchedule.save();
   }
 
   async getAllPostsToGo(params) {
-    const userId = await this.client
-      .send<IUser, string>('findOneByEmail', params.email)
-      .toPromise()
-      .then(user => user._id)
-      .catch();
+    const userId = await this.getUserId(params.email);
 
     if (!userId) return [];
 
@@ -54,36 +46,30 @@ export class SchedulesService {
 
     if (results.length == 0) return null;
 
+    //getting min date
     const minDate = results.reduce((prev, curr) =>
       prev.startsAt < curr.startsAt ? prev : curr,
     ).startsAt;
+    let isLast = true;
 
-    results = results.filter(
-      sch => sch.startsAt.toLocaleDateString() == minDate.toLocaleDateString(),
-    );
+    //flter elems by min date
+    results = results.filter(sch => {
+      if (!(sch.startsAt == minDate)) isLast = false;
+      return sch.startsAt.toLocaleDateString() == minDate.toLocaleDateString();
+    });
 
     minDate.setDate(minDate.getDate() + 1);
-    const mappedResults = results.map(sch => {
-      return {
-        _id: sch._id,
-        postId: sch.postId,
-        providerId: sch.providerId,
-        postTime: sch.startsAt.toLocaleTimeString(),
-      };
-    });
+
+    const mappedResults = await this.mappedResults(results);
 
     return {
       results: mappedResults,
-      nextDate: minDate,
+      nextDate: isLast ? null : minDate,
     };
   }
 
   async getAllPostsDateRange(range) {
-    const userId = await this.client
-      .send<IUser, string>('findOneByEmail', range.email)
-      .toPromise()
-      .then(user => user._id)
-      .catch();
+    const userId = await this.getUserId(range.email);
     if (!userId) return [];
 
     let results = await this.scheduleModel
@@ -91,16 +77,28 @@ export class SchedulesService {
       .exec();
     if (results.length == 0) return null;
 
-    const mappedResults = results.map(sch => {
-      return {
-        _id: sch._id,
-        postId: sch.postId,
-        providerId: sch.providerId,
-        postTime: sch.startsAt.toLocaleTimeString(),
-      };
-    });
+    const mappedResults = await this.mappedResults(results);
 
-    return { mappedResults };
+    return mappedResults;
+  }
+
+  async getAllPostsArch(params: any) {
+    const userId = await this.getUserId(params.email);
+    if (!userId) return [];
+
+    const toSkip: number = (+params.page - 1) * +params.limit;
+    const limit: number = +params.limit;
+
+    let results = await this.scheduleModel
+      .find({ userId, startsAt: { $lt: params.dateTime } })
+      .skip(toSkip)
+      .limit(limit)
+      .exec();
+
+    if (results.length == 0) return null;
+
+    const mappedResults = await this.mappedResults(results);
+    return mappedResults;
   }
 
   async removeSchedule(scheduleId: string) {
@@ -110,5 +108,24 @@ export class SchedulesService {
       })
       .exec();
     return res;
+  }
+
+  private async getUserId(email) {
+    return await this.client
+      .send<IUser, string>('findOneByEmail', email)
+      .toPromise()
+      .then(user => user._id)
+      .catch();
+  }
+
+  private async mappedResults(results) {
+    return results.map(sch => {
+      return {
+        _id: sch._id,
+        postId: sch.postId,
+        providerId: sch.providerId,
+        postTime: sch.startsAt.toLocaleTimeString(),
+      };
+    });
   }
 }

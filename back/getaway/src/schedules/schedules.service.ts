@@ -53,10 +53,9 @@ export class SchedulesService {
     let result = await this.client
       .send<any, any>('getAllPostsToGo', params)
       .toPromise();
-
     if (!result) return null;
-    result.results = await this.createPostsReport(result.results);
 
+    result.results = await this.createPostsReport(result.results);
     return await result;
   }
 
@@ -64,10 +63,19 @@ export class SchedulesService {
     let result = await this.client
       .send<any, any>('getAllPostsDateRange', range)
       .toPromise();
-
     if (!result) return null;
-    result = await this.createPostsReport(result);
 
+    result = await this.createPostsReport(result);
+    return await result;
+  }
+
+  async getAllPostsArch(params: any) {
+    let result = await this.client
+      .send<any, any>('getAllPostsArch', params)
+      .toPromise();
+    if (!result) return null;
+
+    result = await this.createPostsReport(result);
     return await result;
   }
 

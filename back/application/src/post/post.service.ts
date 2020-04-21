@@ -27,21 +27,18 @@ export class PostService {
   }
 
   async uploadFile(file: any) {
-    return await this.client.send<IAttachementResult, string>(
-      'uploadFile',
-      file,
-    );
+    return this.client.send<IAttachementResult, string>('uploadFile', file);
   }
 
   async removeAttachement(removeContent: IAttachementRemove) {
-    return await this.client.send<any, IAttachementRemove>(
+    return this.client.send<any, IAttachementRemove>(
       'removeAttachement',
       removeContent,
     );
   }
 
   async removePost(scheduleId: string) {
-    return await this.client.send<any, string>('removePost', scheduleId);
+    return this.client.send<any, string>('removePost', scheduleId);
   }
 
   async createPost(postContent: IPost) {
@@ -52,12 +49,21 @@ export class PostService {
     return this.client.send<any, ISchedule>('createSchedule', scheduleContent);
   }
 
-  async getAllPostsToGo(params) {
+  async getAllPostsToGo(params: { email: string; dateTime: Date }) {
     return this.client.send<any, any>('getAllPostsToGo', params);
   }
 
   async getAllPostsDateRange(range: { email: string; from: Date; to: Date }) {
     return this.client.send<any, any>('getAllPostsDateRange', range);
+  }
+
+  async getAllPostsArch(params: {
+    email: string;
+    dateTime: Date;
+    page: number;
+    limit: number;
+  }) {
+    return this.client.send<any, any>('getAllPostsArch', params);
   }
 
   async getProviders() {
@@ -77,6 +83,6 @@ export class PostService {
   }
 
   async getProviderById(id: string) {
-    return await this.client.send<IPostTemplate, string>('getProviderById', id);
+    return this.client.send<IPostTemplate, string>('getProviderById', id);
   }
 }
