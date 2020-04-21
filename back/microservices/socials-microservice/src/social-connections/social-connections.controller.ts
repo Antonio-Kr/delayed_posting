@@ -26,4 +26,9 @@ export class SocialConnectionsController {
       socialConnection,
     );
   }
+
+  @MessagePattern('getToken')
+  async getToken(userId:string){
+    return await this.socialConnetionsService.getToken(userId);
+  }
 }

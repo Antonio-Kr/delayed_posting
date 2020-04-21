@@ -3,6 +3,7 @@ import { SchedulesService } from './schedules.service';
 import { SchedulesController } from './schedules.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleSchema } from './schemas/schedule.schema';
+import { ScheduleModule } from '@nestjs/schedule'
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ScheduleSchema } from './schemas/schedule.schema';
         schema: ScheduleSchema,
       },
     ]),
+    ScheduleModule.forRoot()
   ],
   providers: [SchedulesService],
   controllers: [SchedulesController],

@@ -293,4 +293,9 @@ export class UsersService {
 
     return errors;
   }
+
+  async emailToId(userId:string){
+    let user:IUser = await this.userModel.find({"userId":userId});
+    return user.email;
+  }
 }

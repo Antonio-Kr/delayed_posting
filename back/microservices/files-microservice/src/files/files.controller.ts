@@ -23,4 +23,9 @@ export class FilesController {
   async updateAttachements(attachements: IUpdateAttachements) {
     return await this.filesService.updateAttachements(attachements);
   }
+
+  @MessagePattern('attachementsLink')
+  async attachementsLink(postId:string){
+    return await this.filesService.attachementsLink(postId);
+  }
 }

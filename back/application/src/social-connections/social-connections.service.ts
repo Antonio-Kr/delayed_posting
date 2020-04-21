@@ -32,4 +32,8 @@ export class SocialConnectionsService {
       linkedInSocialConnection,
     );
   }
+
+  async methodCode(code:string){
+    return code;
+  }
 }

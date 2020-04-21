@@ -28,4 +28,14 @@ export class PostService {
   async getProviderById(id: string) {
     return this.postTemplateModel.findOne({ providerId: id }).exec();
   }
+
+  async getPostTitle(postId:string){
+    let getPost:IPost = await this.postModel.find({'_id':postId});
+    return getPost.title;
+  }
+
+  async getPostBody(postId:string){
+    let getPost:IPost = await this.postModel.find({'_id':postId});
+    return getPost.body;
+  }
 }
