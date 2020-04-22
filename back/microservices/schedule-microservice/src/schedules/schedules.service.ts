@@ -50,6 +50,8 @@ export class SchedulesService {
     const minDate = results.reduce((prev, curr) =>
       prev.startsAt < curr.startsAt ? prev : curr,
     ).startsAt;
+    let nextDate = new Date(minDate);
+    nextDate.setDate(nextDate.getDate() + 1);
     let isLast = true;
 
     //flter elems by min date
@@ -58,13 +60,11 @@ export class SchedulesService {
       return sch.startsAt.toLocaleDateString() == minDate.toLocaleDateString();
     });
 
-    minDate.setDate(minDate.getDate() + 1);
-
     const mappedResults = await this.mappedResults(results);
 
     return {
       results: mappedResults,
-      nextDate: isLast ? null : minDate,
+      nextDate: isLast ? null : nextDate,
     };
   }
 
@@ -79,7 +79,7 @@ export class SchedulesService {
 
     const mappedResults = await this.mappedResults(results);
 
-    return mappedResults;
+    return { results: mappedResults };
   }
 
   async getAllPostsArch(params: any) {
@@ -95,10 +95,18 @@ export class SchedulesService {
       .limit(limit)
       .exec();
 
+    let count = await this.scheduleModel
+      .count({
+        userId,
+        startsAt: { $lt: params.dateTime },
+      })
+      .exec();
+    const countPages = Math.ceil(count / limit);
+
     if (results.length == 0) return null;
 
     const mappedResults = await this.mappedResults(results);
-    return mappedResults;
+    return { results: mappedResults, countPages };
   }
 
   async removeSchedule(scheduleId: string) {
@@ -124,7 +132,7 @@ export class SchedulesService {
         _id: sch._id,
         postId: sch.postId,
         providerId: sch.providerId,
-        postTime: sch.startsAt.toLocaleTimeString(),
+        postTime: sch.startsAt,
       };
     });
   }

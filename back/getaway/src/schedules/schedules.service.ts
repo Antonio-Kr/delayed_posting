@@ -65,7 +65,7 @@ export class SchedulesService {
       .toPromise();
     if (!result) return null;
 
-    result = await this.createPostsReport(result);
+    result.results = await this.createPostsReport(result.results);
     return await result;
   }
 
@@ -75,7 +75,7 @@ export class SchedulesService {
       .toPromise();
     if (!result) return null;
 
-    result = await this.createPostsReport(result);
+    result.results = await this.createPostsReport(result.results);
     return await result;
   }
 
