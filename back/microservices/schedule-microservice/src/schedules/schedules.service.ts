@@ -41,22 +41,24 @@ export class SchedulesService {
     if (!userId) return [];
 
     let results: ISchedule[] = await this.scheduleModel
-      .find({ userId, startsAt: { $gt: params.dateTime } })
+      .find({ userId, startsAt: { $gte: params.dateTime } })
       .exec();
 
     if (results.length == 0) return null;
 
+    results = results.sort((a, b) => (a.startsAt > b.startsAt ? 1 : -1));
+    console.log(results);
+
     //getting min date
-    const minDate = results.reduce((prev, curr) =>
-      prev.startsAt < curr.startsAt ? prev : curr,
-    ).startsAt;
-    let nextDate = new Date(minDate);
-    nextDate.setDate(nextDate.getDate() + 1);
-    let isLast = true;
+    const minDate = results[0].startsAt;
+    let tmp = results.filter(
+      sch => sch.startsAt.toLocaleDateString() != minDate.toLocaleDateString(),
+    );
+    let nextDate = null;
+    if (tmp.length != 0) nextDate = tmp[0].startsAt;
 
     //flter elems by min date
     results = results.filter(sch => {
-      if (!(sch.startsAt == minDate)) isLast = false;
       return sch.startsAt.toLocaleDateString() == minDate.toLocaleDateString();
     });
 
@@ -64,7 +66,7 @@ export class SchedulesService {
 
     return {
       results: mappedResults,
-      nextDate: isLast ? null : nextDate,
+      nextDate,
     };
   }
 
@@ -101,12 +103,11 @@ export class SchedulesService {
         startsAt: { $lt: params.dateTime },
       })
       .exec();
-    const countPages = Math.ceil(count / limit);
 
     if (results.length == 0) return null;
 
     const mappedResults = await this.mappedResults(results);
-    return { results: mappedResults, countPages };
+    return { results: mappedResults, totalCount: count };
   }
 
   async removeSchedule(scheduleId: string) {
