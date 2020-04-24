@@ -21,11 +21,23 @@ export class PostService {
     return await createdPost.save();
   }
 
+  async removePost(postId: string) {
+    return await this.postModel.findByIdAndRemove(postId).exec();
+  }
+
+  async getPostById(postId: string) {
+    return await this.postModel.find({ _id: postId }).exec();
+  }
+
   async getProviders() {
     return this.socialProviderModel.find().exec();
   }
 
   async getProviderById(id: string) {
     return this.postTemplateModel.findOne({ providerId: id }).exec();
+  }
+
+  async getProviderNameById(providerId) {
+    return this.socialProviderModel.findById(providerId).exec();
   }
 }

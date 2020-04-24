@@ -11,6 +11,9 @@ import { IAttachementRemove } from './interfaces/attachement-remove.interface';
 import { IProvider } from './interfaces/service-provider.interface';
 import { IPostTemplate } from './interfaces/post-template.interface';
 import { ISchedule } from './interfaces/schedule.interface';
+import { IPostTogo } from './interfaces/post-togo.interface';
+import { IPostRange } from './interfaces/post-range.interface';
+import { IPostArchive } from './interfaces/post-archive.interface';
 
 @Injectable()
 export class PostService {
@@ -26,26 +29,39 @@ export class PostService {
     });
   }
 
-  async uploadFile(file: any) {
-    return await this.client.send<IAttachementResult, string>(
-      'uploadFile',
-      file,
-    );
+  async uploadFile(file) {
+    return this.client.send<IAttachementResult, string>('uploadFile', file);
   }
 
   async removeAttachement(removeContent: IAttachementRemove) {
-    return await this.client.send<any, IAttachementRemove>(
+    return this.client.send<any, IAttachementRemove>(
       'removeAttachement',
       removeContent,
     );
   }
 
-  createPost(postContent: IPost) {
+  async removePost(scheduleId: string) {
+    return this.client.send<any, string>('removePost', scheduleId);
+  }
+
+  async createPost(postContent: IPost) {
     return this.client.send<any, IPost>('createPost', postContent);
   }
 
-  createSchedule(scheduleContent: ISchedule) {
+  async createSchedule(scheduleContent: ISchedule) {
     return this.client.send<any, ISchedule>('createSchedule', scheduleContent);
+  }
+
+  async getAllPostsToGo(params: IPostTogo) {
+    return this.client.send<any, IPostTogo>('getAllPostsToGo', params);
+  }
+
+  async getAllPostsDateRange(range: IPostRange) {
+    return this.client.send<any, IPostRange>('getAllPostsDateRange', range);
+  }
+
+  async getAllPostsArch(params: IPostArchive) {
+    return this.client.send<any, IPostArchive>('getAllPostsArch', params);
   }
 
   async getProviders() {
@@ -65,6 +81,6 @@ export class PostService {
   }
 
   async getProviderById(id: string) {
-    return await this.client.send<IPostTemplate, string>('getProviderById', id);
+    return this.client.send<IPostTemplate, string>('getProviderById', id);
   }
 }
