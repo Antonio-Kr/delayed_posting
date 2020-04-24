@@ -16,6 +16,9 @@ import { IProvider } from './interfaces/service-provider.interface';
 import { IPostTemplate } from './interfaces/post-template.interface';
 import { IPost } from './interfaces/post.interface';
 import { ISchedule } from './interfaces/schedule.interface';
+import { IPostTogo } from './interfaces/post-togo.interface';
+import { IPostRange } from './interfaces/post-range.interface';
+import { IPostArchive } from './interfaces/post-archive.interface';
 
 @Controller('post')
 export class PostController {
@@ -45,7 +48,7 @@ export class PostController {
     @Query('email') email: string,
     @Query('dateTime') dateTime: Date,
   ) {
-    let params = { email, dateTime };
+    let params: IPostTogo = { email, dateTime };
     return await this.postService.getAllPostsToGo(params);
   }
 
@@ -55,7 +58,7 @@ export class PostController {
     @Query('from') from: Date,
     @Query('to') to: Date,
   ) {
-    let params = { email, from, to };
+    let params: IPostRange = { email, from, to };
     return await this.postService.getAllPostsDateRange(params);
   }
 
@@ -66,7 +69,7 @@ export class PostController {
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
-    let params = { email, dateTime, page, limit };
+    let params: IPostArchive = { email, dateTime, page, limit };
     return await this.postService.getAllPostsArch(params);
   }
 

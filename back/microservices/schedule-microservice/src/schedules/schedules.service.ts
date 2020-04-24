@@ -10,6 +10,9 @@ import {
 } from '@nestjs/microservices';
 import { connectionConstants } from 'src/constants';
 import { IUser } from './interfaces/users.interface';
+import { IPostTogo } from './interfaces/post-togo.interface';
+import { IPostRange } from './interfaces/post-range.interface';
+import { IPostArchive } from './interfaces/post-archive.interface';
 
 @Injectable()
 export class SchedulesService {
@@ -35,19 +38,16 @@ export class SchedulesService {
     return await createdSchedule.save();
   }
 
-  async getAllPostsToGo(params) {
+  async getAllPostsToGo(params: IPostTogo) {
     const userId = await this.getUserId(params.email);
-
     if (!userId) return [];
 
     let results: ISchedule[] = await this.scheduleModel
       .find({ userId, startsAt: { $gte: params.dateTime } })
       .exec();
-
     if (results.length == 0) return null;
 
     results = results.sort((a, b) => (a.startsAt > b.startsAt ? 1 : -1));
-    console.log(results);
 
     //getting min date
     const minDate = results[0].startsAt;
@@ -57,7 +57,7 @@ export class SchedulesService {
     let nextDate = null;
     if (tmp.length != 0) nextDate = tmp[0].startsAt;
 
-    //flter elems by min date
+    //filter elems by min date
     results = results.filter(sch => {
       return sch.startsAt.toLocaleDateString() == minDate.toLocaleDateString();
     });
@@ -70,7 +70,7 @@ export class SchedulesService {
     };
   }
 
-  async getAllPostsDateRange(range) {
+  async getAllPostsDateRange(range: IPostRange) {
     const userId = await this.getUserId(range.email);
     if (!userId) return [];
 
@@ -84,18 +84,18 @@ export class SchedulesService {
     return { results: mappedResults };
   }
 
-  async getAllPostsArch(params: any) {
+  async getAllPostsArch(params: IPostArchive) {
     const userId = await this.getUserId(params.email);
     if (!userId) return [];
 
     const toSkip: number = (+params.page - 1) * +params.limit;
-    const limit: number = +params.limit;
 
     let results = await this.scheduleModel
       .find({ userId, startsAt: { $lt: params.dateTime } })
       .skip(toSkip)
-      .limit(limit)
+      .limit(params.limit)
       .exec();
+    if (results.length == 0) return null;
 
     let count = await this.scheduleModel
       .count({
@@ -103,8 +103,6 @@ export class SchedulesService {
         startsAt: { $lt: params.dateTime },
       })
       .exec();
-
-    if (results.length == 0) return null;
 
     const mappedResults = await this.mappedResults(results);
     return { results: mappedResults, totalCount: count };

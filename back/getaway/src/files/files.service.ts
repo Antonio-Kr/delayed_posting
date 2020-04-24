@@ -23,7 +23,7 @@ export class FilesService {
     });
   }
 
-  async uploadFile(file: any) {
+  async uploadFile(file) {
     return await this.client.send<IAttachementResult, string>(
       'uploadFile',
       file,

@@ -10,6 +10,9 @@ import { IUser } from '../user/interfaces/user.interface';
 import { PostService } from 'src/post/post.service';
 import { FilesService } from 'src/files/files.service';
 import { SocialConnectionsService } from 'src/social-connections/social-connections.service';
+import { IPostTogo } from './interfaces/post-togo.interface';
+import { IPostRange } from './interfaces/post-range.interface';
+import { IPostArchive } from './interfaces/post-archive.interface';
 
 @Injectable()
 export class SchedulesService {
@@ -49,9 +52,9 @@ export class SchedulesService {
     return true;
   }
 
-  async getAllPostsToGo(params) {
+  async getAllPostsToGo(params: IPostTogo) {
     let result = await this.client
-      .send<any, any>('getAllPostsToGo', params)
+      .send<any, IPostTogo>('getAllPostsToGo', params)
       .toPromise();
     if (!result) return null;
 
@@ -59,9 +62,9 @@ export class SchedulesService {
     return await result;
   }
 
-  async getAllPostsDateRange(range) {
+  async getAllPostsDateRange(range: IPostRange) {
     let result = await this.client
-      .send<any, any>('getAllPostsDateRange', range)
+      .send<any, IPostRange>('getAllPostsDateRange', range)
       .toPromise();
     if (!result) return null;
 
@@ -69,9 +72,9 @@ export class SchedulesService {
     return await result;
   }
 
-  async getAllPostsArch(params: any) {
+  async getAllPostsArch(params: IPostArchive) {
     let result = await this.client
-      .send<any, any>('getAllPostsArch', params)
+      .send<any, IPostArchive>('getAllPostsArch', params)
       .toPromise();
     if (!result) return null;
 
@@ -79,7 +82,7 @@ export class SchedulesService {
     return await result;
   }
 
-  async createPostsReport(array) {
+  private async createPostsReport(array) {
     return await Promise.all(
       array.map(async item => {
         const postInfo = await (

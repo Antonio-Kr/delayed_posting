@@ -3,6 +3,9 @@ import { MessagePattern } from '@nestjs/microservices';
 import { SchedulesService } from './schedules.service';
 import { ISchedule } from './interfaces/schedule.interface';
 import { UserService } from 'src/user/user.service';
+import { IPostTogo } from './interfaces/post-togo.interface';
+import { IPostRange } from './interfaces/post-range.interface';
+import { IPostArchive } from './interfaces/post-archive.interface';
 
 @Controller('schedules')
 export class SchedulesController {
@@ -14,17 +17,17 @@ export class SchedulesController {
   }
 
   @MessagePattern('getAllPostsToGo')
-  async getAllPostsToGo(params) {
+  async getAllPostsToGo(params: IPostTogo) {
     return await this.scheduleService.getAllPostsToGo(params);
   }
 
   @MessagePattern('getAllPostsDateRange')
-  async getAllPostsDateRange(range) {
+  async getAllPostsDateRange(range: IPostRange) {
     return this.scheduleService.getAllPostsDateRange(range);
   }
 
   @MessagePattern('getAllPostsArch')
-  async getAllPostsArch(params) {
+  async getAllPostsArch(params: IPostArchive) {
     return await this.scheduleService.getAllPostsArch(params);
   }
 

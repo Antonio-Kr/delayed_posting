@@ -11,6 +11,9 @@ import { IAttachementRemove } from './interfaces/attachement-remove.interface';
 import { IProvider } from './interfaces/service-provider.interface';
 import { IPostTemplate } from './interfaces/post-template.interface';
 import { ISchedule } from './interfaces/schedule.interface';
+import { IPostTogo } from './interfaces/post-togo.interface';
+import { IPostRange } from './interfaces/post-range.interface';
+import { IPostArchive } from './interfaces/post-archive.interface';
 
 @Injectable()
 export class PostService {
@@ -26,7 +29,7 @@ export class PostService {
     });
   }
 
-  async uploadFile(file: any) {
+  async uploadFile(file) {
     return this.client.send<IAttachementResult, string>('uploadFile', file);
   }
 
@@ -49,21 +52,16 @@ export class PostService {
     return this.client.send<any, ISchedule>('createSchedule', scheduleContent);
   }
 
-  async getAllPostsToGo(params: { email: string; dateTime: Date }) {
-    return this.client.send<any, any>('getAllPostsToGo', params);
+  async getAllPostsToGo(params: IPostTogo) {
+    return this.client.send<any, IPostTogo>('getAllPostsToGo', params);
   }
 
-  async getAllPostsDateRange(range: { email: string; from: Date; to: Date }) {
-    return this.client.send<any, any>('getAllPostsDateRange', range);
+  async getAllPostsDateRange(range: IPostRange) {
+    return this.client.send<any, IPostRange>('getAllPostsDateRange', range);
   }
 
-  async getAllPostsArch(params: {
-    email: string;
-    dateTime: Date;
-    page: number;
-    limit: number;
-  }) {
-    return this.client.send<any, any>('getAllPostsArch', params);
+  async getAllPostsArch(params: IPostArchive) {
+    return this.client.send<any, IPostArchive>('getAllPostsArch', params);
   }
 
   async getProviders() {
