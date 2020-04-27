@@ -20,6 +20,6 @@ export class SchedulesController {
 
   @MessagePattern('startSchedule')
   async schedulePosting(schedule:string){
-    return await this.scheduleService.schedulePosting(schedule);
+    // return await this.scheduleService.schedulePosting(schedule);
   }
 }

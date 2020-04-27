@@ -1,4 +1,5 @@
 export interface ISchedule {
+  _id?:string;
   providerId: string;
   postId: string;
   userId: string;

@@ -47,6 +47,7 @@ export class SocialConnectionsService {
 
   async getToken(userId:string){
     let social:ILinkedInSocialConnection = await this.socialConnectionModel.find({"userId":userId});
+    console.log(social.token)
     return social.token;
   }
 }
