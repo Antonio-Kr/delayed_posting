@@ -6,12 +6,15 @@ import {
   UploadedFile,
   Get,
   Param,
+  Scope,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { IAttachementRemove } from './interfaces/attachement-remove.interface';
 import { IPost } from './interfaces/post.interface';
 import { ISchedule } from './interfaces/schedule.interface';
+import { Readable } from 'stream';
+import { resolve } from 'dns';
 
 @Controller('post')
 export class PostController {
@@ -22,9 +25,9 @@ export class PostController {
     @Body('postContent') postContent: IPost,
     @Body('schedule') schedule,
   ) {
-    const createdPost = await this.postService
-      .createPost(postContent)
-      .toPromise();
+    const createdPost = await (
+      await this.postService.createPost(postContent)
+    ).toPromise();
     const scheduleContent: ISchedule = {
       notify: schedule.notify,
       postId: createdPost._id,
