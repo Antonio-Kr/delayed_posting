@@ -25,9 +25,7 @@ export class PostController {
     @Body('postContent') postContent: IPost,
     @Body('schedule') schedule,
   ) {
-    const createdPost = await (
-      await this.postService.createPost(postContent)
-    ).toPromise();
+    const createdPost = await this.postService.createPost(postContent);
     const scheduleContent: ISchedule = {
       notify: schedule.notify,
       postId: createdPost._id,
@@ -42,12 +40,12 @@ export class PostController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file) {
-    return this.postService.uploadFile(file);
+    return await this.postService.uploadFile(file);
   }
 
   @Post('remove')
   async removeAttachement(@Body() removeContent: IAttachementRemove) {
-    return this.postService.removeAttachement(removeContent);
+    return await this.postService.removeAttachement(removeContent);
   }
 
   @Get('providers')
@@ -57,6 +55,6 @@ export class PostController {
 
   @Get('provider/:id')
   async getProviderById(@Param('id') id: string) {
-    return this.postService.getProviderById(id);
+    return await this.postService.getProviderById(id);
   }
 }

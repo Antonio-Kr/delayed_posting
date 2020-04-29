@@ -22,10 +22,10 @@ export class PostService {
   }
 
   async getProviders() {
-    return this.socialProviderModel.find().exec();
+    return await this.socialProviderModel.find().exec();
   }
 
   async getProviderById(id: string) {
-    return this.postTemplateModel.findOne({ providerId: id }).exec();
+    return await this.postTemplateModel.findOne({ providerId: id }).exec();
   }
 }

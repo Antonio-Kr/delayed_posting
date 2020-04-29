@@ -24,9 +24,9 @@ export class FilesService {
     });
   }
 
-  async uploadFile(data) {
+  async uploadFile(file) {
     return await this.client
-      .send<IAttachementResult, any>('uploadFile', data)
+      .send<IAttachementResult, any>('uploadFile', file)
       .toPromise();
   }
 

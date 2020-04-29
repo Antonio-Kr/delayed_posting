@@ -96,15 +96,14 @@ export class UsersService {
       avatarId,
       ...res
     } = user;
-    let x = {
-      registerOk: registerOk,
-      firstName: firstName,
-      lastName: lastName,
-      timezone: timezone,
-      avatar: avatar,
-      avatarId: avatarId,
+    return {
+      registerOk,
+      firstName,
+      lastName,
+      timezone,
+      avatar,
+      avatarId,
     };
-    return x;
   }
 
   async forgotPassword(email: string) {

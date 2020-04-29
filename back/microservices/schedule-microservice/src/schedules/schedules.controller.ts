@@ -9,6 +9,6 @@ export class SchedulesController {
 
   @MessagePattern('createSchedule')
   async createSchedule(scheduleContent: CreateScheduleDto) {
-    return this.scheduleService.createSchedule(scheduleContent);
+    return await this.scheduleService.createSchedule(scheduleContent);
   }
 }

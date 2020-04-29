@@ -29,61 +29,29 @@ export class PostService {
   }
 
   async uploadFile(file) {
-    let data = file.buffer;
-    const rstream = new Readable({
-      autoDestroy: true,
-      read(size) {
-        let wantMore = true;
-        while (wantMore) {
-          const chunk = data.slice(0, size);
-          if (!chunk || chunk.length == 0) {
-            this.emit('end');
-            return this.push(null);
-          }
-          wantMore = this.push(chunk);
-          data = data.slice(size);
-        }
-      },
-    });
-    return await this.asyncReadable(rstream);
-  }
-  async asyncReadable(readable: Readable) {
-    let uuid = uuidv4();
-
-    for await (const chunk of readable) {
-      let streamData = {
-        uuid,
-        chunk,
-      };
-      // console.log(streamData);
-
-      await this.client
-        .send<IAttachementResult, any>('uploadFile', streamData)
-        .toPromise();
-    }
     return await this.client
       .send<IAttachementResult, any>('uploadFile', {
-        uuid,
+        file,
       })
       .toPromise();
   }
 
   async removeAttachement(removeContent: IAttachementRemove) {
-    return await this.client.send<any, IAttachementRemove>(
-      'removeAttachement',
-      removeContent,
-    );
+    return await this.client
+      .send<any, IAttachementRemove>('removeAttachement', removeContent)
+      .toPromise();
   }
 
   async createPost(postContent: IPost) {
-    return await this.client.send<any, IPost>('createPost', postContent);
+    return await this.client
+      .send<any, IPost>('createPost', postContent)
+      .toPromise();
   }
 
   async createSchedule(scheduleContent: ISchedule) {
-    return await this.client.send<any, ISchedule>(
-      'createSchedule',
-      scheduleContent,
-    );
+    return await this.client
+      .send<any, ISchedule>('createSchedule', scheduleContent)
+      .toPromise();
   }
 
   async getProviders() {
@@ -103,6 +71,8 @@ export class PostService {
   }
 
   async getProviderById(id: string) {
-    return await this.client.send<IPostTemplate, string>('getProviderById', id);
+    return await this.client
+      .send<IPostTemplate, string>('getProviderById', id)
+      .toPromise();
   }
 }

@@ -21,7 +21,9 @@ export class SchedulesService {
     });
   }
 
-  createSchedule(scheduleContent: ISchedule) {
-    return this.client.send<any, ISchedule>('createSchedule', scheduleContent);
+  async createSchedule(scheduleContent: ISchedule) {
+    return await this.client
+      .send<any, ISchedule>('createSchedule', scheduleContent)
+      .toPromise();
   }
 }

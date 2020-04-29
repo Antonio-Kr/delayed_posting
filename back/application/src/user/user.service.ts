@@ -25,43 +25,51 @@ export class UserService {
     });
   }
 
-  login(user: LoginUserDto) {
-    return this.client
+  async login(user: LoginUserDto) {
+    return await this.client
       .send<Promise<IJwtToken>, LoginUserDto>('login', user)
       .toPromise();
   }
 
-  register(user: IUser) {
-    return this.client
+  async register(user: IUser) {
+    return await this.client
       .send<Promise<IUser>, IUser>('register', user)
       .toPromise();
   }
 
-  tokenCheck(token: ITokenCheck) {
-    return this.client
+  async tokenCheck(token: ITokenCheck) {
+    return await this.client
       .send<Promise<IJwtToken>, ITokenCheck>('tokenCheck', token)
       .toPromise();
   }
 
-  tokenRegisterOk(token: ITokenCheck) {
-    return this.client
+  async tokenRegisterOk(token: ITokenCheck) {
+    return await this.client
       .send<Promise<IJwtToken>, ITokenCheck>('tokenRegisterOk', token)
       .toPromise();
   }
 
-  forgotPassword(email) {
-    return this.client.send<string, string>('forgotPassword', email);
+  async forgotPassword(email) {
+    return await this.client
+      .send<string, string>('forgotPassword', email)
+      .toPromise();
   }
 
-  userUpdate(userUpdate: IUserUpdate) {
-    return this.client.send<IUser, IUserUpdate>('userUpdateAll', userUpdate);
+  async userUpdate(userUpdate: IUserUpdate) {
+    return await this.client
+      .send<IUser, IUserUpdate>('userUpdateAll', userUpdate)
+      .toPromise();
   }
 
-  userDelete(token: ITokenCheck) {
-    return this.client.send<string, ITokenCheck>('userDelete', token);
+  async userDelete(token: ITokenCheck) {
+    return await this.client
+      .send<string, ITokenCheck>('userDelete', token)
+      .toPromise();
   }
 
-  userInfo(token: ITokenCheck) {
-    return this.client.send<any, ITokenCheck>('userInfo', token);
+  async userInfo(token: ITokenCheck) {
+    return await this.client
+      .send<any, ITokenCheck>('userInfo', token)
+      .toPromise();
   }
 }

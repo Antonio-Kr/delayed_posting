@@ -10,8 +10,8 @@ export class SocialConnectionsController {
   ) {}
 
   @Get('connections')
-  getConnections(@Query('email') email) {
-    return this.socialConnectionService.getConnections(email);
+  async getConnections(@Query('email') email) {
+    return await this.socialConnectionService.getConnections(email);
   }
 
   @Post('linkedin')

@@ -26,6 +26,7 @@ export class SocialConnectionsService {
       },
     });
   }
+
   async userIdByEmail(email: string): Promise<IUser> {
     return await this.client
       .send<IUser, string>('findOneByEmail', email)

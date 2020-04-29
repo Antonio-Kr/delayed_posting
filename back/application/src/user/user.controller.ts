@@ -19,41 +19,41 @@ export class UserController {
 
   @Post('login')
   async login(@Body('user') user: LoginUserDto) {
-    return this.userService.login(user);
+    return await this.userService.login(user);
   }
 
   @Post('register')
   async register(@Body('user') user: IUser) {
-    return this.userService.register(user);
+    return await this.userService.register(user);
   }
 
   @Post()
   async tokenCheck(@Body('token') token: ITokenCheck) {
-    return this.userService.tokenCheck(token);
+    return await this.userService.tokenCheck(token);
   }
 
   @Post('info')
   async user(@Body('info') info: ITokenCheck) {
-    return this.userService.userInfo(info);
+    return await this.userService.userInfo(info);
   }
 
   @Get('token')
   async token(@Query() token: ITokenCheck) {
-    return this.userService.tokenRegisterOk(token);
+    return await this.userService.tokenRegisterOk(token);
   }
 
   @Post('forgotPassword')
   async forgotPassword(@Body('email') email: string) {
-    return this.userService.forgotPassword(email);
+    return await this.userService.forgotPassword(email);
   }
 
   @Patch('profile')
   async updateUser(@Body('updateUser') userUpdate: IUserUpdate) {
-    return this.userService.userUpdate(userUpdate);
+    return await this.userService.userUpdate(userUpdate);
   }
 
   @Delete('profile')
   async deleteUser(@Body('deleteUser') token: ITokenCheck) {
-    return this.userService.userDelete(token);
+    return await this.userService.userDelete(token);
   }
 }

@@ -9,8 +9,8 @@ export class FilesController {
   constructor(private readonly fileService: FilesService) {}
 
   @MessagePattern('uploadFile')
-  async uploadFile(data) {
-    return this.fileService.uploadFile(data);
+  async uploadFile(file) {
+    return await this.fileService.uploadFile(file);
   }
 
   @MessagePattern('removeAttachement')

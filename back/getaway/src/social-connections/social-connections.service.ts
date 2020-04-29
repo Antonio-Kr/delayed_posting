@@ -19,17 +19,15 @@ export class SocialConnectionsService {
     });
   }
 
-  getConnections(email: string) {
-    return this.client.send<Promise<ISocialConnection[]>, string>(
-      'getConnections',
-      email,
-    );
+  async getConnections(email: string) {
+    return await this.client
+      .send<Promise<ISocialConnection[]>, string>('getConnections', email)
+      .toPromise();
   }
 
-  linkedInLogin(socialConnection: ILinkedInSocialConnection) {
-    return this.client.send<any, ILinkedInSocialConnection>(
-      'linkedInLogin',
-      socialConnection,
-    );
+  async linkedInLogin(socialConnection: ILinkedInSocialConnection) {
+    return await this.client
+      .send<any, ILinkedInSocialConnection>('linkedInLogin', socialConnection)
+      .toPromise();
   }
 }
