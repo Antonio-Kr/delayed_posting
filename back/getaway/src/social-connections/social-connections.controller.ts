@@ -17,6 +17,6 @@ export class SocialConnectionsController {
 
   @MessagePattern('linkedInLogin')
   async linkedInLogin(socialConnection: ILinkedInSocialConnection) {
-    return this.socialConnectionService.linkedInLogin(socialConnection);
+    return await this.socialConnectionService.linkedInLogin(socialConnection);
   }
 }

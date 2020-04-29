@@ -13,10 +13,8 @@ export class TokenController {
   async login(loginUserDto: LoginUserDto) {
     let jwt: any = await this.tokenService
       .validateUserByPassword(loginUserDto)
-      .catch(result => result.message);
-      console.log()
+      .catch((result) => result.message);
     if (!jwt.error) {
-      console.log('hello world');
       await this.tokenService.saveToken((jwt as IJwtToken).token);
     }
     return jwt;
@@ -40,16 +38,16 @@ export class TokenController {
   @MessagePattern('tokenRegisterOk')
   async tokenRegisterOk(token: ITokenCheck) {
     let x = await this.tokenCheck(token);
-    if(x){
+    if (x) {
       let ok = await this.tokenService.sendOk(x);
-      if(ok){
-        return 'Вы подтвердили адрес электронной почты. Для возврата на страницу нажмите <a href="http://localhost:3000">Домой</a>`;'
+      if (ok) {
+        return 'Вы подтвердили адрес электронной почты. Для возврата на страницу нажмите <a href="http://localhost:3000">Домой</a>`;';
       }
     }
   }
 
   @MessagePattern('tokenRegister')
-  async tokenRegister(email:string){
+  async tokenRegister(email: string) {
     let user = await this.tokenService.takeUserByEmail(email);
     let token = await this.tokenService.createJwtPayload(user);
     await this.tokenService.saveToken((token as IJwtToken).token);
@@ -57,18 +55,18 @@ export class TokenController {
   }
 
   @MessagePattern('userDelete')
-  async userDelete(token:ITokenCheck){
+  async userDelete(token: ITokenCheck) {
     let tokenCheck = await this.tokenCheck(token);
-    if(!tokenCheck){
+    if (!tokenCheck) {
       return 'error';
     }
     return await this.tokenService.userDelete(token.email);
   }
 
   @MessagePattern('userInfo')
-  async userInfo(token:ITokenCheck){
+  async userInfo(token: ITokenCheck) {
     let tokenCheck = await this.tokenCheck(token);
-    if(!tokenCheck){
+    if (!tokenCheck) {
       return 'error';
     }
     return await this.tokenService.takeInfoFromUser(token.email);

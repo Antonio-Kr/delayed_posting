@@ -24,7 +24,9 @@ export class PostService {
   }
 
   async createPost(postContent: IPost) {
-    return await this.client.send<any, IPost>('createPost', postContent);
+    return await this.client
+      .send<any, IPost>('createPost', postContent)
+      .toPromise();
   }
 
   async removePost(postId: string) {
@@ -36,14 +38,15 @@ export class PostService {
   }
 
   async getProviders() {
-    return await this.client.send<Promise<IProvider[]>, any>(
-      'getProviders',
-      '',
-    );
+    return await this.client
+      .send<Promise<IProvider[]>, any>('getProviders', '')
+      .toPromise();
   }
 
   async getProviderById(id: string) {
-    return await this.client.send<IPostTemplate, string>('getProviderById', id);
+    return await this.client
+      .send<IPostTemplate, string>('getProviderById', id)
+      .toPromise();
   }
 
   async getProviderNameById(providerId) {

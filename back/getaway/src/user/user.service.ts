@@ -4,7 +4,6 @@ import { Transport } from '@nestjs/common/enums/transport.enum';
 import { IUser } from './interfaces/user.interface';
 import { IUserUpdate } from './interfaces/user-update.interface';
 import { connectionConstants } from 'src/constants';
-import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
 
 @Injectable()
 export class UserService {
@@ -23,11 +22,13 @@ export class UserService {
   async register(user: IUser) {
     return await this.client.send<IUser, IUser>('register', user).toPromise();
   }
+
   async forgotPassword(email: string) {
     return await this.client
       .send<string, string>('forgotPassword', email)
       .toPromise();
   }
+
   async userUpdate(userUpdate: IUserUpdate) {
     if (userUpdate.firstName || userUpdate.lastName || userUpdate.timezone) {
       return await this.client

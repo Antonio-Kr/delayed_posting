@@ -19,25 +19,30 @@ export class TokenService {
       },
     });
   }
-  login(loginUserDto: LoginUserDto) {
-    return this.client
+
+  async login(loginUserDto: LoginUserDto) {
+    return await this.client
       .send<IJwtToken, LoginUserDto>('login', loginUserDto)
       .toPromise();
   }
-  tokenCheck(token: ITokenCheck) {
-    return this.client
+  async tokenCheck(token: ITokenCheck) {
+    return await this.client
       .send<IJwtToken, ITokenCheck>('tokenCheck', token)
       .toPromise();
   }
-  tokenRegisterOk(token: ITokenCheck) {
-    return this.client
+  async tokenRegisterOk(token: ITokenCheck) {
+    return await this.client
       .send<IJwtToken, ITokenCheck>('tokenRegisterOk', token)
       .toPromise();
   }
-  userDelete(token:ITokenCheck){
-    return this.client.send<IJwtToken, ITokenCheck>('userDelete', token).toPromise();
+  async userDelete(token: ITokenCheck) {
+    return await this.client
+      .send<IJwtToken, ITokenCheck>('userDelete', token)
+      .toPromise();
   }
-  userInfo(token:ITokenCheck){
-    return this.client.send<any, ITokenCheck>('userInfo', token);
+  async userInfo(token: ITokenCheck) {
+    return await this.client
+      .send<any, ITokenCheck>('userInfo', token)
+      .toPromise();
   }
 }

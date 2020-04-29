@@ -17,7 +17,7 @@ export class PostService {
   ) {}
 
   async createPost(postContent: IPost) {
-    const createdPost = this.postModel(postContent);
+    const createdPost = new this.postModel(postContent);
     return await createdPost.save();
   }
 
@@ -30,11 +30,11 @@ export class PostService {
   }
 
   async getProviders() {
-    return this.socialProviderModel.find().exec();
+    return await this.socialProviderModel.find().exec();
   }
 
   async getProviderById(id: string) {
-    return this.postTemplateModel.findOne({ providerId: id }).exec();
+    return await this.postTemplateModel.findOne({ providerId: id }).exec();
   }
 
   async getProviderNameById(providerId) {

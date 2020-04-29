@@ -10,8 +10,8 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
 
   @MessagePattern('uploadFile')
-  async uploadFile(file) {
-    return await this.filesService.uploadFile(file);
+  async uploadFile(chunk) {
+    return await this.filesService.uploadFile(chunk);
   }
 
   @MessagePattern('getAttachementsByPostId')

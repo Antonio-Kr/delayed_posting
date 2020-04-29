@@ -20,16 +20,17 @@ export class SocialConnectionsService {
   }
 
   async getConnections(email: string) {
-    return this.client.send<Promise<ISocialConnection[]>, string>(
-      'getConnections',
-      email,
-    );
+    return await this.client
+      .send<ISocialConnection[], string>('getConnections', email)
+      .toPromise();
   }
 
   async linkedInLogin(linkedInSocialConnection: ILinkedInSocialConnection) {
-    return this.client.send<any, ILinkedInSocialConnection>(
-      'linkedInLogin',
-      linkedInSocialConnection,
-    );
+    return await this.client
+      .send<any, ILinkedInSocialConnection>(
+        'linkedInLogin',
+        linkedInSocialConnection,
+      )
+      .toPromise();
   }
 }

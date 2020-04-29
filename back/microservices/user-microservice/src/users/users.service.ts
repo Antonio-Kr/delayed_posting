@@ -11,18 +11,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { IUserUpdate } from './interfaces/user-update.interface';
-const dotenv = require('dotenv');
-const result = dotenv.config();
-if (result.error) {
-  throw result.error;
-}
-console.log(result.parsed);
-const cloudinary = require('cloudinary');
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+import * as cloudinary from 'cloudinary';
 
 @Injectable()
 export class UsersService {
@@ -35,6 +24,12 @@ export class UsersService {
         host: '127.0.0.1',
         port: 8879,
       },
+    });
+
+    cloudinary.v2.config({
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
     });
   }
 
@@ -75,13 +70,7 @@ export class UsersService {
       </ul><p>Ссылка для потверждения почты:<a href='${process.env.HOME_PAGE}/user/token?token=${tokenCheck.token}&email=${tokenCheck.email}'>
       Здесь</a></p></body></html>`,
     };
-    let result = transport.sendMail(Options, function(error, response) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Message sent: OK');
-      }
-    });
+    transport.sendMail(Options);
 
     return await userThis;
   }
@@ -107,15 +96,14 @@ export class UsersService {
       avatarId,
       ...res
     } = user;
-    let x = {
-      registerOk: registerOk,
-      firstName: firstName,
-      lastName: lastName,
-      timezone: timezone,
-      avatar: avatar,
-      avatarId: avatarId,
+    return {
+      registerOk,
+      firstName,
+      lastName,
+      timezone,
+      avatar,
+      avatarId,
     };
-    return x;
   }
 
   async forgotPassword(email: string) {
@@ -159,14 +147,7 @@ export class UsersService {
             </strong><p>Пожалуйста измените свой пароль в профиле. Ссылка на сайт:<a href='${process.env.HOME_PAGE}'>
             Здесь</a></p></body></html>`,
     };
-
-    let result = transport.sendMail(Options, function(error, response) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Message sent: OK');
-      }
-    });
+    transport.sendMail(Options);
 
     return await this.userModel.findOne({ email: email });
   }
@@ -236,12 +217,7 @@ export class UsersService {
     if (tokenCheck == null) {
       return 'error';
     }
-    let res = await cloudinary.v2.uploader.upload(avatarUpdate.avatar, function(
-      error,
-      result,
-    ) {
-      console.log(result, error);
-    });
+    let res = await cloudinary.v2.uploader.upload(avatarUpdate.avatar);
     await this.userModel.update(
       { email: avatarUpdate.email },
       { $set: { avatar: res.url, avatarID: res.public_id } },
@@ -256,6 +232,7 @@ export class UsersService {
     if (tokenCheck == null) {
       return 'error';
     }
+
     await this.userModel.update(
       { email: avatarDelete.email },
       { $set: { avatar: '', avatarId: '' } },

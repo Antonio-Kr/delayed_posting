@@ -26,6 +26,7 @@ export class SocialConnectionsService {
       },
     });
   }
+
   async userIdByEmail(email: string): Promise<IUser> {
     return await this.client
       .send<IUser, string>('findOneByEmail', email)
@@ -36,7 +37,7 @@ export class SocialConnectionsService {
     return await this.socialConnectionModel.find({ userId }).exec();
   }
 
-  async createSocialConnection(
+  async createLinkedInSocialConnection(
     createSocialConnectionDto: ILinkedInSocialConnection,
   ) {
     const createdSocialConnection = new this.socialConnectionModel(

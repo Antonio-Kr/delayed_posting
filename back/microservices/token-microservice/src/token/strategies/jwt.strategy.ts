@@ -15,7 +15,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IJwtPayload) {
-    console.log('jwt strategy validate');
     const user = await this.tokenService.validateUserByJwt(payload);
 
     if (!user) {

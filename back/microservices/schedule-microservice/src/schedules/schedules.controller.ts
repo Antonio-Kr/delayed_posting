@@ -1,6 +1,5 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { ISchedule } from './interfaces/schedule.interface';
 import { SchedulesService } from './schedules.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { IPostTogo } from './interfaces/post-togo.interface';
@@ -13,7 +12,7 @@ export class SchedulesController {
 
   @MessagePattern('createSchedule')
   async createSchedule(scheduleContent: CreateScheduleDto) {
-    return this.scheduleService.createSchedule(scheduleContent);
+    return await this.scheduleService.createSchedule(scheduleContent);
   }
 
   @MessagePattern('getAllPostsToGo')

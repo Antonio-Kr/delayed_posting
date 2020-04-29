@@ -56,7 +56,7 @@ export class UsersController {
       token: passwordUpdate.token,
       email: passwordUpdate.email,
     };
-    return this.usersService.passwordUpdate(passwordUpdate, token);
+    return await this.usersService.passwordUpdate(passwordUpdate, token);
   }
 
   @MessagePattern('avatarUpdate')
@@ -65,7 +65,7 @@ export class UsersController {
       token: avatarUpdate.token,
       email: avatarUpdate.email,
     };
-    return this.usersService.avatarUpdate(avatarUpdate, token);
+    return await this.usersService.avatarUpdate(avatarUpdate, token);
   }
 
   @MessagePattern('avatarDelete')
@@ -74,11 +74,11 @@ export class UsersController {
       token: avatarDelete.token,
       email: avatarDelete.email,
     };
-    return this.usersService.avatarDelete(avatarDelete, token);
+    return await this.usersService.avatarDelete(avatarDelete, token);
   }
 
   @MessagePattern('userDeleted')
   async userDelete(email: string) {
-    return this.usersService.userDelete(email);
+    return await this.usersService.userDelete(email);
   }
 }

@@ -33,12 +33,10 @@ export class SchedulesService {
   }
 
   async createSchedule(scheduleContent: ISchedule) {
-    return await this.client.send<any, ISchedule>(
-      'createSchedule',
-      scheduleContent,
-    );
-  }
 
+    return await this.client
+      .send<any, ISchedule>('createSchedule', scheduleContent)
+      .toPromise();
   async removePost(scheduleId: string) {
     let removedSchedule = await this.client
       .send<any, string>('removeSchedule', scheduleId)

@@ -35,7 +35,6 @@ export class TokenService {
 
   async saveToken(token: string): Promise<IToken> {
     let createdToken = await this.createTokenModel(token);
-    console.log(createdToken);
     return await createdToken.save();
   }
 
@@ -45,8 +44,8 @@ export class TokenService {
 
   async validateUserByPassword(loginAttempt: LoginUserDto) {
     let userToAttempt = await this.takeUserByEmail(loginAttempt.email);
-    if(userToAttempt.registerOk!='active'){
-      return {'error': {"error_message":"Need confirm email", code: 3078}};
+    if (userToAttempt.registerOk != 'active') {
+      return { error: { error_message: 'Need confirm email', code: 3078 } };
     }
     return await new Promise(async (resolve, reject) => {
       if (
@@ -76,12 +75,11 @@ export class TokenService {
   }
 
   async takeInfoFromUser(email) {
-    return await this.client
-      .send<any, string>('findInfoFromUser', email);
+    return await this.client.send<any, string>('findInfoFromUser', email);
   }
 
-  async sendOk(token:IJwtToken){
-    let user:IUser = await this.takeUserByEmail(token.email);
+  async sendOk(token: IJwtToken) {
+    let user: IUser = await this.takeUserByEmail(token.email);
     return await this.client.send<IUser, IUser>('registerOk', user).toPromise();
   }
 
@@ -102,7 +100,7 @@ export class TokenService {
   }
 
   async createTokenModel(token: string) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       let tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       let tokenDto: TokenDto = {
@@ -112,11 +110,11 @@ export class TokenService {
       };
       resolve(tokenDto);
     })
-      .then(result => new this.tokenModel(result))
-      .catch(result => result.message);
+      .then((result) => new this.tokenModel(result))
+      .catch((result) => result.message);
   }
 
-  async userDelete(email:string){
+  async userDelete(email: string) {
     return await this.client.send<any, string>('userDeleted', email);
   }
 }

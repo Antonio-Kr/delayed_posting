@@ -1,4 +1,3 @@
-
 import { Controller, Post, Body, Query, Get } from '@nestjs/common';
 import { ILinkedInSocialConnection } from './interfaces/social-connection-linkedin.interface';
 import { SocialConnectionsService } from './social-connections.service';

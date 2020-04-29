@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope, Inject } from '@nestjs/common';
 import * as cloudinary from 'cloudinary';
 import { InjectModel } from '@nestjs/mongoose';
 import { IAttachement } from './interfaces/attachement.interface';
@@ -20,29 +20,25 @@ export class FilesService {
     });
   }
 
-  async uploadFile(file: any): Promise<IAttachementResult> {
-    let b64 = Buffer.from(file.buffer.data).toString('base64');
-    const resourceType = file.mimetype.replace(/\/.+/, '');
-
-    let attachementResult = await cloudinary.v2.uploader
-      .upload(`data:${file.mimetype};base64,${b64}`, {
-        resource_type: resourceType,
-      })
-      .then(async result => {
-        let attachementDto: CreateAttachementDto = this.createAttachementDto(
-          result,
-        );
-        const createdAttachement = new this.attachementModel(attachementDto);
-        const saveResult = this.saveAttachement(createdAttachement);
-        return await saveResult;
-      })
-      .catch(error => error);
-
-    await console.log(attachementResult);
-    if (attachementResult.error) {
-      attachementResult = null;
-    }
-    return await attachementResult;
+  async uploadFile(file) {
+    const resourceType = file.file.mimetype.replace(/\/.+/, '');
+    return new Promise((resolve, reject) => {
+      const upload_stream = cloudinary.v2.uploader.upload_stream(
+        { resource_type: resourceType },
+        (err, image) => {
+          if (err) {
+            reject(err);
+          }
+          let attachementDto: CreateAttachementDto = this.createAttachementDto(
+            image,
+          );
+          const createdAttachement = new this.attachementModel(attachementDto);
+          const saveResult = this.saveAttachement(createdAttachement);
+          resolve(saveResult);
+        },
+      );
+      upload_stream.end(Buffer.from(file.file.buffer.data));
+    });
   }
 
   async getAttachementsByPostId(postId: string) {
@@ -52,6 +48,11 @@ export class FilesService {
   async removeAttachement(removeContent: IAttachementRemove) {
     await cloudinary.v2.uploader.destroy(removeContent.fileId);
     return await this.attachementModel.remove({ fileId: removeContent.fileId });
+  }
+
+  async updateAttachements(attachements: IUpdateAttachements) {
+    return await Promise.all(attachements.attachements).then(() => {
+      attachements.attachements.map(att => {
   }
 
   async removeAttachementsByPostId(postId: string) {
@@ -79,7 +80,7 @@ export class FilesService {
   private createAttachementDto(saveData): CreateAttachementDto {
     return {
       contentType: saveData.resource_type,
-      createdAt: new Date(),
+      createdAt: saveData.created_at,
       fileId: saveData.public_id,
       link: saveData.secure_url,
       postId: '0',
@@ -89,16 +90,10 @@ export class FilesService {
   private async saveAttachement(
     createdAttachement,
   ): Promise<IAttachementResult> {
-    return await createdAttachement
-      .save()
-      .then(
-        async (result): Promise<IAttachementResult> => {
-          return {
-            fileId: result.fileId,
-            link: result.link,
-          };
-        },
-      )
-      .catch(error => error);
+    let result = await createdAttachement.save();
+    return {
+      fileId: result.fileId,
+      link: result.link,
+    };
   }
 }

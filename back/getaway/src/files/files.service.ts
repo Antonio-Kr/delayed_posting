@@ -8,6 +8,7 @@ import { connectionConstants } from 'src/constants';
 import { IAttachementResult } from './interfaces/attachement-result.interface';
 import { IUpdateAttachements } from 'src/post/interfaces/update-attachements.interface';
 import { IAttachementRemove } from './interfaces/attachement-remove.interface';
+import * as stream from 'stream';
 
 @Injectable()
 export class FilesService {
@@ -24,10 +25,9 @@ export class FilesService {
   }
 
   async uploadFile(file) {
-    return await this.client.send<IAttachementResult, string>(
-      'uploadFile',
-      file,
-    );
+    return await this.client
+      .send<IAttachementResult, any>('uploadFile', file)
+      .toPromise();
   }
 
   async getAttachementsByPostId(postId: string) {
@@ -44,10 +44,9 @@ export class FilesService {
   }
 
   async removeAttachement(removeContent: IAttachementRemove) {
-    return await this.client.send<any, IAttachementRemove>(
-      'removeAttachement',
-      removeContent,
-    );
+    return await this.client
+      .send<any, IAttachementRemove>('removeAttachement', removeContent)
+      .toPromise();
   }
 
   async updateAttachements(updateAttachements: IUpdateAttachements) {

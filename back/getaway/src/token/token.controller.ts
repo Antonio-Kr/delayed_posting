@@ -10,26 +10,26 @@ export class TokenController {
 
   @MessagePattern('login')
   async login(user: LoginUserDto) {
-    return this.tokenService.login(user);
+    return await this.tokenService.login(user);
   }
 
   @MessagePattern('tokenCheck')
   async tokenCheck(token: ITokenCheck) {
-    return this.tokenService.tokenCheck(token);
+    return await this.tokenService.tokenCheck(token);
   }
 
   @MessagePattern('tokenRegisterOk')
   async tokenRegisterOk(token: ITokenCheck) {
-    return this.tokenService.tokenRegisterOk(token);
+    return await this.tokenService.tokenRegisterOk(token);
   }
 
   @MessagePattern('userDelete')
   async userDelete(token: ITokenCheck) {
-    return this.tokenService.userDelete(token);
+    return await this.tokenService.userDelete(token);
   }
 
   @MessagePattern('userInfo')
   async userInfo(token: ITokenCheck) {
-    return this.tokenService.userInfo(token);
+    return await this.tokenService.userInfo(token);
   }
 }

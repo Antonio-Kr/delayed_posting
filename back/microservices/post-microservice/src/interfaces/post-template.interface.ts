@@ -1,4 +1,6 @@
-export interface IPostTemplate {
+import { Document } from 'mongoose';
+
+export interface IPostTemplate extends Document {
   providerId: string;
   attachements: {
     img: boolean;

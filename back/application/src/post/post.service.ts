@@ -15,6 +15,7 @@ import { IPostTogo } from './interfaces/post-togo.interface';
 import { IPostRange } from './interfaces/post-range.interface';
 import { IPostArchive } from './interfaces/post-archive.interface';
 
+
 @Injectable()
 export class PostService {
   private client: ClientProxy;
@@ -30,26 +31,30 @@ export class PostService {
   }
 
   async uploadFile(file) {
-    return this.client.send<IAttachementResult, string>('uploadFile', file);
+    return await this.client
+      .send<IAttachementResult, any>('uploadFile', {
+        file,
+      })
+      .toPromise();
   }
 
   async removeAttachement(removeContent: IAttachementRemove) {
-    return this.client.send<any, IAttachementRemove>(
-      'removeAttachement',
-      removeContent,
-    );
-  }
-
-  async removePost(scheduleId: string) {
-    return this.client.send<any, string>('removePost', scheduleId);
+    return await this.client
+      .send<any, IAttachementRemove>('removeAttachement', removeContent)
+      .toPromise();
   }
 
   async createPost(postContent: IPost) {
-    return this.client.send<any, IPost>('createPost', postContent);
+    return await this.client
+      .send<any, IPost>('createPost', postContent)
+      .toPromise();
   }
 
   async createSchedule(scheduleContent: ISchedule) {
-    return this.client.send<any, ISchedule>('createSchedule', scheduleContent);
+    return await this.client
+      .send<any, ISchedule>('createSchedule', scheduleContent)
+      .toPromise();
+
   }
 
   async getAllPostsToGo(params: IPostTogo) {
@@ -81,6 +86,8 @@ export class PostService {
   }
 
   async getProviderById(id: string) {
-    return this.client.send<IPostTemplate, string>('getProviderById', id);
+    return await this.client
+      .send<IPostTemplate, string>('getProviderById', id)
+      .toPromise();
   }
 }
