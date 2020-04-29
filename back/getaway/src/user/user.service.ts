@@ -20,11 +20,11 @@ export class UserService {
     });
   }
 
-  register(user: IUser) {
-    return this.client.send<IUser, IUser>('register', user).toPromise();
+  async register(user: IUser) {
+    return await this.client.send<IUser, IUser>('register', user).toPromise();
   }
-  forgotPassword(email: string) {
-    return this.client
+  async forgotPassword(email: string) {
+    return await this.client
       .send<string, string>('forgotPassword', email)
       .toPromise();
   }

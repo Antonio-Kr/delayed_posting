@@ -14,6 +14,16 @@ export class FilesController {
     return await this.filesService.uploadFile(file);
   }
 
+  @MessagePattern('getAttachementsByPostId')
+  async getAttachementsByPostId(postId: string) {
+    return await this.filesService.getAttachementsByPostId(postId);
+  }
+
+  @MessagePattern('removeAttachementsByPostId')
+  async removeAttachementsByPostId(postId: string) {
+    return await this.filesService.removeAttachementsByPostId(postId);
+  }
+
   @MessagePattern('removeAttachement')
   async removeAttachement(removeContent: IAttachementRemove) {
     return await this.filesService.removeAttachement(removeContent);

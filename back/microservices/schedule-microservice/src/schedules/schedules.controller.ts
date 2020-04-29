@@ -4,7 +4,13 @@ import { ISchedule } from './interfaces/schedule.interface';
 import { SchedulesService } from './schedules.service';
 import { Cron } from '@nestjs/schedule'
 import { CreateScheduleDto } from './dto/create-schedule.dto';
+
 import { SchedulerRegistry } from '@nestjs/schedule';
+
+
+import { IPostTogo } from './interfaces/post-togo.interface';
+import { IPostRange } from './interfaces/post-range.interface';
+import { IPostArchive } from './interfaces/post-archive.interface';
 
 
 @Controller('schedules')
@@ -18,8 +24,29 @@ export class SchedulesController {
     return this.scheduleService.createSchedule(scheduleContent);
   }
 
+
   @MessagePattern('restartSchedule')
   async restartSchedule(){
     return this.scheduleService.startSchedule();
+
+  @MessagePattern('getAllPostsToGo')
+  async getAllPostsToGo(params: IPostTogo) {
+    return this.scheduleService.getAllPostsToGo(params);
+  }
+
+  @MessagePattern('getAllPostsDateRange')
+  async getAllPostsDateRange(range: IPostRange) {
+    return this.scheduleService.getAllPostsDateRange(range);
+  }
+
+  @MessagePattern('getAllPostsArch')
+  async getAllPostsArch(params: IPostArchive) {
+    return this.scheduleService.getAllPostsArch(params);
+  }
+
+  @MessagePattern('removeSchedule')
+  async removeSchedule(scheduleId: string) {
+    return this.scheduleService.removeSchedule(scheduleId);
+
   }
 }
