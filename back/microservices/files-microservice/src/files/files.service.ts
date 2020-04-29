@@ -41,6 +41,10 @@ export class FilesService {
     });
   }
 
+  async getAttachementsByPostId(postId: string) {
+    return await this.attachementModel.find({ postId }).exec();
+  }
+
   async removeAttachement(removeContent: IAttachementRemove) {
     await cloudinary.v2.uploader.destroy(removeContent.fileId);
     return await this.attachementModel.remove({ fileId: removeContent.fileId });
@@ -49,6 +53,19 @@ export class FilesService {
   async updateAttachements(attachements: IUpdateAttachements) {
     return await Promise.all(attachements.attachements).then(() => {
       attachements.attachements.map(att => {
+  }
+
+  async removeAttachementsByPostId(postId: string) {
+    const attachements = await this.attachementModel.find({ postId }).exec();
+    attachements.forEach(
+      async att => await cloudinary.v2.uploader.destroy(att.fileId),
+    );
+    return await this.attachementModel.remove({ postId }).exec();
+  }
+
+  async updateAttachements(attachements: IUpdateAttachements) {
+    return await Promise.all(attachements.attachements).then(async () => {
+      await attachements.attachements.map(att => {
         this.attachementModel
           .update(
             { fileId: att.fileId },

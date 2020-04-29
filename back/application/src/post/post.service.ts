@@ -11,8 +11,10 @@ import { IAttachementRemove } from './interfaces/attachement-remove.interface';
 import { IProvider } from './interfaces/service-provider.interface';
 import { IPostTemplate } from './interfaces/post-template.interface';
 import { ISchedule } from './interfaces/schedule.interface';
-import { Readable } from 'stream';
-import { v4 as uuidv4 } from 'uuid';
+import { IPostTogo } from './interfaces/post-togo.interface';
+import { IPostRange } from './interfaces/post-range.interface';
+import { IPostArchive } from './interfaces/post-archive.interface';
+
 
 @Injectable()
 export class PostService {
@@ -52,6 +54,19 @@ export class PostService {
     return await this.client
       .send<any, ISchedule>('createSchedule', scheduleContent)
       .toPromise();
+
+  }
+
+  async getAllPostsToGo(params: IPostTogo) {
+    return this.client.send<any, IPostTogo>('getAllPostsToGo', params);
+  }
+
+  async getAllPostsDateRange(range: IPostRange) {
+    return this.client.send<any, IPostRange>('getAllPostsDateRange', range);
+  }
+
+  async getAllPostsArch(params: IPostArchive) {
+    return this.client.send<any, IPostArchive>('getAllPostsArch', params);
   }
 
   async getProviders() {

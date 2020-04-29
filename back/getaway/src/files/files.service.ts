@@ -30,6 +30,19 @@ export class FilesService {
       .toPromise();
   }
 
+  async getAttachementsByPostId(postId: string) {
+    return await this.client
+      .send<IAttachementResult[], string>('getAttachementsByPostId', postId)
+      .toPromise();
+  }
+
+  async removeAttachementsByPostId(postId: string) {
+    return await this.client.send<any, string>(
+      'removeAttachementsByPostId',
+      postId,
+    );
+  }
+
   async removeAttachement(removeContent: IAttachementRemove) {
     return await this.client
       .send<any, IAttachementRemove>('removeAttachement', removeContent)
