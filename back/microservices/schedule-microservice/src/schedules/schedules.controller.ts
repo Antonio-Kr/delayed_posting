@@ -18,8 +18,8 @@ export class SchedulesController {
     return this.scheduleService.createSchedule(scheduleContent);
   }
 
-  @MessagePattern('startSchedule')
-  async schedulePosting(schedule:string){
-    // return await this.scheduleService.schedulePosting(schedule);
+  @MessagePattern('restartSchedule')
+  async restartSchedule(){
+    return this.scheduleService.startSchedule();
   }
 }

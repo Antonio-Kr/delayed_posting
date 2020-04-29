@@ -36,7 +36,7 @@ export class UserService {
     else if(userUpdate.password&&userUpdate.newPassword){
       return this.client.send<any, IUserUpdate>('passwordUpdate', userUpdate).toPromise();
     }
-    else if(userUpdate.avatar){
+    else if(userUpdate.avatar||userUpdate.avatarId){
       return this.client.send<IUser, IUserUpdate>('avatarUpdate', userUpdate).toPromise();
     }
     else if(userUpdate.avatar==null||userUpdate.avatar==""){

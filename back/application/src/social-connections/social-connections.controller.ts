@@ -44,7 +44,6 @@ export class SocialConnectionsController {
         },
       },
     ).then(result => result.json());
-    console.log(tokenJson)
 
     const expires_inSeconds = new Date().getSeconds() + tokenJson.expires_in;
 

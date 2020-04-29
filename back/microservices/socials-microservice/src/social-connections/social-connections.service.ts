@@ -46,8 +46,7 @@ export class SocialConnectionsService {
   }
 
   async getToken(userId:string){
-    let social:ILinkedInSocialConnection = await this.socialConnectionModel.find({"userId":userId});
-    console.log(social.token)
+    let social:ILinkedInSocialConnection = await this.socialConnectionModel.findOne({"userId":userId}).sort({'_id':-1});
     return social.token;
   }
 }

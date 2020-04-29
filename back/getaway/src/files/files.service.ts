@@ -42,4 +42,8 @@ export class FilesService {
       .send<any, IUpdateAttachements>('updateAttachements', updateAttachements)
       .toPromise();
   }
+
+  async attachementsLink(postId:string){
+    return await this.client.send<string, string>('attachementsLink',postId).toPromise()
+  }
 }
