@@ -91,7 +91,7 @@ export class SchedulesService {
     let bodyPost = new Array();
     for(let i =0;i<scheduleMass.length;i++){
       
-      const dataTime = Date.parse(scheduleMass[i].startsAt);
+      const dataTime = Date.parse(scheduleMass[i].startsAt.toString());
       const data:Date = new Date(dataTime);
       
       let scheduleDate = data.getUTCSeconds()+' '+data.getUTCMinutes()+' '+data.getUTCHours()+' '+data.getUTCDate()+' '+(data.getUTCMonth()+1)+' '+data.getUTCDay();
@@ -177,7 +177,7 @@ export class SchedulesService {
     ).then(response => response.json());
       return personId.id;
   }
-}
+
   async getAllPostsToGo(params: IPostTogo) {
     const userId = await this.getUserId(params.email);
     if (!userId) return [];
