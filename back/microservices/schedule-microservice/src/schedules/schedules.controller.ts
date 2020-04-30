@@ -28,6 +28,7 @@ export class SchedulesController {
   @MessagePattern('restartSchedule')
   async restartSchedule(){
     return this.scheduleService.startSchedule();
+  }
 
   @MessagePattern('getAllPostsToGo')
   async getAllPostsToGo(params: IPostTogo) {
