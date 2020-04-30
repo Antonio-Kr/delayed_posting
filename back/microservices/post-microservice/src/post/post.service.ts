@@ -61,6 +61,7 @@ export class PostService {
   async getPostBody(postId:string){
     let getPost:IPost = await this.postModel.findOne({'_id':postId});
     return getPost.body;
+  }
 
   async getProviderNameById(providerId) {
     return this.socialProviderModel.findById(providerId).exec();
