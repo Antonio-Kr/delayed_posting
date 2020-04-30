@@ -43,7 +43,7 @@ export class TokenController {
     if(x){
       let ok = await this.tokenService.sendOk(x);
       if(ok){
-        return 'Вы подтвердили адрес электронной почты. Для возврата на страницу нажмите <a href="http://localhost:3000">Домой</a>`;'
+        return `Вы подтвердили адрес электронной почты. Для возврата на страницу нажмите <a href="${process.env.BASE_FRONT}">Домой</a>;`
       }
     }
   }
