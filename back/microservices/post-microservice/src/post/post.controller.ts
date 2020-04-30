@@ -40,10 +40,10 @@ export class PostController {
   @MessagePattern('getPostBody')
   async getPostBody(postId:string){
     return this.postService.getPostBody(postId);
-
+  }
+  
   @MessagePattern('getProviderNameById')
   async getProviderNameById(providerId) {
     return await this.postService.getProviderNameById(providerId);
-
   }
 }
