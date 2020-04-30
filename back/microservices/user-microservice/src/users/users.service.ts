@@ -52,8 +52,7 @@ export class UsersService {
 
     let nodemailer = require('nodemailer');
     let mailOptions = {
-      service: 'gmail',
-      host: 'smtp.gmail.com',
+      host: 'smtp.ukr.net',
       port: 465,
       secure: true,
       auth: {
@@ -64,7 +63,7 @@ export class UsersService {
 
     let transport = nodemailer.createTransport(mailOptions);
     let Options = {
-      from: 'user@gmail.com',
+      from: process.env.LOGIN_EMAIL,
       to: userThis.email,
       subject: 'Регистрация на сайте ',
       text: 'Добро пожаловать!',
@@ -72,7 +71,7 @@ export class UsersService {
       </head><body> <h1>Добро пожаловать!</h1> <p>Поздравляем вас с успешной 
       регистрацией на сайте!</p><ul> <li>Ваш логин: <strong>${createUserDto.email}
       </strong></li><li>Ваш пароль: <strong> ${createUserDto.password}</strong></li>
-      </ul><p>Ссылка для потверждения почты:<a href='${process.env.HOME_PAGE}/user/token?token=${tokenCheck.token}&email=${tokenCheck.email}'>
+      </ul><p>Ссылка для потверждения почты:<a href='${process.env.BASE_FRONT}/user/token?token=${tokenCheck.token}&email=${tokenCheck.email}'>
       Здесь</a></p></body></html>`,
     };
     let result = transport.sendMail(Options, function(error, response) {
@@ -123,6 +122,7 @@ export class UsersService {
     let a = Math.random()
       .toString(36)
       .slice(2, 10);
+    a = Math.random().toString().slice(2,1) + a + '!';
     userForgot = await this.findOneByEmail(email);
 
     const res = await this.userModel.update(
@@ -137,8 +137,7 @@ export class UsersService {
     let nodemailer = require('nodemailer');
 
     let mailOptions = {
-      service: 'gmail',
-      host: 'smtp.gmail.com',
+      host: 'smtp.ukr.net',
       port: 465,
       secure: true,
       auth: {
@@ -150,13 +149,13 @@ export class UsersService {
     let transport = nodemailer.createTransport(mailOptions);
 
     let Options = {
-      from: 'user@gmail.com',
+      from: process.env.LOGIN_EMAIL,
       to: emailString,
       subject: 'Изменение пароля ',
       text: 'Здравствуйте!',
       html: `<!DOCTYPE html><html lang="ru"><head> <meta charset="UTF-8"> <title>Title</title>
             </head><body> <h1>Здравствуйте!</h1> <p>Ваш пароль был сброшен!</p>Вот ваш временный пароль для входа: <strong>${a}
-            </strong><p>Пожалуйста измените свой пароль в профиле. Ссылка на сайт:<a href='${process.env.HOME_PAGE}'>
+            </strong><p>Пожалуйста измените свой пароль в профиле. Ссылка на сайт:<a href='${process.env.BASE_FRONT}'>
             Здесь</a></p></body></html>`,
     };
 
@@ -236,15 +235,9 @@ export class UsersService {
     if (tokenCheck == null) {
       return 'error';
     }
-    let res = await cloudinary.v2.uploader.upload(avatarUpdate.avatar, function(
-      error,
-      result,
-    ) {
-      console.log(result, error);
-    });
     await this.userModel.update(
       { email: avatarUpdate.email },
-      { $set: { avatar: res.url, avatarID: res.public_id } },
+      { $set: { avatar: avatarUpdate.avatar, avatarID: avatarUpdate.avatarId } },
     );
 
     let user = await this.findOneByEmail(avatarUpdate.email);
@@ -292,5 +285,10 @@ export class UsersService {
     }
 
     return errors;
+  }
+
+  async emailToId(userId:string){
+    let user:IUser = await this.userModel.find({"userId":userId});
+    return user.email;
   }
 }

@@ -17,4 +17,11 @@ export class FilesController {
   async removeAttachement(removeContent: IAttachementRemove) {
     return await this.fileService.removeAttachement(removeContent);
   }
+
+  @MessagePattern('attachementsLink')
+  async attachementsLink(postId:string){
+    
+    console.log(postId)
+    return await this.fileService.attachementsLink(postId);
+  }
 }

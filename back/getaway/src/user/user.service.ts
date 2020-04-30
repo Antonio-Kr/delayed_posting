@@ -28,24 +28,21 @@ export class UserService {
       .send<string, string>('forgotPassword', email)
       .toPromise();
   }
-  async userUpdate(userUpdate: IUserUpdate) {
-    if (userUpdate.firstName || userUpdate.lastName || userUpdate.timezone) {
-      return await this.client
-        .send<IUser, IUserUpdate>('userUpdate', userUpdate)
-        .toPromise();
-    } else if (userUpdate.password && userUpdate.newPassword) {
-      return await this.client
-        .send<any, IUserUpdate>('passwordUpdate', userUpdate)
-        .toPromise();
-    } else if (userUpdate.avatar) {
-      return await this.client
-        .send<IUser, IUserUpdate>('avatarUpdate', userUpdate)
-        .toPromise();
-    } else if (userUpdate.avatar == null || userUpdate.avatar == '') {
-      return await this.client
-        .send<IUser, IUserUpdate>('avatarDelete', userUpdate)
-        .toPromise();
-    } else {
+  userUpdate(userUpdate: IUserUpdate) {
+
+    if(userUpdate.firstName||userUpdate.lastName||userUpdate.timezone){
+      return this.client.send<IUser, IUserUpdate>('userUpdate', userUpdate).toPromise();
+    }
+    else if(userUpdate.password&&userUpdate.newPassword){
+      return this.client.send<any, IUserUpdate>('passwordUpdate', userUpdate).toPromise();
+    }
+    else if(userUpdate.avatar||userUpdate.avatarId){
+      return this.client.send<IUser, IUserUpdate>('avatarUpdate', userUpdate).toPromise();
+    }
+    else if(userUpdate.avatar==null||userUpdate.avatar==""){
+      return this.client.send<IUser, IUserUpdate>('avatarDelete', userUpdate).toPromise();
+    }
+    else { 
       return 'error';
     }
   }

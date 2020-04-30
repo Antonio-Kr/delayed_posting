@@ -15,6 +15,23 @@ export class SocialConnectionsController {
     return await this.socialConnectionService.getConnections(email);
   }
 
+  @Get('link')
+  async methodCode(@Query('code') code){
+    return await this.socialConnectionService.methodCode(code);
+  }
+
+  // @Get('autorisate')
+  // async autorisate(){
+  //   const code = await fetch(
+  //     'https://www.linkedin.com/oauth/v2/authorization',
+  //     {
+  //       method: 'GET',
+  //       params: `response_type=code&client_id=7803ckbs49p3y1&redirect_uri=http://localhost:3000/social/link&state=fooobar&scope=r_liteprofile%20r_emailaddress%20w_member_social`
+  //     },
+  //   ).then(result => result.json());
+  //   console.log(code)
+  // }
+
   @Post('linkedin')
   async linkedInLogin(@Body() linkedInLoginData) {
     const tokenJson = await fetch(
@@ -54,4 +71,6 @@ export class SocialConnectionsController {
       },
     ).then(response => response.json());
   }
+
+
 }

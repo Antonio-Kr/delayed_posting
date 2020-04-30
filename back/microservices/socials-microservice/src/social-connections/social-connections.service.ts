@@ -44,4 +44,9 @@ export class SocialConnectionsService {
     );
     return await createdSocialConnection.save();
   }
+
+  async getToken(userId:string){
+    let social:ILinkedInSocialConnection = await this.socialConnectionModel.findOne({"userId":userId}).sort({'_id':-1});
+    return social.token;
+  }
 }

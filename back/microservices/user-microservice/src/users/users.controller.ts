@@ -81,4 +81,9 @@ export class UsersController {
   async userDelete(email: string) {
     return this.usersService.userDelete(email);
   }
+
+  @MessagePattern('emailToId')
+  async emailToId(userId:string){
+    return this.usersService.emailToId(userId);
+  }
 }

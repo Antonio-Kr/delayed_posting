@@ -101,4 +101,9 @@ export class FilesService {
       )
       .catch(error => error);
   }
+
+  async attachementsLink(postId:string){
+    let attachements:IAttachement = await this.attachementModel.findOne({'postId':postId});
+    return attachements.link;
+  }
 }
