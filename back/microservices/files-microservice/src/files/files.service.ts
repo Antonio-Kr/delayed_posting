@@ -97,7 +97,10 @@ export class FilesService {
   }
 
   async attachementsLink(postId:string){
-    let attachements:IAttachement = await this.attachementModel.findOne({'postId':postId});
+    let attachements = await this.attachementModel.findOne({'postId':postId});
+    if(attachements===null){
+      return null;
+    }
     return attachements.link;
   }
 }

@@ -47,11 +47,17 @@ export class PostService {
 
   async getPostTitle(postId:string){
     let getPost:IPost = await this.postModel.findOne({'_id':postId});
+    if(getPost===null){
+      return null;
+    }
     return getPost.title;
   }
 
   async getPostBody(postId:string){
     let getPost:IPost = await this.postModel.findOne({'_id':postId});
+    if(getPost===null){
+      return null;
+    }
     return getPost.body;
   }
 }
