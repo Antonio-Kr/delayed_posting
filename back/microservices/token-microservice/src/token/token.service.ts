@@ -15,6 +15,11 @@ import {
 } from '@nestjs/microservices';
 import { sha512 } from 'js-sha512';
 import { ITokenCheck } from './interfaces/token-check.interface';
+const dotenv = require('dotenv');
+const result = dotenv.config();
+if (result.error) {
+  throw result.error;
+}
 
 @Injectable()
 export class TokenService {
