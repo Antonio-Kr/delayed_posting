@@ -100,7 +100,15 @@ export class SchedulesService {
       postBody[i] = await this.getPostBody(scheduleMass[i].postId);
       token[i] = await this.getToken(scheduleMass[i].userId);
       personId[i] = await this.getPersonId(token[i]);
-      console.log(attachementsLink[i])
+      if(attachementsLink[i]===null){
+        attachementsLink[i]='[]';
+      }
+      if(postTitle[i]===null){
+        postTitle[i]='[]';
+      }
+      if(postBody[i]===null){
+        postBody[i]='[]';
+      }
       bodyPost[i] = {
         content: {
           contentEntities: [
