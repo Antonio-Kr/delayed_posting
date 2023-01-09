@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^6.13.2",
-    "@nestjs/jwt": "6.1.2",
+    "@nestjs/jwt": "10.0.1",
     "@nestjs/microservices": "6.11.11",
     "@nestjs/mongoose": "6.3.1",
     "@nestjs/passport": "6.2.0",
@@ -50,7 +50,7 @@
     "js-sha512": "0.8.0",
     "mongoose": "5.9.4",
     "passport": "^0.4.1",
-    "passport-jwt": "4.0.0",
+    "passport-jwt": "4.0.1",
     "prettier": "^1.18.2",
     "supertest": "^4.0.2",
     "ts-jest": "25.2.0",
